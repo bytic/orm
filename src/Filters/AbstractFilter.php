@@ -176,7 +176,7 @@ class AbstractFilter implements FilterInterface
      */
     public function cleanRequestValue($value)
     {
-        return clean($value);
+        return trim(stripslashes(htmlentities($value, ENT_QUOTES, 'UTF-8')));
     }
 
     /**

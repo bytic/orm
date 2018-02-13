@@ -228,7 +228,10 @@ abstract class RecordManager
      */
     public function getRootNamespace()
     {
-        return app('app')->getRootNamespace() . 'Models\\';
+        if (function_exists('app')) {
+            return app('app')->getRootNamespace() . 'Models\\';
+        }
+        return 'App\Models\\';
     }
 
     /**
