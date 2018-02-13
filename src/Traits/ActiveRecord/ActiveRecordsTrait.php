@@ -2,6 +2,7 @@
 
 namespace Nip\Records\Traits\ActiveRecord;
 
+use Nip\Container\Container;
 use Nip\Database\Connections\Connection;
 use Nip\Database\Query\AbstractQuery as Query;
 use Nip\Database\Query\Delete as DeleteQuery;
@@ -102,7 +103,10 @@ trait ActiveRecordsTrait
      */
     protected function newDbConnection()
     {
-        return app('db.connection');
+        if (function_exists('app')) {
+            return app('db.connection');
+        }
+        return Container::getInstance()->get('db.connection');
     }
 
     public function checkDB()
@@ -387,7 +391,7 @@ trait ActiveRecordsTrait
         if (isset($where)) {
             if (is_array($where)) {
                 foreach ($where as $condition) {
-                    $condition = (array) $condition;
+                    $condition = (array)$condition;
                     $query->where($condition[0], $condition[1]);
                 }
             } else {

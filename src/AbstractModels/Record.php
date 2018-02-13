@@ -12,7 +12,7 @@ use Nip\Utility\Traits\NameWorksTrait;
  *
  * @method \Nip_Helper_Url URL()
  */
-abstract class Record extends \Nip_Object
+abstract class Record
 {
     use NameWorksTrait;
 
@@ -26,6 +26,33 @@ abstract class Record extends \Nip_Object
 
     protected $_dbData = [];
     protected $_helpers = [];
+
+
+    protected $_data;
+
+    public function &__get($name)
+    {
+        if (!$this->__isset($name)) {
+            $this->_data[$name] = null;
+        }
+
+        return $this->_data[$name];
+    }
+
+    public function __set($name, $value)
+    {
+        $this->_data[$name] = $value;
+    }
+
+    public function __isset($name)
+    {
+        return isset($this->_data[$name]);
+    }
+
+    public function __unset($name)
+    {
+        unset($this->_data[$name]);
+    }
 
 
     /**

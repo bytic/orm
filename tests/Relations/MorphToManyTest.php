@@ -3,6 +3,7 @@
 namespace Nip\Records\Tests\Relations;
 
 use Mockery as m;
+use Nip\Container\Container;
 use Nip\Database\Connections\Connection;
 use Nip\Records\Record;
 use Nip\Records\RecordManager;
@@ -62,6 +63,6 @@ class MorphToManyTest extends \Nip\Records\Tests\AbstractTest
     protected function setUp()
     {
         parent::setUp();
-        app()->set('db.connection', new Connection(false));
+        Container::getInstance()->set('db.connection', new Connection(false));
     }
 }
