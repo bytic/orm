@@ -3,6 +3,7 @@
 namespace Nip\Records;
 
 use Nip\Records\Traits\HasFilters\RecordsTrait as HasFilters;
+use Nip\Records\Traits\HasMorphName\HasMorphNameManagerTrait;
 use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
 
 /**
@@ -13,4 +14,5 @@ class RecordManager extends AbstractModels\RecordManager
 {
     use HasFilters;
     use HasRelationsRecordsTrait;
+    use HasMorphNameManagerTrait;
 }

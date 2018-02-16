@@ -21,7 +21,7 @@ trait HasManagerTrait
     protected $manager = null;
 
     /**
-     * @return RecordManager
+     * @return RecordManager|\Nip\Records\RecordManager
      */
     public function getManager()
     {

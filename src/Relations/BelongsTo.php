@@ -2,6 +2,7 @@
 
 namespace Nip\Records\Relations;
 
+use Nip\Database\Query\AbstractQuery;
 use Nip\Records\Collections\Collection as RecordCollection;
 
 /**
@@ -62,5 +63,12 @@ class BelongsTo extends Relation
         }
 
         return $dictionary;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function populateQuerySpecific(AbstractQuery $query)
+    {
     }
 }

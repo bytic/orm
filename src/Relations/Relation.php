@@ -13,6 +13,7 @@ use Nip\Records\Locator\Exceptions\InvalidModelException;
 use Nip\Records\Locator\ModelLocator;
 use Nip\Records\Record;
 use Nip\Records\RecordManager;
+use Nip\Records\Relations\Exceptions\RelationsNeedsAName;
 use Nip\Records\Relations\Traits\HasManagerTrait;
 use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
 use Nip\Records\Traits\Relations\HasRelationsRecordTrait;
@@ -29,7 +30,7 @@ abstract class Relation
     /**
      * @var
      */
-    protected $name;
+    protected $name = null;
 
     /**
      * @var string
@@ -163,9 +164,13 @@ abstract class Relation
 
     /**
      * @return mixed
+     * @throws RelationsNeedsAName
      */
     public function getName()
     {
+        if ($this->name === null) {
+            throw new RelationsNeedsAName();
+        }
         return $this->name;
     }
 
@@ -225,9 +230,7 @@ abstract class Relation
     /**
      * @param AbstractQuery $query
      */
-    public function populateQuerySpecific(AbstractQuery $query)
-    {
-    }
+    abstract public function populateQuerySpecific(AbstractQuery $query);
 
     /**
      * @return \Nip\Database\Query\Delete

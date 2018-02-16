@@ -3,7 +3,7 @@
 namespace Nip\Records\AbstractModels;
 
 use Nip\HelperBroker;
-use Nip\Logger\Exception;
+use \Exception;
 use Nip\Utility\Traits\NameWorksTrait;
 
 /**

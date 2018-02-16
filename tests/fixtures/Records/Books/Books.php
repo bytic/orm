@@ -2,6 +2,8 @@
 
 namespace Nip\Records\Tests\Fixtures\Records\Books;
 
+use Nip\Database\Connections\MySqlConnection;
+
 /**
  * Class Books
  * @package Nip\Records\Tests\Fixtures\Records\Books
@@ -9,7 +11,13 @@ namespace Nip\Records\Tests\Fixtures\Records\Books;
 class Books extends \Nip\Records\RecordManager
 {
 
-    public function findOne($primary)
+    protected function newDbConnection()
     {
+        return new MySqlConnection(null);
+    }
+
+    protected function generateTable()
+    {
+        return 'books';
     }
 }
