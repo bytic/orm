@@ -47,6 +47,9 @@ abstract class AbstractStage implements StageInterface
      */
     protected function newModelManager($class)
     {
+        if (method_exists($class, "instance")) {
+            return call_user_func([$class, "instance"]);
+        }
         $manager = new $class();
         return $manager;
     }
