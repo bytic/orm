@@ -6,6 +6,7 @@ use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Locator\Configuration\HasConfigurationTrait;
 use Nip\Records\Locator\Exceptions\InvalidModelException;
 use Nip\Records\Locator\ModelLocator\Traits\StaticMethodsTrait;
+use Nip\Records\Locator\Registry\HasModelRegistry;
 use Nip\Records\Locator\Resolver\Commands\Command;
 use Nip\Records\Locator\Resolver\Commands\CommandsFactory;
 use Nip\Records\Locator\Resolver\HasResolverPipelineTrait;
@@ -19,6 +20,7 @@ class ModelLocator
     use StaticMethodsTrait;
     use HasResolverPipelineTrait;
     use HasConfigurationTrait;
+    use HasModelRegistry;
 
     /**
      * @param string $alias
@@ -28,6 +30,8 @@ class ModelLocator
     public function getManager($alias)
     {
         $manager = $this->locateManager($alias);
+        $this->getModelRegistry()->set($alias, $manager);
+        $this->getModelRegistry()->set($manager->getClassName(), $manager);
         return $manager;
     }
 
@@ -38,7 +42,7 @@ class ModelLocator
      */
     protected function locateManager($alias)
     {
-        $command = CommandsFactory::createFromAlias($alias, $this->getConfiguration());
+        $command = CommandsFactory::create($alias, $this);
         $pipeline = $this->buildCallPipeline();
 
         /** @var Command $command */

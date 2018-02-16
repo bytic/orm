@@ -4,6 +4,8 @@
 namespace Nip\Records\Locator\Resolver\Commands;
 
 use Nip\Records\Locator\Configuration\Configuration;
+use Nip\Records\Locator\ModelLocator;
+use Nip\Records\Locator\Registry\ModelRegistry;
 
 /**
  * Class CommandsFactory
@@ -11,6 +13,21 @@ use Nip\Records\Locator\Configuration\Configuration;
  */
 class CommandsFactory
 {
+
+    /**
+     * @param string $alias
+     * @param ModelLocator $modelLocator
+     * @return Command
+     */
+    public static function create($alias, $modelLocator = null)
+    {
+        $command = new Command();
+        $command->setAlias($alias);
+        $command = self::hydrateConfiguration($command, $modelLocator->getConfiguration());
+        $command = self::hydrateModelRegistry($command, $modelLocator->getModelRegistry());
+        return $command;
+    }
+
     /**
      * @param string $alias
      * @param Configuration|null $configuration
@@ -32,6 +49,19 @@ class CommandsFactory
     {
         if ($configuration instanceof Configuration) {
             $command->setConfiguration($configuration);
+        }
+        return $command;
+    }
+
+    /**
+     * @param Command $command
+     * @param ModelRegistry|null $registry
+     * @return Command
+     */
+    protected static function hydrateModelRegistry(Command $command, $registry)
+    {
+        if ($registry instanceof ModelRegistry) {
+            $command->setModelRegistry($registry);
         }
         return $command;
     }

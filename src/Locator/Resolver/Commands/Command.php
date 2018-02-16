@@ -5,6 +5,7 @@ namespace Nip\Records\Locator\Resolver\Commands;
 
 use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Locator\Configuration\Configuration;
+use Nip\Records\Locator\Registry\ModelRegistry;
 
 /**
  * Class Command
@@ -21,6 +22,11 @@ class Command
      * @var Configuration
      */
     protected $configuration;
+
+    /**
+     * @var ModelRegistry
+     */
+    protected $modelRegistry;
 
     /**
      * @var RecordManager
@@ -105,5 +111,21 @@ class Command
     public function getNamespaces()
     {
         return $this->hasNamespaces() ? $this->getConfiguration()->getNamespaces() : [];
+    }
+
+    /**
+     * @return ModelRegistry
+     */
+    public function getModelRegistry(): ModelRegistry
+    {
+        return $this->modelRegistry;
+    }
+
+    /**
+     * @param ModelRegistry $modelRegistry
+     */
+    public function setModelRegistry(ModelRegistry $modelRegistry)
+    {
+        $this->modelRegistry = $modelRegistry;
     }
 }

@@ -38,4 +38,18 @@ class ModelLocatorTest extends AbstractTest
         $manager = ModelLocator::get('books');
         self::assertInstanceOf(Books::class, $manager);
     }
+
+    public function testGetClassFromModelRegistry()
+    {
+        ModelLocator::instance()->getConfiguration()->addNamespace('Nip\Records\Tests\Fixtures\Records');
+
+        $manager = ModelLocator::get('Books');
+        self::assertInstanceOf(Books::class, $manager);
+        $manager->singleton = 'valid';
+        self::assertEquals('valid', $manager->singleton);
+
+        $manager = ModelLocator::get('Books\Books');
+        self::assertInstanceOf(Books::class, $manager);
+        self::assertEquals('valid', $manager->singleton);
+    }
 }

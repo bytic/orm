@@ -2,6 +2,7 @@
 
 namespace Nip\Records\Locator\ModelLocator\Traits;
 
+use Nip\Records\Locator\Exceptions\InvalidModelException;
 use Nip\Records\RecordManager;
 
 /**
