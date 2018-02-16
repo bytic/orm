@@ -2,6 +2,9 @@
 
 namespace Nip\Records\Relations;
 
+use Nip\Records\AbstractModels\Record;
+use Nip\Records\Relations\Exceptions\ModelNotLoadedInRelation;
+
 /**
  * Class MorphToMany
  * @package Nip\Records\Relations
@@ -11,6 +14,31 @@ class MorphTo extends BelongsTo
     protected $morphPrefix = 'item';
 
     protected $morphTypeField = null;
+
+    /** @noinspection PhpMissingParentCallCommonInspection
+     * @return string
+     * @throws ModelNotLoadedInRelation
+     */
+    public function getWithClass()
+    {
+        $type = $this->getMorphType();
+        $typePlural = inflector()->pluralize($type);
+        return $typePlural;
+    }
+
+    /**
+     * @return mixed
+     * @throws ModelNotLoadedInRelation
+     */
+    public function getMorphType()
+    {
+        if ($this->getItem() instanceof Record) {
+            return $this->getItem()->{$this->getMorphTypeField()};
+        }
+        throw new ModelNotLoadedInRelation(
+            $this->debugString()
+        );
+    }
 
     /**
      * @param $params
@@ -71,8 +99,9 @@ class MorphTo extends BelongsTo
 
     /**
      * @param null $morphTypeField
+     * @return void
      */
-    public function setMorphTypeField($morphTypeField): void
+    public function setMorphTypeField($morphTypeField)
     {
         $this->morphTypeField = $morphTypeField;
     }

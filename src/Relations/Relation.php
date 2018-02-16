@@ -6,12 +6,16 @@ use Nip\Database\Connections\Connection;
 use Nip\Database\Query\AbstractQuery;
 use Nip\Database\Query\Select as Query;
 use Nip\HelperBroker;
-use Nip\Logger\Exception;
+use Exception;
 use Nip\Records\Collections\Collection;
 use Nip\Records\Collections\Collection as RecordCollection;
+use Nip\Records\Locator\Exceptions\InvalidModelException;
+use Nip\Records\Locator\ModelLocator;
 use Nip\Records\Record;
 use Nip\Records\RecordManager;
+use Nip\Records\Relations\Traits\HasManagerTrait;
 use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
+use Nip\Records\Traits\Relations\HasRelationsRecordTrait;
 use Nip_Helper_Arrays as ArraysHelper;
 
 /**
@@ -20,6 +24,7 @@ use Nip_Helper_Arrays as ArraysHelper;
  */
 abstract class Relation
 {
+    use HasManagerTrait;
 
     /**
      * @var
@@ -35,12 +40,6 @@ abstract class Relation
      * @var Record
      */
     protected $item;
-
-    /**
-     * @var RecordManager
-     */
-    protected $manager = null;
-
 
     /**
      * @var RecordManager
@@ -79,6 +78,7 @@ abstract class Relation
 
     /**
      * @return Query
+     * @throws Exception
      */
     public function getQuery()
     {
@@ -100,6 +100,9 @@ abstract class Relation
         return $this;
     }
 
+    /**
+     * @throws Exception
+     */
     public function initQuery()
     {
         $query = $this->newQuery();
@@ -110,6 +113,7 @@ abstract class Relation
 
     /**
      * @return Query
+     * @throws Exception
      */
     public function newQuery()
     {
@@ -118,6 +122,7 @@ abstract class Relation
 
     /**
      * @return RecordManager
+     * @throws Exception
      */
     public function getWith()
     {
@@ -139,6 +144,9 @@ abstract class Relation
         return $this;
     }
 
+    /**
+     * @throws Exception
+     */
     public function initWith()
     {
         $className = $this->getWithClass();
@@ -175,39 +183,24 @@ abstract class Relation
      */
     public function setWithClass($name)
     {
-        $object = call_user_func([$name, "instance"]);
-        if (is_object($object) && $object instanceof RecordManager) {
-            $this->setWith($object);
-        } else {
+        try {
+            $manager = $this->getModelManagerInstance($name);
+            $this->setWith($manager);
+        } catch (InvalidModelException $exception) {
             throw new Exception(
-                "Cannot instance records [" . $name . "] in relation for [" . $this->getManager()->getClassName() . "]"
+                'Cannot instance records [' . $name . '] in ' . $this->debugString()
             );
         }
     }
 
     /**
+     * @param $name
      * @return RecordManager
+     * @throws InvalidModelException
      */
-    public function getManager()
+    public function getModelManagerInstance($name)
     {
-        if ($this->manager == null) {
-            $this->initManager();
-        }
-
-        return $this->manager;
-    }
-
-    /**
-     * @param HasRelationsRecordsTrait $manager
-     */
-    public function setManager($manager)
-    {
-        $this->manager = $manager;
-    }
-
-    public function initManager()
-    {
-        $this->manager = $this->getItem()->getManager();
+        return ModelLocator::get($name);
     }
 
     /**
@@ -219,7 +212,7 @@ abstract class Relation
     }
 
     /**
-     * @param Record $item
+     * @param Record|HasRelationsRecordTrait $item
      * @return $this
      */
     public function setItem(Record $item)
@@ -238,6 +231,7 @@ abstract class Relation
 
     /**
      * @return \Nip\Database\Query\Delete
+     * @throws Exception
      */
     public function getDeleteQuery()
     {
@@ -275,6 +269,7 @@ abstract class Relation
 
     /**
      * @param $params
+     * @throws Exception
      */
     public function addParams($params)
     {
@@ -287,6 +282,7 @@ abstract class Relation
 
     /**
      * @param $params
+     * @throws Exception
      */
     public function checkParamClass($params)
     {
@@ -330,6 +326,14 @@ abstract class Relation
     }
 
     /**
+     * @return array
+     */
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+    /**
      * @param $params
      */
     public function setParams($params)
@@ -364,6 +368,7 @@ abstract class Relation
 
     /**
      * @return string
+     * @throws Exception
      */
     protected function generateTable()
     {
@@ -408,6 +413,7 @@ abstract class Relation
     /**
      * @param RecordCollection $collection
      * @return RecordCollection
+     * @throws Exception
      */
     public function getEagerResults($collection)
     {
@@ -422,6 +428,7 @@ abstract class Relation
     /**
      * @param RecordCollection $collection
      * @return Query
+     * @throws Exception
      */
     public function getEagerQuery(RecordCollection $collection)
     {
@@ -480,6 +487,7 @@ abstract class Relation
 
     /**
      * @return string
+     * @throws Exception
      */
     public function getWithPK()
     {
@@ -531,5 +539,16 @@ abstract class Relation
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return string
+     */
+    protected function debugString()
+    {
+        return 'Relation'
+        . ' Manager:[' . ($this->hasManager() ? $this->getManager()->getClassName() : '') . ']'
+            . ' name:[' . $this->getName() . '] '
+            . ' params:[' . serialize($this->getParams()) . ']';
     }
 }

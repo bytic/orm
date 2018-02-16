@@ -26,6 +26,16 @@ trait StaticMethodsTrait
     }
 
     /**
+     * @param string $alias
+     * @param RecordManager $entityManager
+     * @return void`
+     */
+    public static function set($alias, $entityManager)
+    {
+        self::instance()->getModelRegistry()->set($alias, $entityManager);
+    }
+
+    /**
      * Singleton
      *
      * @return self
