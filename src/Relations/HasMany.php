@@ -13,8 +13,7 @@ class HasMany extends HasOneOrMany
 {
 
     /**
-     * @param AbstractQuery $query
-     * @return AbstractQuery
+     * @inheritdoc
      */
     public function populateQuerySpecific(AbstractQuery $query)
     {

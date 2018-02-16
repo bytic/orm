@@ -4,6 +4,7 @@ namespace Nip\Records\Relations;
 
 use Nip\Records\AbstractModels\Record;
 use Nip\Records\Relations\Exceptions\ModelNotLoadedInRelation;
+use Nip\Records\Relations\Traits\HasMorphTypeTrait;
 
 /**
  * Class MorphToMany
@@ -11,9 +12,7 @@ use Nip\Records\Relations\Exceptions\ModelNotLoadedInRelation;
  */
 class MorphTo extends BelongsTo
 {
-    protected $morphPrefix = 'item';
-
-    protected $morphTypeField = null;
+    use HasMorphTypeTrait;
 
     /** @noinspection PhpMissingParentCallCommonInspection
      * @return string
@@ -49,60 +48,4 @@ class MorphTo extends BelongsTo
         parent::addParams($params);
     }
 
-    /**
-     * @param $params
-     */
-    public function checkParamMorphPrefix($params)
-    {
-        if (isset($params['morphPrefix'])) {
-            $this->setMorphPrefix($params['morphPrefix']);
-            unset($params['morphPrefix']);
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getMorphPrefix(): string
-    {
-        return $this->morphPrefix;
-    }
-
-    /**
-     * @param string $morphPrefix
-     */
-    public function setMorphPrefix(string $morphPrefix): void
-    {
-        $this->morphPrefix = $morphPrefix;
-    }
-
-    /** @noinspection PhpMissingParentCallCommonInspection
-     * @return string
-     */
-    public function generateFK()
-    {
-        return $this->getMorphPrefix() . '_id';
-    }
-
-    /**
-     * @return null
-     */
-    public function getMorphTypeField()
-    {
-        if ($this->morphTypeField === null) {
-            $this->setMorphTypeField(
-                $this->getMorphPrefix() . '_type'
-            );
-        }
-        return $this->morphTypeField;
-    }
-
-    /**
-     * @param null $morphTypeField
-     * @return void
-     */
-    public function setMorphTypeField($morphTypeField)
-    {
-        $this->morphTypeField = $morphTypeField;
-    }
 }

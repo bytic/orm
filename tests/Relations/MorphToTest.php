@@ -7,6 +7,7 @@ use Nip\Records\Locator\ModelLocator;
 use Nip\Records\Record;
 use Nip\Records\Relations\Exceptions\ModelNotLoadedInRelation;
 use Nip\Records\Relations\MorphTo;
+use Nip\Records\Tests\AbstractTest;
 
 /**
  * Class MorphToTest
@@ -14,15 +15,15 @@ use Nip\Records\Relations\MorphTo;
  *
  * @property MorphTo $object
  */
-class MorphToTest extends \Nip\Records\Tests\AbstractTest
+class MorphToTest extends AbstractTest
 {
 
     public function testMorphDefaultFieldsGeneration()
     {
         $relation = new MorphTo();
-        self::assertEquals('item', $relation->getMorphPrefix());
-        self::assertEquals('item_id', $relation->getFK());
-        self::assertEquals('item_type', $relation->getMorphTypeField());
+        self::assertEquals('parent', $relation->getMorphPrefix());
+        self::assertEquals('parent_id', $relation->getFK());
+        self::assertEquals('parent_type', $relation->getMorphTypeField());
     }
 
     public function testMorphCustomFieldsGeneration()
@@ -40,6 +41,7 @@ class MorphToTest extends \Nip\Records\Tests\AbstractTest
     public function testGetWithClassWithoutItem()
     {
         $relation = new MorphTo();
+        $relation->setName('test');
         $this->expectException(ModelNotLoadedInRelation::class);
         $relation->getWithClass();
     }
@@ -54,10 +56,10 @@ class MorphToTest extends \Nip\Records\Tests\AbstractTest
         $article = new Record();
         $relation->setItem($article);
 
-        $article->writeData(['item_id' => 3, 'item_type' => 'users']);
+        $article->writeData(['parent_id' => 3, 'parent_type' => 'users']);
         self::assertEquals('users', $relation->getWithClass());
 
-        $article->writeData(['item_id' => 3, 'item_type' => 'book']);
+        $article->writeData(['parent_id' => 3, 'parent_type' => 'book']);
         self::assertEquals('books', $relation->getWithClass());
     }
 
@@ -88,8 +90,8 @@ class MorphToTest extends \Nip\Records\Tests\AbstractTest
         ModelLocator::set('users', $users);
 
         $article = new Record();
-        $article->item_id = 3;
-        $article->item_type = 'users';
+        $article->parent_id = 3;
+        $article->parent_type = 'users';
 
         $this->object->setItem($article);
     }
