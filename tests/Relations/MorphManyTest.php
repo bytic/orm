@@ -2,7 +2,6 @@
 
 namespace Nip\Records\Tests\Relations;
 
-use Mockery as m;
 use Nip\Records\Locator\ModelLocator;
 use Nip\Records\Record;
 use Nip\Records\RecordManager;
@@ -33,13 +32,15 @@ class MorphManyTest extends AbstractTest
         $relation->setName('Books');
 
         $users = new RecordManager();
+        $users->setPrimaryKey('id');
+
         $user = new Record();
         $user->id = 3;
         $user->setManager($users);
         $relation->setItem($user);
 
         self::assertEquals(
-            "SELECT `books`.* FROM `books` WHERE parent_type = 'nip_records'",
+            "SELECT `books`.* FROM `books` WHERE parent_type = 'nip_records' AND `parent_id` = 3",
             $relation->getQuery()->getString()
         );
     }
