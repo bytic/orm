@@ -39,7 +39,7 @@ class MorphManyTest extends AbstractTest
         $relation->setItem($user);
 
         self::assertEquals(
-            "SELECT `books`.* FROM `books` WHERE field = ''",
+            "SELECT `books`.* FROM `books` WHERE parent_type = 'nip_records'",
             $relation->getQuery()->getString()
         );
     }

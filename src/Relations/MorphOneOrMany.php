@@ -2,7 +2,6 @@
 
 namespace Nip\Records\Relations;
 
-use Nip\Database\Query\AbstractQuery;
 use Nip\Records\Relations\Traits\HasMorphTypeTrait;
 
 /**
@@ -27,7 +26,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
     public function getMorphValue(): string
     {
         if ($this->morphValue == null) {
-            $this->initMorphClass();
+            $this->initMorphValue();
         }
         return $this->morphValue;
     }
@@ -43,7 +42,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
     /**
      * @return string
      */
-    protected function initMorphClass()
+    protected function initMorphValue()
     {
         $this->setMorphValue(
             $this->getManager()->getMorphName()

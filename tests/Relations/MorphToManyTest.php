@@ -34,7 +34,7 @@ class MorphToManyTest extends \Nip\Records\Tests\AbstractTest
         static::assertSame(
             "SELECT `pages`.`id` AS `id`, `pages`.`id_page` AS `id_page`, `pages_pivot`.`test` AS `__test` "
             . "FROM `pages`, ``.`pages_pivot` "
-            . "WHERE `pages_pivot`.`id_page` = `pages`.`id` AND `pages_pivot`.`pivotal_type` = ''",
+            . "WHERE `pages_pivot`.`id_page` = `pages`.`id` AND `pages_pivot`.`pivotal_type` = 'tags'",
             $relation->newQuery()->getString()
         );
     }
@@ -60,9 +60,4 @@ class MorphToManyTest extends \Nip\Records\Tests\AbstractTest
         return $page;
     }
 
-    protected function setUp()
-    {
-        parent::setUp();
-        Container::getInstance()->set('db.connection', new Connection(false));
-    }
 }
