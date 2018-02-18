@@ -14,15 +14,6 @@ use Nip\Records\Tests\AbstractTest;
  */
 class RecordTest extends AbstractTest
 {
-    /**
-     * @var \UnitTester
-     */
-    protected $tester;
-
-    /**
-     * @var Record
-     */
-    protected $object;
 
     /**
      * @return array
@@ -44,32 +35,5 @@ class RecordTest extends AbstractTest
     {
         $this->object->setClassName($recordName);
         self::assertSame($managerName, $this->object->getManagerName());
-    }
-
-    public function testNewRelation()
-    {
-        $users = m::namedMock('Users', Records::class)->shouldDeferMissing()
-            ->shouldReceive('instance')->andReturnSelf()->getMock();
-
-        m::namedMock('User', Record::class);
-
-        $this->object->getManager()->initRelationsFromArray('belongsTo', ['User']);
-
-        $relation = $this->object->newRelation('User');
-        static::assertSame($users, $relation->getWith());
-        static::assertSame($this->object, $relation->getItem());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-        $wrapper = new Connection(false);
-
-        $manager = new Records();
-        $manager->setDB($wrapper);
-        $manager->setTable('pages');
-
-        $this->object = new Record();
-        $this->object->setManager($manager);
     }
 }
