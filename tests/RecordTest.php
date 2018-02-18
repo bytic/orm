@@ -33,7 +33,21 @@ class RecordTest extends AbstractTest
      */
     public function testGetManagerName($recordName, $managerName)
     {
-        $this->object->setClassName($recordName);
-        self::assertSame($managerName, $this->object->getManagerName());
+        $record = new Record();
+        $record->setClassName($recordName);
+        self::assertSame($managerName, $record->getManagerName());
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $wrapper = new Connection(false);
+
+        $manager = new Records();
+        $manager->setDB($wrapper);
+        $manager->setTable('pages');
+
+        $this->object = new Record();
+        $this->object->setManager($manager);
     }
 }

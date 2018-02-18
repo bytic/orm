@@ -16,13 +16,13 @@ use Nip\Records\Tests\AbstractTest;
 class MorphManyTest extends AbstractTest
 {
 
-    public function testGetMorphClass()
+    public function testGetMorphClassWithGenericManager()
     {
         $relation = new MorphMany();
         $manager = new RecordManager();
         $relation->setManager($manager);
 
-        self::assertEquals('Nip\Records\RecordManager', $relation->getMorphValue());
+        self::assertEquals('nip_records', $relation->getMorphValue());
     }
 
     public function testGetQuery()
@@ -39,7 +39,7 @@ class MorphManyTest extends AbstractTest
         $relation->setItem($user);
 
         self::assertEquals(
-            '++',
+            "SELECT `books`.* FROM `books` WHERE field = ''",
             $relation->getQuery()->getString()
         );
     }

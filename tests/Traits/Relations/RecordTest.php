@@ -7,10 +7,13 @@ use Nip\Database\Connections\Connection;
 use Nip\Records\Record;
 use Nip\Records\RecordManager as Records;
 use Nip\Records\Tests\AbstractTest;
+use Nip\Records\Traits\Relations\HasRelationsRecordTrait;
 
 /**
  * Class RecordTest
  * @package Nip\Records\Tests
+ *
+ * @property HasRelationsRecordTrait $object
  */
 class RecordTest extends AbstractTest
 {
@@ -18,15 +21,19 @@ class RecordTest extends AbstractTest
     public function testNewRelation()
     {
         $users = m::namedMock('Users', Records::class)->shouldDeferMissing()
-            ->shouldReceive('instance')->andReturnSelf()->getMock();
+            ->shouldReceive('instance')->andReturnSelf()
+            ->getMock();
 
         m::namedMock('User', Record::class);
 
-        $this->object->getManager()->initRelationsFromArray('belongsTo', ['User']);
+        $manager = $this->object->getManager();
+        $relation = $manager->belongsTo('User');
+        $relation->setWith($users);
 
         $relation = $this->object->newRelation('User');
-        static::assertSame($users, $relation->getWith());
+
         static::assertSame($this->object, $relation->getItem());
+        static::assertSame($users, $relation->getWith());
     }
 
     protected function setUp()
