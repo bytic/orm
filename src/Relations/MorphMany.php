@@ -3,23 +3,22 @@
 namespace Nip\Records\Relations;
 
 use Nip\Database\Query\AbstractQuery;
-use Nip\Database\Query\Select as Query;
 
 /**
- * Class HasMany
+ * Class MorphMany
  * @package Nip\Records\Relations
  */
-class HasMany extends HasOneOrMany
+class MorphMany extends MorphOneOrMany
 {
 
     /**
-     * @inheritdoc
+     * @param AbstractQuery $query
      */
     public function populateQuerySpecific(AbstractQuery $query)
     {
+        $query->where($this->getMorphTypeField() . ' = ?', $this->getMorphValue());
+
         $pk = $this->getManager()->getPrimaryKey();
         $query->where('`' . $this->getFK() . '` = ?', $this->getItem()->{$pk});
-
-        return $query;
     }
 }

@@ -3,7 +3,7 @@
 namespace Nip\Records\AbstractModels;
 
 use Nip\HelperBroker;
-use Nip\Logger\Exception;
+use \Exception;
 use Nip\Utility\Traits\NameWorksTrait;
 
 /**
@@ -52,6 +52,33 @@ abstract class Record
     {
         unset($this->_data[$name]);
     }
+
+    protected $_data;
+
+    public function &__get($name)
+    {
+        if (!$this->__isset($name)) {
+            $this->_data[$name] = null;
+        }
+
+        return $this->_data[$name];
+    }
+
+    public function __set($name, $value)
+    {
+        $this->_data[$name] = $value;
+    }
+
+    public function __isset($name)
+    {
+        return isset($this->_data[$name]);
+    }
+
+    public function __unset($name)
+    {
+        unset($this->_data[$name]);
+    }
+
 
     /**
      * Overloads Ucfirst() helper

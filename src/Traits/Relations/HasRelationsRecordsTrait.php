@@ -156,6 +156,16 @@ trait HasRelationsRecordsTrait
      * @param array $params
      * @return Relation
      */
+    public function morphTo($name, $params = [])
+    {
+        return $this->initRelation('morphTo', $name, $params);
+    }
+
+    /**
+     * @param $name
+     * @param array $params
+     * @return Relation
+     */
     public function morphToMany($name, $params = [])
     {
         return $this->initRelation('morphToMany', $name, $params);

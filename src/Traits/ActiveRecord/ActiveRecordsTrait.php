@@ -391,7 +391,7 @@ trait ActiveRecordsTrait
         if (isset($where)) {
             if (is_array($where)) {
                 foreach ($where as $condition) {
-                    $condition = (array) $condition;
+                    $condition = (array)$condition;
                     $query->where($condition[0], $condition[1]);
                 }
             } else {

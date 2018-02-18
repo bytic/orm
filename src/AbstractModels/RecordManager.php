@@ -231,7 +231,7 @@ abstract class RecordManager
         if (function_exists('app')) {
             return app('app')->getRootNamespace() . 'Models\\';
         }
-        return 'App\Models\\';
+        return 'App\\Models\\';
     }
 
     /**
