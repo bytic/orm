@@ -154,7 +154,7 @@ trait ActiveRecordsTrait
      */
     protected function generateTable()
     {
-        return str_replace('-', '_', $this->getController());
+        return $this->getController();
     }
 
     /**
