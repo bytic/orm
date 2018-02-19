@@ -40,7 +40,7 @@ trait HasPivotTable
         ];
         sort($tables);
 
-        return implode("_", $tables);
+        return implode("-", $tables);
     }
 
     /**
