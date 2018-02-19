@@ -59,10 +59,4 @@ class MorphToManyTest extends \Nip\Records\Tests\AbstractTest
         $page->setManager($pages);
         return $page;
     }
-
-    protected function setUp()
-    {
-        parent::setUp();
-        app()->set('db.connection', new Connection(false));
-    }
 }

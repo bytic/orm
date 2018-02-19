@@ -4,6 +4,7 @@ namespace Nip\Records\AbstractModels;
 
 use Nip\HelperBroker;
 use \Exception;
+use Nip\Records\Traits\ActiveRecord\ActiveRecordTrait;
 use Nip\Utility\Traits\NameWorksTrait;
 
 /**
@@ -15,6 +16,7 @@ use Nip\Utility\Traits\NameWorksTrait;
 abstract class Record
 {
     use NameWorksTrait;
+    use ActiveRecordTrait;
 
     protected $_name = null;
     protected $_manager = null;
@@ -24,7 +26,6 @@ abstract class Record
      */
     protected $managerName = null;
 
-    protected $_dbData = [];
     protected $_helpers = [];
 
     protected $_data;
@@ -52,33 +53,6 @@ abstract class Record
     {
         unset($this->_data[$name]);
     }
-
-    protected $_data;
-
-    public function &__get($name)
-    {
-        if (!$this->__isset($name)) {
-            $this->_data[$name] = null;
-        }
-
-        return $this->_data[$name];
-    }
-
-    public function __set($name, $value)
-    {
-        $this->_data[$name] = $value;
-    }
-
-    public function __isset($name)
-    {
-        return isset($this->_data[$name]);
-    }
-
-    public function __unset($name)
-    {
-        unset($this->_data[$name]);
-    }
-
 
     /**
      * Overloads Ucfirst() helper
@@ -123,24 +97,6 @@ abstract class Record
     public function setName($name)
     {
         $this->_name = $name;
-    }
-
-    /**
-     * @param bool|array $data
-     */
-    public function writeDBData($data = false)
-    {
-        foreach ($data as $key => $value) {
-            $this->_dbData[$key] = $value;
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function getDBData()
-    {
-        return $this->_dbData;
     }
 
     /**
@@ -226,60 +182,6 @@ abstract class Record
         throw new Exception('invalid manager name [' . $class . ']');
     }
 
-    /**
-     * @return bool
-     */
-    public function insert()
-    {
-        $pk = $this->getManager()->getPrimaryKey();
-        $lastId = $this->getManager()->insert($this);
-        if ($pk == 'id') {
-            $this->{$pk} = $lastId;
-        }
-
-        return $lastId > 0;
-    }
-
-    /**
-     * @return bool|\Nip\Database\Result
-     */
-    public function update()
-    {
-        $return = $this->getManager()->update($this);
-        return $return;
-    }
-
-    public function save()
-    {
-        $this->getManager()->save($this);
-    }
-
-    public function saveRecord()
-    {
-        $this->getManager()->save($this);
-    }
-
-    public function delete()
-    {
-        $this->getManager()->delete($this);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isInDB()
-    {
-        $pk = $this->getManager()->getPrimaryKey();
-        return $this->{$pk} > 0;
-    }
-
-    /**
-     * @return bool|false|Record
-     */
-    public function exists()
-    {
-        return $this->getManager()->exists($this);
-    }
 
     /**
      * @return string
@@ -305,17 +207,6 @@ abstract class Record
     {
         $data = $this->toArray();
         return $data;
-    }
-
-    /**
-     * @return Record
-     */
-    public function getCloneWithRelations()
-    {
-        $item = $this->getClone();
-        $item->cloneRelations($this);
-
-        return $item;
     }
 
     /**
@@ -350,16 +241,6 @@ abstract class Record
         foreach ($data as $key => $value) {
             $this->__set($key, $value);
         }
-    }
-
-    /**
-     * Clone the relations records from a sibling
-     * @param self $from
-     * @return \Nip\Records\Traits\Relations\HasRelationsRecordTrait
-     */
-    public function cloneRelations($from)
-    {
-        return $this->getManager()->cloneRelations($from, $this);
     }
 
     /**

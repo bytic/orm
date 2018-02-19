@@ -2,6 +2,7 @@
 
 namespace Nip\Records\Traits\Relations;
 
+use Nip\Records\AbstractModels\Record;
 use Nip\Records\Relations\HasMany;
 use Nip\Records\Relations\Relation;
 use Nip\Records\Traits\AbstractTrait\RecordTrait;
@@ -99,5 +100,27 @@ trait HasRelationsRecordTrait
         $relation->setItem($this);
 
         return $relation;
+    }
+
+    /**
+     * @return Record|self
+     */
+    public function getCloneWithRelations()
+    {
+        /** @var self $item */
+        $item = $this->getClone();
+        $item->cloneRelations($this);
+
+        return $item;
+    }
+
+    /**
+     * Clone the relations records from a sibling
+     * @param self $from
+     * @return \Nip\Records\Traits\Relations\HasRelationsRecordTrait
+     */
+    public function cloneRelations($from)
+    {
+        return $this->getManager()->cloneRelations($from, $this);
     }
 }

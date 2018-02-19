@@ -18,4 +18,5 @@ $adapter = m::namedMock('TestAdapter', \Nip\Database\Adapters\MySQLi::class)->sh
     ->getMock();
 $connection->setAdapter($adapter);
 
+Container::setInstance(new Container());
 Container::getInstance()->set('db.connection', $connection);
