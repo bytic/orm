@@ -21,7 +21,7 @@ class MorphManyTest extends AbstractTest
         $manager = new RecordManager();
         $relation->setManager($manager);
 
-        self::assertEquals('nip_records', $relation->getMorphValue());
+        self::assertEquals('nip-records', $relation->getMorphValue());
     }
 
     public function testGetQuery()
@@ -40,7 +40,7 @@ class MorphManyTest extends AbstractTest
         $relation->setItem($user);
 
         self::assertEquals(
-            "SELECT `books`.* FROM `books` WHERE parent_type = 'nip_records' AND `parent_id` = 3",
+            "SELECT `books`.* FROM `books` WHERE parent_type = 'nip-records' AND `parent_id` = 3",
             $relation->getQuery()->getString()
         );
     }
