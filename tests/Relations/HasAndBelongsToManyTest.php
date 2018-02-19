@@ -23,11 +23,11 @@ class HasAndBelongsToManyTest extends \Nip\Records\Tests\AbstractTest
         $relation = new HasAndBelongsToMany();
         $relation->setManager($tableA);
         $relation->setWith($tableB);
-        self::assertEquals('tableA-tableB', $relation->getTable());
+        self::assertEquals('tableA_tableB', $relation->getTable());
 
         $relation = new HasAndBelongsToMany();
         $relation->setManager($tableB);
         $relation->setWith($tableA);
-        self::assertEquals('tableA-tableB', $relation->getTable());
+        self::assertEquals('tableA_tableB', $relation->getTable());
     }
 }
