@@ -534,7 +534,7 @@ abstract class RecordManager
      * Finds one Record using params array
      *
      * @param array $params
-     * @return Record|false
+     * @return Record|null
      */
     public function findOneByParams(array $params = [])
     {
@@ -544,7 +544,7 @@ abstract class RecordManager
             return $records->rewind();
         }
 
-        return false;
+        return null;
     }
 
     /**
