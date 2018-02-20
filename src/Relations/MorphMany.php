@@ -21,4 +21,14 @@ class MorphMany extends MorphOneOrMany
         $pk = $this->getManager()->getPrimaryKey();
         $query->where('`' . $this->getFK() . '` = ?', $this->getItem()->{$pk});
     }
+
+    /** @noinspection PhpMissingParentCallCommonInspection
+     * @inheritdoc
+     */
+    public function populateEagerQueryFromFkList($query, $fkList)
+    {
+        $value = $this->hasManager() ? $this->getMorphValue() : '';
+        $query->where($this->getMorphTypeField() . ' = ?', $value);
+        return parent::populateEagerQueryFromFkList($query, $fkList);
+    }
 }

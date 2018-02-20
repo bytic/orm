@@ -128,6 +128,7 @@ class HasAndBelongsToMany extends HasOneOrMany
         if ($collection->count() < 1) {
             return $this->getWith()->newCollection();
         }
+
         $query = $this->getEagerQuery($collection);
 
         $return = $this->newCollection();

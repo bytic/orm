@@ -2,6 +2,7 @@
 
 namespace Nip\Records\Tests\Relations;
 
+use Nip\Records\Collections\Collection;
 use Nip\Records\Locator\ModelLocator;
 use Nip\Records\Record;
 use Nip\Records\RecordManager;
@@ -42,6 +43,37 @@ class MorphManyTest extends AbstractTest
         self::assertEquals(
             "SELECT `books`.* FROM `books` WHERE parent_type = 'nip-records' AND `parent_id` = 3",
             $relation->getQuery()->getString()
+        );
+    }
+
+    public function testGetEagerQuery()
+    {
+        ModelLocator::instance()->getConfiguration()->addNamespace('Nip\Records\Tests\Fixtures\Records');
+
+        $relation = new MorphMany();
+        $relation->setName('Books');
+
+        $collection = new Collection();
+
+        self::assertEquals(
+            "SELECT `books`.* FROM `books` WHERE parent_type = '' AND parent_id IN ()",
+            $relation->getEagerQuery($collection)->getString()
+        );
+
+        $users = new RecordManager();
+        $users->setPrimaryKey('id');
+        $relation->setManager($users);
+
+        foreach ([3, 4] as $id) {
+            $user = new Record();
+            $user->id = $id;
+            $user->setManager($users);
+            $collection->add($user);
+        }
+
+        self::assertEquals(
+            "SELECT `books`.* FROM `books` WHERE parent_type = 'nip-records' AND parent_id IN (3, 4)",
+            $relation->getEagerQuery($collection)->getString()
         );
     }
 

@@ -13,4 +13,14 @@ class Books extends \Nip\Records\RecordManager
     {
         return 'books';
     }
+
+    public function generatePrimaryFK()
+    {
+        return 'id_book';
+    }
+
+    public function generatePrimaryKey()
+    {
+        return 'id';
+    }
 }
