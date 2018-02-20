@@ -44,9 +44,4 @@ class BelongsToTest extends \Nip\Records\Tests\AbstractTest
         $this->_object->setItem($article);
     }
 
-    // tests
-
-    protected function _after()
-    {
-    }
 }
