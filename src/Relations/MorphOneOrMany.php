@@ -48,4 +48,14 @@ abstract class MorphOneOrMany extends HasOneOrMany
             $this->getManager()->getMorphName()
         );
     }
+
+    /**
+     * @param $params
+     * @throws \Exception
+     */
+    public function addParams($params)
+    {
+        $this->checkParamMorphPrefix($params);
+        parent::addParams($params);
+    }
 }

@@ -44,4 +44,22 @@ class MorphManyTest extends AbstractTest
             $relation->getQuery()->getString()
         );
     }
+
+
+    public function testMorphDefaultFieldsGeneration()
+    {
+        $relation = new MorphMany();
+        self::assertEquals('parent', $relation->getMorphPrefix());
+        self::assertEquals('parent_id', $relation->getFK());
+        self::assertEquals('parent_type', $relation->getMorphTypeField());
+    }
+
+    public function testMorphCustomFieldsGeneration()
+    {
+        $relation = new MorphMany();
+        $relation->addParams(['morphPrefix' => 'item']);
+        self::assertEquals('item', $relation->getMorphPrefix());
+        self::assertEquals('item_id', $relation->getFK());
+        self::assertEquals('item_type', $relation->getMorphTypeField());
+    }
 }

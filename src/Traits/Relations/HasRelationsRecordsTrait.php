@@ -28,6 +28,7 @@ trait HasRelationsRecordsTrait
      * Get a specified relationship.
      * @param  string $relation
      * @return null|Relation
+     * @throws \Exception
      */
     public function getRelation($relation)
     {
@@ -39,6 +40,7 @@ trait HasRelationsRecordsTrait
     /**
      * Check if the model needs to initRelations
      * @return void
+     * @throws \Exception
      */
     protected function checkInitRelations()
     {
@@ -47,6 +49,9 @@ trait HasRelationsRecordsTrait
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function initRelations()
     {
         $this->relations = [];
@@ -57,6 +62,7 @@ trait HasRelationsRecordsTrait
 
     /**
      * @param string $type
+     * @throws \Exception
      */
     protected function initRelationsType($type)
     {
@@ -69,6 +75,7 @@ trait HasRelationsRecordsTrait
     /**
      * @param string $type
      * @param $array
+     * @throws \Exception
      */
     public function initRelationsFromArray($type, $array)
     {
@@ -84,6 +91,7 @@ trait HasRelationsRecordsTrait
      * @param string $name
      * @param array $params
      * @return Relation
+     * @throws \Exception
      */
     protected function initRelation($type, $name, $params)
     {
@@ -125,6 +133,7 @@ trait HasRelationsRecordsTrait
      * @param $name
      * @param array $params
      * @return Relation
+     * @throws \Exception
      */
     public function belongsTo($name, $params = [])
     {
@@ -135,6 +144,7 @@ trait HasRelationsRecordsTrait
      * @param $name
      * @param array $params
      * @return Relation
+     * @throws \Exception
      */
     public function hasMany($name, $params = [])
     {
@@ -145,6 +155,7 @@ trait HasRelationsRecordsTrait
      * @param $name
      * @param array $params
      * @return Relation
+     * @throws \Exception
      */
     public function HABTM($name, $params = [])
     {
@@ -155,6 +166,7 @@ trait HasRelationsRecordsTrait
      * @param $name
      * @param array $params
      * @return Relation
+     * @throws \Exception
      */
     public function morphTo($name, $params = [])
     {
@@ -165,6 +177,18 @@ trait HasRelationsRecordsTrait
      * @param $name
      * @param array $params
      * @return Relation
+     * @throws \Exception
+     */
+    public function morphMany($name, $params = [])
+    {
+        return $this->initRelation('morphMany', $name, $params);
+    }
+
+    /**
+     * @param $name
+     * @param array $params
+     * @return Relation
+     * @throws \Exception
      */
     public function morphToMany($name, $params = [])
     {
@@ -175,6 +199,7 @@ trait HasRelationsRecordsTrait
      * @param $name
      * @param array $params
      * @return MorphToMany
+     * @throws \Exception
      */
     public function morphedByMany($name, $params = [])
     {
@@ -188,6 +213,7 @@ trait HasRelationsRecordsTrait
      * Determine if the given relation is loaded.
      * @param  string $key
      * @return bool
+     * @throws \Exception
      */
     public function hasRelation($key)
     {
@@ -201,6 +227,7 @@ trait HasRelationsRecordsTrait
      * @param  string $relation
      * @param  mixed $value
      * @return $this
+     * @throws \Exception
      */
     public function setRelation($relation, $value)
     {
@@ -214,6 +241,7 @@ trait HasRelationsRecordsTrait
      * @param HasRelationsRecordTrait $from
      * @param HasRelationsRecordTrait $to
      * @return HasRelationsRecordTrait
+     * @throws \Exception
      */
     public function cloneRelations($from, $to)
     {
@@ -240,6 +268,7 @@ trait HasRelationsRecordsTrait
     /**
      * Get all the loaded relations for the instance.
      * @return array
+     * @throws \Exception
      */
     public function getRelations()
     {
