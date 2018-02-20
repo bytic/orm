@@ -29,10 +29,10 @@ class MorphToTest extends AbstractTest
     public function testMorphCustomFieldsGeneration()
     {
         $relation = new MorphTo();
-        $relation->addParams(['morphPrefix' => 'parent']);
-        self::assertEquals('parent', $relation->getMorphPrefix());
-        self::assertEquals('parent_id', $relation->getFK());
-        self::assertEquals('parent_type', $relation->getMorphTypeField());
+        $relation->addParams(['morphPrefix' => 'item']);
+        self::assertEquals('item', $relation->getMorphPrefix());
+        self::assertEquals('item_id', $relation->getFK());
+        self::assertEquals('item_type', $relation->getMorphTypeField());
     }
 
     /**
