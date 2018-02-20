@@ -3,8 +3,10 @@
 namespace Nip\Records\Tests\Relations;
 
 use Mockery as m;
+use Nip\Records\Collections\Collection;
 use Nip\Records\Locator\ModelLocator;
 use Nip\Records\Record;
+use Nip\Records\RecordManager;
 use Nip\Records\Relations\Exceptions\ModelNotLoadedInRelation;
 use Nip\Records\Relations\MorphTo;
 use Nip\Records\Tests\AbstractTest;
@@ -71,6 +73,37 @@ class MorphToTest extends AbstractTest
 
         self::assertInstanceOf(Record::class, $user);
         self::assertSame(3, $user->id);
+    }
+
+    public function testGetEagerQuery()
+    {
+        ModelLocator::instance()->getConfiguration()->addNamespace('Nip\Records\Tests\Fixtures\Records');
+
+        $relation = new MorphTo();
+        $relation->setName('Book');
+
+        $books = ModelLocator::get('books');
+
+        $users = new RecordManager();
+        $users->setPrimaryKey('id');
+        $relation->setManager($users);
+
+        $collection = new Collection();
+
+        foreach ([3, 4] as $id) {
+            $user = new Record();
+            $user->parent_type = 'books';
+            $user->parent_id = $id;
+            $user->setManager($users);
+            $collection->add($user);
+        }
+
+        static::assertEquals('parent_id', $relation->getFK());
+        static::assertEquals([3, 4], $relation->getEagerFkList($collection));
+        static::assertEquals(
+            'SELECT `books`.* FROM `books` WHERE id IN (3, 4)',
+            $relation->getEagerQueryType($collection, $books)->getString()
+        );
     }
 
 

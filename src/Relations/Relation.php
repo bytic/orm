@@ -436,7 +436,18 @@ abstract class Relation
     public function getEagerQuery(RecordCollection $collection)
     {
         $fkList = $this->getEagerFkList($collection);
-        $query = $this->newQuery();
+        $query = $this->populateEagerQueryFromFkList($this->newQuery(), $fkList);
+        return $query;
+    }
+
+    /**
+     * @param Query $query
+     * @param array $fkList
+     * @return Query
+     * @throws Exception
+     */
+    protected function populateEagerQueryFromFkList($query, $fkList)
+    {
         $query->where($this->getWithPK() . ' IN ?', $fkList);
 
         return $query;

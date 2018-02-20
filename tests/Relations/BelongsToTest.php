@@ -3,8 +3,12 @@
 namespace Nip\Records\Tests\Relations;
 
 use Mockery as m;
+use Nip\Records\Collections\Collection;
+use Nip\Records\Locator\ModelLocator;
 use Nip\Records\Record;
+use Nip\Records\RecordManager;
 use Nip\Records\Relations\BelongsTo;
+use Nip\Records\Tests\Fixtures\Records\Books\Books;
 
 /**
  * Class BelongsToTest
@@ -16,19 +20,53 @@ class BelongsToTest extends \Nip\Records\Tests\AbstractTest
     /**
      * @var BelongsTo
      */
-    protected $_object;
+    protected $object;
 
     public function testInitResults()
     {
-        static::assertSame($this->_user, $this->_object->getResults());
+        static::assertSame($this->_user, $this->object->getResults());
+    }
+
+    public function testGetEagerQuery()
+    {
+        ModelLocator::instance()->getConfiguration()->addNamespace('Nip\Records\Tests\Fixtures\Records');
+
+        $relation = new BelongsTo();
+        $relation->setName('Books');
+
+        static::assertInstanceOf(Books::class, $relation->getWith());
+        $collection = new Collection();
+
+        static::assertEquals(
+            'SELECT `books`.* FROM `books` WHERE id IN ()',
+            $relation->getEagerQuery($collection)->getString()
+        );
+
+        $users = new RecordManager();
+        $users->setPrimaryKey('id');
+        $relation->setManager($users);
+
+        foreach ([3, 4] as $id) {
+            $user = new Record();
+            $user->id_book = $id;
+            $user->setManager($users);
+            $collection->add($user);
+        }
+
+        static::assertEquals('id_book', $relation->getFK());
+        static::assertEquals([3,4], $relation->getEagerFkList($collection));
+        static::assertEquals(
+            'SELECT `books`.* FROM `books` WHERE id IN (3, 4)',
+            $relation->getEagerQuery($collection)->getString()
+        );
     }
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->_object = new BelongsTo();
-        $this->_object->setName('User');
+        $this->object = new BelongsTo();
+        $this->object->setName('User');
 
         $this->_user = new Record();
 
@@ -38,10 +76,9 @@ class BelongsToTest extends \Nip\Records\Tests\AbstractTest
         $users->setPrimaryFK('id_user');
 //        m::namedMock('User', 'Record');
 
-        $this->_object->setWith($users);
+        $this->object->setWith($users);
         $article = new Record();
         $article->id_user = 3;
-        $this->_object->setItem($article);
+        $this->object->setItem($article);
     }
-
 }

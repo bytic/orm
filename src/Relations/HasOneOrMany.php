@@ -77,13 +77,10 @@ abstract class HasOneOrMany extends Relation
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection
-     * @param RecordCollection $collection
-     * @return Query
+     * @inheritdoc
      */
-    public function getEagerQuery(RecordCollection $collection)
+    public function populateEagerQueryFromFkList($query, $fkList)
     {
-        $fkList = $this->getEagerFkList($collection);
-        $query = $this->newQuery();
         $query->where($this->getFK() . ' IN ?', $fkList);
         return $query;
     }
@@ -94,6 +91,9 @@ abstract class HasOneOrMany extends Relation
      */
     public function getEagerFkList(RecordCollection $collection)
     {
+        if ($collection->isEmpty()) {
+            return [];
+        }
         $key = $collection->getManager()->getPrimaryKey();
         $return = HelperBroker::get('Arrays')->pluck($collection, $key);
 
