@@ -8,6 +8,8 @@ use Nip\Records\Record;
 use Nip\Records\RecordManager;
 use Nip\Records\Relations\MorphMany;
 use Nip\Records\Tests\AbstractTest;
+use mockery as m;
+use Nip\Records\Tests\Fixtures\Records\Books\Book;
 
 /**
  * Class MorphManyTest
@@ -75,6 +77,31 @@ class MorphManyTest extends AbstractTest
             "SELECT `books`.* FROM `books` WHERE parent_type = 'nip-records' AND parent_id IN (3, 4)",
             $relation->getEagerQuery($collection)->getString()
         );
+    }
+
+    public function testSaveResult()
+    {
+        $relation = new MorphMany();
+
+        $relation->setName('Books');
+
+        $users = new RecordManager();
+        $users->setPrimaryKey('id');
+
+        $user = new Record();
+        $user->id = 3;
+        $user->setManager($users);
+        $relation->setItem($user);
+        $relation->setManager($users);
+
+        $book = m::mock(Book::class)->shouldDeferMissing()
+            ->shouldReceive('saveRecord')->andReturn(true)
+            ->getMock();
+
+        $relation->saveResult($book);
+
+        self::assertEquals(3, $book->parent_id);
+        self::assertEquals('nip-records', $book->parent_type);
     }
 
 
