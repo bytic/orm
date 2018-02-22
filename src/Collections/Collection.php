@@ -2,7 +2,7 @@
 
 namespace Nip\Records\Collections;
 
-use Nip\Collection as AbstractCollection;
+use Nip\Collections\Collection as AbstractCollection;
 use Nip\HelperBroker;
 use Nip\Records\AbstractModels\Record as Record;
 use Nip\Records\AbstractModels\RecordManager as Records;
@@ -204,11 +204,11 @@ class Collection extends AbstractCollection
                     $item->delete();
                 }
             } else {
-                $pk = $this->getManager()->getPrimaryKey();
-                $pk_list = HelperBroker::get('Arrays')->pluck($this, $pk);
+                $primaryKey = $this->getManager()->getPrimaryKey();
+                $pk_list = HelperBroker::get('Arrays')->pluck($this, $primaryKey);
 
                 $query = $this->getManager()->newQuery("delete");
-                $query->where("$pk IN ?", $pk_list);
+                $query->where("$primaryKey IN ?", $pk_list);
                 $query->execute();
             }
 

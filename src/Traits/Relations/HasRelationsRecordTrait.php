@@ -49,7 +49,9 @@ trait HasRelationsRecordTrait
         if (substr($name, 0, 3) == "get") {
             $relation = $this->getRelation(substr($name, 3));
             if ($relation) {
-                return $relation->getResults();
+                $results = $relation->getResults();
+                // RETURN NULL TO DISTINCT FROM FALSE THAT MEANS NO RELATION
+                return ($results) ? $results : null;
             }
         }
 

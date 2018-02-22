@@ -28,8 +28,8 @@ class BelongsTo extends Relation
     public function initResults()
     {
         $manager = $this->getWith();
-        $fk = $this->getItem()->{$this->getFK()};
-        $this->setResults($manager->findOne($fk));
+        $foreignKey = $this->getItem()->{$this->getFK()};
+        $this->setResults($manager->findOne($foreignKey));
     }
 
     /**
@@ -40,12 +40,12 @@ class BelongsTo extends Relation
      */
     public function getResultsFromCollectionDictionary($dictionary, $collection, $record)
     {
-        $pk = $record->{$this->getFK()};
-        if (isset($dictionary[$pk])) {
-            return $dictionary[$pk];
+        $primaryKey = $record->{$this->getFK()};
+        if (isset($dictionary[$primaryKey])) {
+            return $dictionary[$primaryKey];
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -56,6 +56,9 @@ class BelongsTo extends Relation
      */
     protected function buildDictionary(RecordCollection $collection)
     {
+        if ($collection->isEmpty()) {
+            return [];
+        }
         $dictionary = [];
         $withPK = $this->getWithPK();
         foreach ($collection as $record) {
