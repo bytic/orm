@@ -69,7 +69,7 @@ abstract class RecordManager
     public function __call($name, $arguments)
     {
         $return = $this->isCallDatabaseOperation($name, $arguments);
-        if ($return !== null) {
+        if ($return !== false) {
             return $return;
         }
 
@@ -135,13 +135,13 @@ abstract class RecordManager
         $params['module'] = $module ? $module : request()->getModuleName();
 
         $routeName = $params['module'] . '.' . $params['controller'] . '.' . $params['action'];
-        if ($this->Url()->getRouter()->hasRoute($routeName)) {
+        if (app()->get('router')->hasRoute($routeName)) {
             unset($params['module'], $params['controller'], $params['action']);
         } else {
             $routeName = $params['module'] . '.default';
         }
 
-        return $this->Url()->assemble($routeName, $params);
+        return app()->get('router')->assembleFull($routeName, $params);
     }
 
     /**
