@@ -6,6 +6,7 @@ use Exception;
 use MongoDB\Driver\Query;
 use Nip\Records\AbstractModels\Record;
 use Nip\Records\Collections\Collection;
+use Nip\Records\RecordManager;
 use Nip\Records\Relations\Exceptions\ModelNotLoadedInRelation;
 use Nip\Records\Relations\Traits\HasMorphTypeTrait;
 use Nip\HelperBroker;
@@ -67,17 +68,17 @@ class MorphTo extends BelongsTo
             }
         }
         $types = $this->getTypesFromCollection($collection);
-        $collection = new Collection();
+        $results = new Collection();
         foreach ($types as $type) {
             $manager = $this->getModelManagerInstance($type);
             $query = $this->getEagerQueryType($collection, $manager);
             $typeCollection = $manager->findByQuery($query);
             foreach ($typeCollection as $item) {
-                $collection->add($item);
+                $results->add($item);
             }
         }
 
-        return $collection;
+        return $results;
     }
 
     /**
@@ -88,10 +89,31 @@ class MorphTo extends BelongsTo
      */
     public function getEagerQueryType(Collection $collection, $manager)
     {
-        $fkList = $this->getEagerFkList($collection);
+        $fkList = $this->getEagerFkListType($collection, $manager);
         $query = $manager->newQuery();
         $query->where($manager->getPrimaryKey() . ' IN ?', $fkList);
         return $query;
+    }
+
+    /**
+     * @param Collection $collection
+     * @param RecordManager $manager
+     * @return array
+     */
+    public function getEagerFkListType(Collection $collection, $manager)
+    {
+        $foreignKey =  $this->getFK();
+        $typeField = $this->getMorphTypeField();
+        $type = $manager->getMorphName();
+        $return = [];
+
+        foreach ($collection as $item) {
+            if ($item->{$typeField} == $type) {
+                $return[] = $item->{$foreignKey};
+            }
+        }
+
+        return array_unique($return);
     }
 
     /**
