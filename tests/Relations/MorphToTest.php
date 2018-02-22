@@ -10,6 +10,8 @@ use Nip\Records\RecordManager;
 use Nip\Records\Relations\Exceptions\ModelNotLoadedInRelation;
 use Nip\Records\Relations\MorphTo;
 use Nip\Records\Tests\AbstractTest;
+use Nip\Records\Tests\Fixtures\Records\Books\Books;
+use Nip\Records\Tests\Fixtures\Records\Shelves\Shelves;
 
 /**
  * Class MorphToTest
@@ -103,6 +105,41 @@ class MorphToTest extends AbstractTest
         static::assertEquals(
             'SELECT `books`.* FROM `books` WHERE id IN (3, 4)',
             $relation->getEagerQueryType($collection, $books)->getString()
+        );
+    }
+
+    public function testGetEagerQueryType()
+    {
+        ModelLocator::instance()->getConfiguration()->addNamespace('Nip\Records\Tests\Fixtures\Records');
+
+        $relation = new MorphTo();
+
+        $users = new RecordManager();
+        $users->setPrimaryKey('id');
+        $relation->setManager($users);
+
+        $collection = new Collection();
+
+        $user = new Record();
+        $user->parent_type = 'books';
+        $user->parent_id = 3;
+        $user->setManager($users);
+        $collection->add($user);
+
+        $user = new Record();
+        $user->parent_type = 'shelves';
+        $user->parent_id = 4;
+        $user->setManager($users);
+        $collection->add($user);
+
+        static::assertEquals(
+            'SELECT `books`.* FROM `books` WHERE id IN (3)',
+            $relation->getEagerQueryType($collection, new Books())->getString()
+        );
+
+        static::assertEquals(
+            'SELECT `shelves`.* FROM `shelves` WHERE id IN (4)',
+            $relation->getEagerQueryType($collection, new Shelves())->getString()
         );
     }
 
