@@ -3,6 +3,7 @@
 namespace Nip\Records\Relations;
 
 use Nip\Database\Query\AbstractQuery;
+use Nip\Records\AbstractModels\Record;
 use Nip\Records\Collections\Collection as RecordCollection;
 
 /**
@@ -60,12 +61,23 @@ class BelongsTo extends Relation
             return [];
         }
         $dictionary = [];
-        $withPK = $this->getWithPK();
         foreach ($collection as $record) {
-            $dictionary[$record->{$withPK}] = $record;
+            $dictionary[$this->getDictionaryKey($record)] = $record;
         }
 
         return $dictionary;
+    }
+
+    /**
+     * @param Record $record
+     * @return array
+     * @throws \Exception
+     */
+    protected function getDictionaryKey(Record $record)
+    {
+        $withPK = $this->getWithPK();
+
+        return $record->{$withPK};
     }
 
     /**

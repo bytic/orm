@@ -511,13 +511,13 @@ abstract class Relation
 
     /**
      * @param RecordCollection $collection
-     * @param RecordCollection $records
+     * @param RecordCollection $recordsLoaded
      *
      * @return RecordCollection
      */
-    public function match(RecordCollection $collection, RecordCollection $records)
+    public function match(RecordCollection $collection, RecordCollection $recordsLoaded)
     {
-        $dictionary = $this->buildDictionary($records);
+        $dictionary = $this->buildDictionary($recordsLoaded);
 
         foreach ($collection as $record) {
             /** @var Record $record */
@@ -525,7 +525,7 @@ abstract class Relation
             $record->getRelation($this->getName())->setResults($results);
         }
 
-        return $records;
+        return $recordsLoaded;
     }
 
     /**

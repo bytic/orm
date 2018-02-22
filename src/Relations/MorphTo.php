@@ -102,7 +102,7 @@ class MorphTo extends BelongsTo
      */
     public function getEagerFkListType(Collection $collection, $manager)
     {
-        $foreignKey =  $this->getFK();
+        $foreignKey = $this->getFK();
         $typeField = $this->getMorphTypeField();
         $type = $manager->getMorphName();
         $return = [];
@@ -114,6 +114,36 @@ class MorphTo extends BelongsTo
         }
 
         return array_unique($return);
+    }
+
+    /** @noinspection PhpMissingParentCallCommonInspection
+     * @param Record $record
+     * @return array
+     * @throws \Exception
+     */
+    protected function getDictionaryKey(Record $record)
+    {
+        $key = $record->getManager()->getMorphName();
+        $key .= '-' . $record->getPrimaryKey();
+
+        return $key;
+    }
+
+    /**
+     * @param $dictionary
+     * @param $collection
+     * @param $record
+     * @return mixed
+     */
+    public function getResultsFromCollectionDictionary($dictionary, $collection, $record)
+    {
+        $dictionaryKey = $record->{$this->getMorphTypeField()};
+        $dictionaryKey .= '-' . $record->{$this->getFK()};
+        if (isset($dictionary[$dictionaryKey])) {
+            return $dictionary[$dictionaryKey];
+        }
+
+        return null;
     }
 
     /**
