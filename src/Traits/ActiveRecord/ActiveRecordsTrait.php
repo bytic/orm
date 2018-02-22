@@ -496,7 +496,7 @@ trait ActiveRecordsTrait
             return $return->rewind();
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -583,7 +583,7 @@ trait ActiveRecordsTrait
     /**
      * @param string $name
      * @param $arguments
-     * @return RecordCollection|null
+     * @return RecordCollection|false
      */
     protected function isCallDatabaseOperation($name, $arguments)
     {
@@ -606,10 +606,12 @@ trait ActiveRecordsTrait
 
                 $operation = str_replace($match, "", $name) . "Params";
 
-                return $this->$operation($params);
+                $results = $this->$operation($params);
+                // RETURN NULL TO DISTINCT FROM FALSE THAT MEANS NOT A DATABASE OPERATION
+                return ($results) ? $results : null;
             }
         }
 
-        return null;
+        return false;
     }
 }
