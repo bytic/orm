@@ -3,6 +3,7 @@
 namespace Nip\Records\Relations;
 
 use Nip\Database\Query\AbstractQuery;
+use Nip\Records\AbstractModels\Record;
 
 /**
  * Class MorphMany
@@ -30,5 +31,15 @@ class MorphMany extends MorphOneOrMany
         $value = $this->hasManager() ? $this->getMorphValue() : '';
         $query->where($this->getMorphTypeField() . ' = ?', $value);
         return parent::populateEagerQueryFromFkList($query, $fkList);
+    }
+
+    /**
+     * @param Record $item
+     */
+    public function saveResult(Record $item)
+    {
+        $value = $this->hasManager() ? $this->getMorphValue() : '';
+        $item->{$this->getMorphTypeField()} = $value;
+        return parent::saveResult($item);
     }
 }
