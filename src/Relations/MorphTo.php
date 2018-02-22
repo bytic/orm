@@ -60,7 +60,11 @@ class MorphTo extends BelongsTo
     public function getEagerResults($collection)
     {
         if ($collection->count() < 1) {
-            return $this->getWith()->newCollection();
+            if ($this->getItem() instanceof Record) {
+                return $this->getWith()->newCollection();
+            } else {
+                return new Collection();
+            }
         }
         $types = $this->getTypesFromCollection($collection);
         $collection = new Collection();
