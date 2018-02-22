@@ -40,7 +40,7 @@ class NamespaceSearch extends AbstractStage
     {
         $namespaces = $this->getCommand()->getNamespaces();
         $classes = [];
-        $aliasVariations = $this->buildAliasVariations();
+        $aliasVariations = $this->buildAliasVariations($this->getCommand()->getAlias());
         foreach ($namespaces as $namespace) {
             foreach ($aliasVariations as $variation) {
                 $classes[] = $namespace . '\\' . $variation;
@@ -50,11 +50,13 @@ class NamespaceSearch extends AbstractStage
     }
 
     /**
+     * @param $alias
      * @return array
      */
-    public function buildAliasVariations()
+    public function buildAliasVariations($alias)
     {
-        $alias = $this->getCommand()->getAlias();
+        $alias = str_replace('\\', '-', $alias);
+        $alias = inflector()->classify($alias);
         $alias = ucwords(preg_replace('/[^A-Z^a-z^0-9]+/', ' ', $alias));
         $elements = explode(" ", $alias);
 

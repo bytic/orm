@@ -194,6 +194,7 @@ abstract class Relation
         } catch (InvalidModelException $exception) {
             throw new Exception(
                 'Cannot instance records [' . $name . '] in ' . $this->debugString()
+                .'|| with message ' . $exception->getMessage()
             );
         }
     }

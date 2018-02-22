@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b8e52d06dab256985eed1c58ae304578",
+    "content-hash": "73ea8a4474adac120a2d4e05f054b2cd",
     "packages": [
         {
             "name": "bytic/cache",
@@ -98,6 +98,48 @@
             "description": "Php Framework",
             "homepage": "https://github.com/ByTIC/collections",
             "time": "2018-02-13T13:30:15+00:00"
+        },
+        {
+            "name": "bytic/config",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bytic/config.git",
+                "reference": "809003363cd03b427d5d2e1ec7c025f700086385"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bytic/config/zipball/809003363cd03b427d5d2e1ec7c025f700086385",
+                "reference": "809003363cd03b427d5d2e1ec7c025f700086385",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9",
+                "phpunit/phpunit": "^6.2",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nip\\Config\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gabriel Solomon",
+                    "email": "hello@gabrielsolomon.ro"
+                }
+            ],
+            "description": "Php Framework",
+            "homepage": "https://github.com/bytic/config",
+            "time": "2018-02-04T18:18:11+00:00"
         },
         {
             "name": "bytic/container",
@@ -242,6 +284,50 @@
             "description": "filesystem module for bytic framework",
             "homepage": "https://github.com/bytic/filesystem",
             "time": "2018-02-13T20:35:28+00:00"
+        },
+        {
+            "name": "bytic/helpers",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bytic/helpers.git",
+                "reference": "bd1619e27fa8bd0e4b3d6f30234f9669acb09f12"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bytic/helpers/zipball/bd1619e27fa8bd0e4b3d6f30234f9669acb09f12",
+                "reference": "bd1619e27fa8bd0e4b3d6f30234f9669acb09f12",
+                "shasum": ""
+            },
+            "require": {
+                "bytic/config": "^1.0",
+                "bytic/filesystem": "^1.0",
+                "bytic/router": "^1.0",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9",
+                "phpunit/phpunit": "^6.2",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nip\\Helpers\\": "src/"
+                },
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Gabriel Solomon",
+                    "email": "hello@gabrielsolomon.ro"
+                }
+            ],
+            "description": "Php Framework",
+            "time": "2018-02-22T09:38:14+00:00"
         },
         {
             "name": "bytic/http",
@@ -434,6 +520,54 @@
                 "request"
             ],
             "time": "2017-04-06T15:24:50+00:00"
+        },
+        {
+            "name": "bytic/router",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bytic/router.git",
+                "reference": "cb4f84e49bef75bd52f8a4228d643b8b2b2bb5aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bytic/router/zipball/cb4f84e49bef75bd52f8a4228d643b8b2b2bb5aa",
+                "reference": "cb4f84e49bef75bd52f8a4228d643b8b2b2bb5aa",
+                "shasum": ""
+            },
+            "require": {
+                "bytic/http": "^1.0",
+                "bytic/inflector": "^1.0",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9",
+                "phpunit/phpunit": "^6.2",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nip\\Router\\": "src"
+                },
+                "classmap": [
+                    "src"
+                ],
+                "files": []
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gabriel Solomon",
+                    "email": "hello@gabrielsolomon.ro"
+                }
+            ],
+            "description": "Php Framework",
+            "homepage": "https://github.com/bytic/router",
+            "time": "2018-02-07T12:47:34+00:00"
         },
         {
             "name": "bytic/utility",
@@ -3041,16 +3175,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.2.2",
+            "version": "3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "d7c00c3000ac0ce79c96fcbfef86b49a71158cd1"
+                "reference": "4842476c434e375f9d3182ff7b89059583aa8b27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/d7c00c3000ac0ce79c96fcbfef86b49a71158cd1",
-                "reference": "d7c00c3000ac0ce79c96fcbfef86b49a71158cd1",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4842476c434e375f9d3182ff7b89059583aa8b27",
+                "reference": "4842476c434e375f9d3182ff7b89059583aa8b27",
                 "shasum": ""
             },
             "require": {
@@ -3060,7 +3194,7 @@
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0"
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
             "bin": [
                 "bin/phpcs",
@@ -3088,7 +3222,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-12-19T21:44:46+00:00"
+            "time": "2018-02-20T21:35:23+00:00"
         },
         {
             "name": "theseer/tokenizer",
