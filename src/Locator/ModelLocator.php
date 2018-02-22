@@ -53,8 +53,9 @@ class ModelLocator
         }
 
         throw new InvalidModelException(
-            "No valid instance located for model alias " .
-            "[" . $alias . "]"
+            "No valid instance located for model alias "
+            . "[" . $alias . "]"
+            . " Tried [" . implode(', ', $command->getTries()) . "]"
         );
     }
 }

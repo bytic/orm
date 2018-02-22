@@ -29,6 +29,11 @@ class Command
     protected $modelRegistry;
 
     /**
+     * @var []
+     */
+    protected $tries = [];
+
+    /**
      * @var RecordManager
      */
     protected $instance = null;
@@ -127,5 +132,21 @@ class Command
     public function setModelRegistry(ModelRegistry $modelRegistry)
     {
         $this->modelRegistry = $modelRegistry;
+    }
+
+    /**
+     * @return ModelRegistry
+     */
+    public function getTries(): array
+    {
+        return $this->tries;
+    }
+
+    /**
+     * @param $class
+     */
+    public function addTry($class)
+    {
+        $this->tries[] = $class;
     }
 }

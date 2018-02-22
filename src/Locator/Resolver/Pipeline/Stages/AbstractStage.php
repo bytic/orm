@@ -38,6 +38,7 @@ abstract class AbstractStage implements StageInterface
      */
     protected function isValidClassName($class)
     {
+        $this->getCommand()->addTry($class);
         return class_exists($class);
     }
 
