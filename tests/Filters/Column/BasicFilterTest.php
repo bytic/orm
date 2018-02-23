@@ -56,6 +56,9 @@ class BasicFilterTest extends \Nip\Records\Tests\AbstractTest
         static::assertSame($filterValue, $this->_object->getValueFromRequest());
     }
 
+    /**
+     * @return array
+     */
     public function getValueFromRequestProvider()
     {
         return [

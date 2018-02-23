@@ -103,7 +103,7 @@ class AbstractFilter implements FilterInterface
         $request = $this->getRequest();
         $name = $this->getRequestField();
         if ($name) {
-            $return = $request->get($name);
+            $return = $request->get($name, false);
             if ($return) {
                 return $return;
             }
@@ -167,7 +167,11 @@ class AbstractFilter implements FilterInterface
      */
     public function isValidRequestValue($value)
     {
-        return !empty($value);
+        if (is_string($value)) {
+            return !empty(trim($value));
+        }
+
+        return false;
     }
 
     /**
