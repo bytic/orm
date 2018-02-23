@@ -105,7 +105,7 @@ class AbstractFilter implements FilterInterface
         if ($name) {
             $return = $request->get($name);
             if ($return) {
-                return trim($return);
+                return $return;
             }
         }
 
