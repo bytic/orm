@@ -74,7 +74,7 @@ abstract class AbstractPaginator
     }
 
     /**
-     *
+     * Does the count for all records
      */
     protected function doCount()
     {
@@ -99,6 +99,7 @@ abstract class AbstractPaginator
     protected function getCountQuery()
     {
         $query = clone $this->getQuery();
+        $query->setCols();
         $query->count('*', 'count');
         return $query;
     }
