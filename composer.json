@@ -15,7 +15,8 @@
       "Nip\\Records\\": "src"
     },
     "classmap": [
-      "src"
+      "src",
+      "legacy"
     ],
     "files": [
     ]
