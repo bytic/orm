@@ -81,7 +81,7 @@ abstract class AbstractPaginator
         $query = $this->getCountQuery();
         $result = $query->execute()->fetchResult();
 
-        $this->count = intval(reset($result['count']));
+        $this->count = intval($result['count']);
         $this->pages = intval($this->count / $this->itemsPerPage);
 
         if ($this->count % $this->itemsPerPage != 0) {
