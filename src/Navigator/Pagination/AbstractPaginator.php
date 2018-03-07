@@ -101,6 +101,7 @@ abstract class AbstractPaginator
         $query = clone $this->getQuery();
         $query->setCols();
         $query->count('*', 'count');
+        $query->limit(1);
         return $query;
     }
 
