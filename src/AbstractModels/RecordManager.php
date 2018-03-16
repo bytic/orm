@@ -69,7 +69,7 @@ abstract class RecordManager
     public function __call($name, $arguments)
     {
         $return = $this->isCallDatabaseOperation($name, $arguments);
-        if ($return !== null) {
+        if ($return !== false) {
             return $return;
         }
 
