@@ -8,5 +8,4 @@ namespace Nip\Records\Relations\Exceptions;
  */
 class RelationsNeedsAName extends \Exception
 {
-
 }

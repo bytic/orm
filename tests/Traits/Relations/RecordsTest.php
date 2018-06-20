@@ -20,7 +20,6 @@ use Nip\Records\Tests\AbstractTest;
  */
 class RecordsTest extends AbstractTest
 {
-
     public function testGetRelationClass()
     {
         self::assertEquals(BelongsTo::class, $this->object->getRelationClass('BelongsTo'));

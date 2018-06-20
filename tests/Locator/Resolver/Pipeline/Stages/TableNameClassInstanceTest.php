@@ -33,5 +33,4 @@ class TableNameClassInstanceTest extends AbstractTest
             ['race_entries-logs','RaceEntries_Logs']
         ];
     }
-
 }
