@@ -11,7 +11,6 @@ use Nip\Records\Relations\HasAndBelongsToMany;
  */
 class HasAndBelongsToManyTest extends \Nip\Records\Tests\AbstractTest
 {
-
     public function testTableNameGeneration()
     {
         $tableA = new RecordManager();

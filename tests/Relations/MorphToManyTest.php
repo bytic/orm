@@ -59,5 +59,4 @@ class MorphToManyTest extends \Nip\Records\Tests\AbstractTest
         $page->setManager($pages);
         return $page;
     }
-
 }

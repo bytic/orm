@@ -21,7 +21,6 @@ use Nip\Records\Tests\Fixtures\Records\Shelves\Shelves;
  */
 class MorphToTest extends AbstractTest
 {
-
     public function testMorphDefaultFieldsGeneration()
     {
         $relation = new MorphTo();
