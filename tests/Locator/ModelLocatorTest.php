@@ -13,7 +13,6 @@ use Nip\Records\Tests\Fixtures\Records\Books\Books;
  */
 class ModelLocatorTest extends AbstractTest
 {
-
     public function testGetClassFullName()
     {
         $manager = ModelLocator::get(Books::class);

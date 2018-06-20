@@ -17,7 +17,6 @@ use Nip\Records\Traits\Relations\HasRelationsRecordTrait;
  */
 class RecordTest extends AbstractTest
 {
-
     public function testNewRelation()
     {
         $users = m::namedMock('Users', Records::class)->shouldDeferMissing()

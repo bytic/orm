@@ -154,7 +154,6 @@ class MorphTo extends BelongsTo
      */
     protected function populateEagerQueryFromFkList($query, $fkList)
     {
-
         return $query;
     }
 
