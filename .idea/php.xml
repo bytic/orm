@@ -60,9 +60,13 @@
       <path value="$PROJECT_DIR$/vendor/bytic/database" />
       <path value="$PROJECT_DIR$/vendor/bytic/cache" />
       <path value="$PROJECT_DIR$/vendor/bytic/filesystem" />
-      <path value="$PROJECT_DIR$/vendor/bytic/profiler" />
       <path value="$PROJECT_DIR$/vendor/league/pipeline" />
       <path value="$PROJECT_DIR$/vendor/league/flysystem" />
+      <path value="$PROJECT_DIR$/vendor/bytic/config" />
+      <path value="$PROJECT_DIR$/vendor/bytic/router" />
+      <path value="$PROJECT_DIR$/vendor/bytic/helpers" />
+      <path value="$PROJECT_DIR$/vendor/bytic/profiler" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7" />
