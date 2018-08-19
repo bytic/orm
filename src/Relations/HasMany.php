@@ -17,8 +17,8 @@ class HasMany extends HasOneOrMany
      */
     public function populateQuerySpecific(AbstractQuery $query)
     {
-        $pk = $this->getManager()->getPrimaryKey();
-        $query->where('`' . $this->getFK() . '` = ?', $this->getItem()->{$pk});
+        $primaryKey = $this->getManager()->getPrimaryKey();
+        $query->where('`' . $this->getFK() . '` = ?', $this->getItem()->{$primaryKey});
 
         return $query;
     }

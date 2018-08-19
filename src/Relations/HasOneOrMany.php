@@ -4,6 +4,7 @@ namespace Nip\Records\Relations;
 
 use Nip\Database\Query\Select as Query;
 use Nip\HelperBroker;
+use Nip_Helper_Arrays as ArraysHelper;
 use Nip\Records\AbstractModels\Record as Record;
 use Nip\Records\Collections\Associated as AssociatedCollection;
 use Nip\Records\Collections\Collection;
@@ -50,12 +51,15 @@ abstract class HasOneOrMany extends Relation
      */
     public function saveResult(Record $item)
     {
-        $pk = $this->getManager()->getPrimaryKey();
-        $fk = $this->getFK();
-        $item->{$fk} = $this->getItem()->{$pk};
+        $primaryKey = $this->getManager()->getPrimaryKey();
+        $foreignKey = $this->getFK();
+        $item->{$foreignKey} = $this->getItem()->{$primaryKey};
         $item->saveRecord();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function initResults()
     {
         $query = $this->getQuery();
@@ -95,7 +99,9 @@ abstract class HasOneOrMany extends Relation
             return [];
         }
         $key = $collection->getManager()->getPrimaryKey();
-        $return = HelperBroker::get('Arrays')->pluck($collection, $key);
+        /** @var ArraysHelper $arrayHelper */
+        $arrayHelper = HelperBroker::get('Arrays');
+        $return = $arrayHelper->pluck($collection, $key);
 
         return array_unique($return);
     }
@@ -108,12 +114,12 @@ abstract class HasOneOrMany extends Relation
      */
     public function getResultsFromCollectionDictionary($dictionary, $collection, $record)
     {
-        $fk = $record->getManager()->getPrimaryKey();
-        $pk = $record->{$fk};
+        $foreignKey = $record->getManager()->getPrimaryKey();
+        $primaryKey = $record->{$foreignKey};
         $collection = $this->newCollection();
 
-        if ($dictionary[$pk]) {
-            foreach ($dictionary[$pk] as $record) {
+        if (isset($dictionary[$primaryKey])) {
+            foreach ($dictionary[$primaryKey] as $record) {
                 $collection->add($record);
             }
         }
@@ -129,9 +135,9 @@ abstract class HasOneOrMany extends Relation
     protected function buildDictionary(RecordCollection $collection)
     {
         $dictionary = [];
-        $pk = $this->getDictionaryKey();
+        $primaryKey = $this->getDictionaryKey();
         foreach ($collection as $record) {
-            $dictionary[$record->{$pk}][] = $record;
+            $dictionary[$record->{$primaryKey}][] = $record;
         }
         return $dictionary;
     }
