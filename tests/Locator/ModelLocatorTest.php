@@ -6,6 +6,7 @@ use Nip\Records\Locator\Exceptions\InvalidModelException;
 use Nip\Records\Locator\ModelLocator;
 use Nip\Records\Tests\AbstractTest;
 use Nip\Records\Tests\Fixtures\Records\Books\Books;
+use Nip\Records\Tests\Fixtures\Records\Books\Chapters\BooksChapters;
 
 /**
  * Class ModelLocatorTest
@@ -50,5 +51,13 @@ class ModelLocatorTest extends AbstractTest
         $manager = ModelLocator::get('Books\Books');
         self::assertInstanceOf(Books::class, $manager);
         self::assertEquals('valid', $manager->singleton);
+    }
+
+    public function testGetModelWithFolderAndComposeName()
+    {
+        ModelLocator::instance()->getConfiguration()->addNamespace('Nip\Records\Tests\Fixtures\Records');
+
+        $manager = ModelLocator::get('books-chapters');
+        self::assertInstanceOf(BooksChapters::class, $manager);
     }
 }
