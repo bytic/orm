@@ -17,7 +17,6 @@ use Nip\Records\Tests\Fixtures\Records\Books\Book;
  */
 class MorphManyTest extends AbstractTest
 {
-
     public function testGetMorphClassWithGenericManager()
     {
         $relation = new MorphMany();

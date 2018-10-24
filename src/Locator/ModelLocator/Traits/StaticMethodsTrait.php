@@ -14,7 +14,7 @@ trait StaticMethodsTrait
     /**
      * @var self
      */
-    static protected $instance;
+    protected static $instance;
 
     /**
      * @param $entityManager

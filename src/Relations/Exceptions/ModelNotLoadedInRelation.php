@@ -8,5 +8,4 @@ namespace Nip\Records\Relations\Exceptions;
  */
 class ModelNotLoadedInRelation extends \Exception
 {
-
 }

@@ -10,5 +10,4 @@ use Nip\Collections\Collection;
  */
 class ModelRegistry extends Collection
 {
-
 }
