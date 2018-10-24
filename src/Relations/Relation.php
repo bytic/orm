@@ -194,7 +194,7 @@ abstract class Relation
         } catch (InvalidModelException $exception) {
             throw new Exception(
                 'Cannot instance records [' . $name . '] in ' . $this->debugString()
-                .'|| with message ' . $exception->getMessage()
+                . '|| with message ' . $exception->getMessage()
             );
         }
     }
@@ -407,6 +407,15 @@ abstract class Relation
     /**
      * @return bool
      */
+    public function isPopulatable()
+    {
+        $pk1 = $this->getManager()->getPrimaryKey();
+        return !empty($this->getItem()->{$pk1});
+    }
+
+    /**
+     * @return bool
+     */
     public function isPopulated()
     {
         return $this->populated == true;
@@ -562,7 +571,7 @@ abstract class Relation
     protected function debugString()
     {
         return 'Relation'
-        . ' Manager:[' . ($this->hasManager() ? $this->getManager()->getClassName() : '') . ']'
+            . ' Manager:[' . ($this->hasManager() ? $this->getManager()->getClassName() : '') . ']'
             . ' name:[' . $this->getName() . '] '
             . ' params:[' . serialize($this->getParams()) . ']';
     }

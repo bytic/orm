@@ -62,10 +62,12 @@ abstract class HasOneOrMany extends Relation
      */
     public function initResults()
     {
-        $query = $this->getQuery();
-        $items = $this->getWith()->findByQuery($query);
         $collection = $this->newCollection();
-        $this->populateCollection($collection, $items);
+        if ($this->isPopulatable()) {
+            $query = $this->getQuery();
+            $items = $this->getWith()->findByQuery($query);
+            $this->populateCollection($collection, $items);
+        }
         $this->setResults($collection);
     }
 

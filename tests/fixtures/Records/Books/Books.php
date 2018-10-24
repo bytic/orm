@@ -2,12 +2,16 @@
 
 namespace Nip\Records\Tests\Fixtures\Records\Books;
 
+use Nip\Utility\Traits\SingletonTrait;
+
 /**
  * Class Books
  * @package Nip\Records\Tests\Fixtures\Records\Books
  */
 class Books extends \Nip\Records\RecordManager
 {
+    use SingletonTrait;
+
     protected function generateTable()
     {
         return 'books';
