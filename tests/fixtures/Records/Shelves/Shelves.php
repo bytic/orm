@@ -8,7 +8,6 @@ namespace Nip\Records\Tests\Fixtures\Records\Shelves;
  */
 class Shelves extends \Nip\Records\RecordManager
 {
-
     protected function generateTable()
     {
         return 'shelves';
