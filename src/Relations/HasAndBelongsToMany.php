@@ -32,6 +32,7 @@ class HasAndBelongsToMany extends HasOneOrMany
 
     /** @noinspection PhpMissingParentCallCommonInspection
      * @return SelectQuery
+     * @throws \Exception
      */
     public function newQuery()
     {
@@ -51,7 +52,7 @@ class HasAndBelongsToMany extends HasOneOrMany
         $this->hydrateQueryWithPivotConstraints($query);
 
         $order = $this->getParam('order');
-        if ($order) {
+        if (is_array($order)) {
             foreach ($order as $item) {
                 $query->order([$item[0], $item[1]]);
             }
@@ -82,7 +83,7 @@ class HasAndBelongsToMany extends HasOneOrMany
 
     protected function initJoinFields()
     {
-        $structure = $this->getDB()->describeTable($this->getTable());
+        $structure = $this->getDB()->getMetadata()->describeTable($this->getTable());
         $this->setJoinFields(array_keys($structure["fields"]));
     }
 
