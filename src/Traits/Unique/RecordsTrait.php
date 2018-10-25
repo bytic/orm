@@ -20,12 +20,16 @@ trait RecordsTrait
     public function exists(Record $item)
     {
         $params = $this->generateExistsParams($item);
+
+        if (!$params) {
+            return false;
+        }
         return $this->findOneByParams($params);
     }
 
     /**
      * @param Record $item
-     * @return array
+     * @return array|bool
      */
     public function generateExistsParams(Record $item)
     {
