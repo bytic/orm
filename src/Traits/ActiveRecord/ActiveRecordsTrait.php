@@ -13,6 +13,7 @@ use Nip\Database\Result;
 use Nip\Paginator;
 use Nip\Records\AbstractModels\Record;
 use Nip\Records\Collections\Collection as RecordCollection;
+use Nip\Records\Traits\Unique\RecordsTrait as UniqueRecordsTrait;
 
 /**
  * Class ActiveRecordsTrait
@@ -20,6 +21,7 @@ use Nip\Records\Collections\Collection as RecordCollection;
  */
 trait ActiveRecordsTrait
 {
+    use UniqueRecordsTrait;
 
     /**
      * @var Connection
@@ -38,7 +40,6 @@ trait ActiveRecordsTrait
      */
     protected $primaryKey = null;
     protected $fields = null;
-    protected $uniqueFields = null;
 
     /**
      * @var null|string

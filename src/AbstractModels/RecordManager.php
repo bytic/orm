@@ -471,64 +471,6 @@ abstract class RecordManager
         $this->initDB();
     }
 
-    /**
-     * @param Record $item
-     * @return bool|false|Record
-     */
-    public function exists(Record $item)
-    {
-        $params = [];
-        $params['where'] = [];
-
-        $fields = $this->getUniqueFields();
-
-        if (!$fields) {
-            return false;
-        }
-
-        foreach ($fields as $field) {
-            $params['where'][$field . '-UNQ'] = ["$field = ?", $item->{$field}];
-        }
-
-        $pk = $this->getPrimaryKey();
-        if ($item->getPrimaryKey()) {
-            $params['where'][] = ["$pk != ?", $item->getPrimaryKey()];
-        }
-
-        return $this->findOneByParams($params);
-    }
-
-    /**
-     * @return null
-     */
-    public function getUniqueFields()
-    {
-        if ($this->uniqueFields === null) {
-            $this->initUniqueFields();
-        }
-
-        return $this->uniqueFields;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function initUniqueFields()
-    {
-        $this->uniqueFields = [];
-        $structure = $this->getTableStructure();
-        foreach ($structure['indexes'] as $name => $index) {
-            if ($index['unique']) {
-                foreach ($index['fields'] as $field) {
-                    if ($field != $this->getPrimaryKey()) {
-                        $this->uniqueFields[] = $field;
-                    }
-                }
-            }
-        }
-
-        return $this->uniqueFields;
-    }
 
     /**
      * Finds one Record using params array
