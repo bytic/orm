@@ -71,7 +71,7 @@ trait HasSessionsTrait
      * @param $data
      * @return string
      */
-    static public function generateSessionNameFromData($data)
+    public static function generateSessionNameFromData($data)
     {
         return md5(serialize($data));
     }
