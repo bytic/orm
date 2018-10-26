@@ -21,8 +21,11 @@ class BasicFilter extends AbstractFilter implements FilterInterface
      */
     public function filterQuery($query)
     {
+        $value = $this->getValue();
         if ($this->getDatabaseOperation() == 'LIKE%%') {
-            $query->where("{$this->getDbName()} LIKE ?", "%{$this->getValue()}%");
+            $query->where("{$this->getDbName()} LIKE ?", "%{$value}%");
+        } elseif (is_array($value)) {
+            $query->where("{$this->getDbName()} IN ?", $value);
         } else {
             $query->where("{$this->getDbName()} = ?", $this->getValue());
         }

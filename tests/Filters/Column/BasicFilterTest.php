@@ -2,6 +2,7 @@
 
 namespace Nip\Records\Tests\Filters\Column;
 
+use Nip\Database\Query\Select;
 use Nip\Records\Filters\Column\BasicFilter;
 use Nip\Request;
 
@@ -96,6 +97,33 @@ class BasicFilterTest extends \Nip\Records\Tests\AbstractTest
             ['value ', 'value', true],
             [' value ', 'value', true],
             ['  ', false, false],
+        ];
+    }
+
+    /**
+     * @dataProvider filterQueryForArrayProvider
+     */
+    public function testFilterQueryForArray($value, $queryString)
+    {
+        $query = new Select();
+        $query->from('books');
+        $filter = new BasicFilter();
+        $filter->setName('type');
+        $filter->setDbName('type');
+        $filter->setValue($value);
+        $filter->filterQuery($query);
+
+        self::assertSame($queryString, $query->assemble());
+    }
+
+    /**
+     * @return array
+     */
+    public function filterQueryForArrayProvider()
+    {
+        return [
+            [6, 'SELECT * FROM `books` WHERE type = 6'],
+            [[4, 5, 6], 'SELECT * FROM `books` WHERE type IN (4, 5, 6)'],
         ];
     }
 
