@@ -40,5 +40,4 @@ trait HasDbNameTrait
 
         return $this;
     }
-
 }
