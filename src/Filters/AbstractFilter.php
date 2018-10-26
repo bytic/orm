@@ -3,6 +3,8 @@
 namespace Nip\Records\Filters;
 
 use Nip\Database\Query\Select;
+use Nip\Records\Filters\Filters\Traits\HasManagerTrait;
+use Nip\Records\Filters\Filters\Traits\HasSessionTrait;
 use Nip\Utility\Traits\HasRequestTrait;
 
 /**
@@ -12,6 +14,8 @@ use Nip\Utility\Traits\HasRequestTrait;
 class AbstractFilter implements FilterInterface
 {
     use HasRequestTrait;
+    use HasManagerTrait;
+    use HasSessionTrait;
 
     /**
      * @var null|string
@@ -27,11 +31,6 @@ class AbstractFilter implements FilterInterface
      * @var null|mixed
      */
     protected $value = null;
-
-    /**
-     * @var FilterManager
-     */
-    protected $manager;
 
     /**
      * @param Select $query
@@ -167,6 +166,9 @@ class AbstractFilter implements FilterInterface
      */
     public function isValidRequestValue($value)
     {
+        if (is_numeric($value)) {
+            return $value;
+        }
         if (is_string($value)) {
             return !empty(trim($value));
         }
@@ -180,22 +182,9 @@ class AbstractFilter implements FilterInterface
      */
     public function cleanRequestValue($value)
     {
+        if (is_numeric($value)) {
+            return $value;
+        }
         return trim(stripslashes(htmlentities($value, ENT_QUOTES, 'UTF-8')));
-    }
-
-    /**
-     * @return null|FilterManager
-     */
-    public function getManager()
-    {
-        return $this->manager;
-    }
-
-    /**
-     * @param FilterManager $manager
-     */
-    public function setManager($manager)
-    {
-        $this->manager = $manager;
     }
 }

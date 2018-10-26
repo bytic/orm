@@ -2,6 +2,10 @@
 
 namespace Nip\Records\Filters;
 
+/**
+ * Interface FilterInterface
+ * @package Nip\Records\Filters
+ */
 interface FilterInterface
 {
     public function getName();
@@ -10,5 +14,9 @@ interface FilterInterface
 
     public function getManager();
 
+    /**
+     * @param $field
+     * @return mixed
+     */
     public function setManager($field);
 }

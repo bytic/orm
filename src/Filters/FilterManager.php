@@ -5,9 +5,10 @@ namespace Nip\Records\Filters;
 use Nip\Collections\AbstractCollection;
 use Nip\Collections\Traits\ArrayAccessTrait;
 use Nip\Database\Query\Select as SelectQuery;
-use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Filters\Column\AbstractFilter as AbstractColumnFilter;
-use Nip\Records\Traits\HasFilters\RecordsTrait;
+use Nip\Records\Filters\Traits\HasFiltersTrait;
+use Nip\Records\Filters\Traits\HasRecordManagerTrait;
+use Nip\Records\Filters\Traits\HasSessionsTrait;
 use Nip\Utility\Traits\HasRequestTrait;
 
 /**
@@ -15,23 +16,17 @@ use Nip\Utility\Traits\HasRequestTrait;
  * @package Nip\Records\Filters
  *
  * @method AbstractFilter[]|AbstractColumnFilter[] all()
+ * @method AbstractFilter|AbstractColumnFilter get($name)
  */
 class FilterManager extends AbstractCollection
 {
     use HasRequestTrait;
     use ArrayAccessTrait;
+    use HasFiltersTrait;
+    use HasSessionsTrait;
+    use HasRecordManagerTrait;
 
-    /**
-     * @var AbstractFilter[]|AbstractColumnFilter[]
-     */
-    protected $items = [];
-
-    protected $filtersArray = null;
-
-    /**
-     * @var null|RecordManager
-     */
-    protected $recordManager = null;
+    const DEFAULT_SESSION = 'default';
 
     /**
      * Init filter Manager, init default filters
@@ -40,118 +35,26 @@ class FilterManager extends AbstractCollection
     {
     }
 
-    /**
+    /** @noinspection PhpDocMissingThrowsInspection
+     * @param null $session
      * @return null
      */
-    public function getFiltersArray()
+    public function getFiltersArray($session = null)
     {
-        if ($this->filtersArray === null) {
-            $this->initFiltersArray();
-        }
-
-        return $this->filtersArray;
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $session = $this->getSession($session);
+        return $session->getFiltersArray();
     }
 
-    /**
-     * @param null $filtersArray
-     */
-    public function setFiltersArray($filtersArray)
-    {
-        $this->filtersArray = $filtersArray;
-    }
-
-    public function initFiltersArray()
-    {
-        $filtersArray = $this->generateFiltersArray();
-        $this->setFiltersArray($filtersArray);
-    }
-
-    /**
-     * @return array
-     */
-    public function generateFiltersArray()
-    {
-        $filtersArray = [];
-        $filters = $this->all();
-        $request = $this->getRequest();
-        foreach ($filters as $filter) {
-            $filter->setRequest($request);
-            if ($filter->isActive()) {
-                $filtersArray[$filter->getName()] = $filter->getValue();
-            }
-        }
-
-        return $filtersArray;
-    }
-
-    /**
+    /** @noinspection PhpDocMissingThrowsInspection
      * @param SelectQuery $query
+     * @param null $session
      * @return SelectQuery
      */
-    public function filterQuery($query)
+    public function filterQuery($query, $session = null)
     {
-        $filters = $this->all();
-        foreach ($filters as $filter) {
-            if ($filter->isActive()) {
-                $filter->filterQuery($query);
-            }
-        }
-
-        return $query;
-    }
-
-    /**
-     * @param mixed $type
-     * @return AbstractFilter|AbstractColumnFilter ;
-     */
-    public function newFilter($type)
-    {
-        $class = $this->getFilterClass($type);
-        $filter = new $class;
-
-        return $filter;
-    }
-
-    /**
-     * @param string $type
-     * @return string
-     */
-    public function getFilterClass($type)
-    {
-        return '\Nip\Records\Filters\\' . $type;
-    }
-
-    /**
-     * @param AbstractFilter|AbstractColumnFilter $filter
-     */
-    public function addFilter($filter)
-    {
-        $this->prepareFilter($filter);
-        $this->set($filter->getName(), $filter);
-    }
-
-    /**
-     * @param AbstractFilter|AbstractColumnFilter $filter
-     */
-    public function prepareFilter($filter)
-    {
-        $filter->setManager($this);
-        $filter->setRequest($this->getRequest());
-    }
-
-    /**
-     * @return null|RecordManager
-     */
-    public function getRecordManager()
-    {
-        return $this->recordManager;
-    }
-
-    /**
-     * @param RecordsTrait $recordManager
-     */
-    public function setRecordManager($recordManager)
-    {
-        $this->recordManager = $recordManager;
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $session = $this->getSession($session);
+        return $session->filterQuery($query);
     }
 }
