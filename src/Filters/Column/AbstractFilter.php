@@ -8,7 +8,7 @@ use Nip\Records\Filters\Column\Traits\HasDbNameTrait;
  * Class AbstractFilter
  * @package Nip\Records\Filters\Column
  */
-class AbstractFilter extends \Nip\Records\Filters\AbstractFilter implements FilterInterface
+abstract class AbstractFilter extends \Nip\Records\Filters\AbstractFilter implements FilterInterface
 {
     use HasDbNameTrait;
 

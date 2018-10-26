@@ -11,7 +11,7 @@ use Nip\Utility\Traits\HasRequestTrait;
  * Class AbstractFilter
  * @package Nip\Records\Filters
  */
-class AbstractFilter implements FilterInterface
+abstract class AbstractFilter implements FilterInterface
 {
     use HasRequestTrait;
     use HasManagerTrait;
@@ -35,9 +35,7 @@ class AbstractFilter implements FilterInterface
     /**
      * @param Select $query
      */
-    public function filterQuery($query)
-    {
-    }
+    abstract public function filterQuery($query);
 
     /**
      * @return bool
