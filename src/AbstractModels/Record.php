@@ -4,6 +4,7 @@ namespace Nip\Records\AbstractModels;
 
 use Nip\HelperBroker;
 use \Exception;
+use Nip\Records\Traits\HasManager\HasManagerRecordTrait;
 use Nip\Utility\Traits\NameWorksTrait;
 
 /**
@@ -15,14 +16,9 @@ use Nip\Utility\Traits\NameWorksTrait;
 abstract class Record
 {
     use NameWorksTrait;
+    use HasManagerRecordTrait;
 
     protected $_name = null;
-    protected $_manager = null;
-
-    /**
-     * @var string
-     */
-    protected $managerName = null;
 
     protected $_dbData = [];
     protected $_helpers = [];
@@ -128,78 +124,6 @@ abstract class Record
         return $this->{$pk};
     }
 
-    /**
-     * @return \Nip\Records\RecordManager
-     */
-    public function getManager()
-    {
-        if ($this->_manager == null) {
-            $this->initManager();
-        }
-
-        return $this->_manager;
-    }
-
-    /**
-     * @param RecordManager $manager
-     */
-    public function setManager($manager)
-    {
-        $this->_manager = $manager;
-    }
-
-    protected function initManager()
-    {
-        $class = $this->getManagerName();
-        $manager = $this->getManagerInstance($class);
-        $this->setManager($manager);
-    }
-
-    /**
-     * @return string
-     */
-    public function getManagerName()
-    {
-        if ($this->managerName === null) {
-            $this->initManagerName();
-        }
-
-        return $this->managerName;
-    }
-
-    /**
-     * @param string $managerName
-     */
-    public function setManagerName($managerName)
-    {
-        $this->managerName = $managerName;
-    }
-
-    protected function initManagerName()
-    {
-        $this->setManagerName($this->inflectManagerName());
-    }
-
-    /**
-     * @return string
-     */
-    protected function inflectManagerName()
-    {
-        return ucfirst(inflector()->pluralize($this->getClassName()));
-    }
-
-    /**
-     * @param string $class
-     * @return RecordManager
-     * @throws Exception
-     */
-    protected function getManagerInstance($class)
-    {
-        if (class_exists($class)) {
-            return call_user_func([$class, 'instance']);
-        }
-        throw new Exception('invalid manager name [' . $class . ']');
-    }
 
     /**
      * @return bool
