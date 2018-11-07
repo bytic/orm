@@ -73,7 +73,7 @@ class Command
     /**
      * @param Configuration $configuration
      */
-    public function setConfiguration(Configuration $configuration): void
+    public function setConfiguration(Configuration $configuration)
     {
         $this->configuration = $configuration;
     }

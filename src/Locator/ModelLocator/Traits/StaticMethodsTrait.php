@@ -3,7 +3,7 @@
 namespace Nip\Records\Locator\ModelLocator\Traits;
 
 use Nip\Records\Locator\Exceptions\InvalidModelException;
-use Nip\Records\RecordManager;
+use Nip\Records\AbstractModels\RecordManager;
 
 /**
  * Trait StaticMethodsTrait
