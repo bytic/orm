@@ -107,14 +107,11 @@ class HasAndBelongsToMany extends HasOneOrMany
      */
     public function getLinkQuery($specific = true)
     {
-        $pk = $this->getManager()->getPrimaryKey();
-        $fk = $this->getManager()->getPrimaryFK();
-
         $query = $this->getDB()->newSelect();
         $query->from($this->getTable());
 
         if ($specific) {
-            $query->where("`{$this->getTable()}`.`$fk` = ?", $this->getItem()->{$pk});
+            $query = $this->populateQuerySpecific($query);
         }
 
         return $query;

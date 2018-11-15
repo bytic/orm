@@ -14,6 +14,7 @@ use Nip\Records\Locator\ModelLocator;
 use Nip\Records\Record;
 use Nip\Records\RecordManager;
 use Nip\Records\Relations\Exceptions\RelationsNeedsAName;
+use Nip\Records\Relations\Traits\HasForeignKeyTrait;
 use Nip\Records\Relations\Traits\HasManagerTrait;
 use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
 use Nip\Records\Traits\Relations\HasRelationsRecordTrait;
@@ -26,6 +27,7 @@ use Nip_Helper_Arrays as ArraysHelper;
 abstract class Relation
 {
     use HasManagerTrait;
+    use HasForeignKeyTrait;
 
     /**
      * @var
@@ -51,11 +53,6 @@ abstract class Relation
      * @var null|string
      */
     protected $table = null;
-
-    /**
-     * @var null|string
-     */
-    protected $fk = null;
 
     /**
      * @var Query
@@ -121,13 +118,13 @@ abstract class Relation
         return $this->getWith()->paramsToQuery();
     }
 
-    /**
+    /** @noinspection PhpDocMissingThrowsInspection
      * @return RecordManager
-     * @throws Exception
      */
     public function getWith()
     {
         if ($this->with == null) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             $this->initWith();
         }
 
@@ -319,17 +316,6 @@ abstract class Relation
     }
 
     /**
-     * @param $params
-     */
-    public function checkParamFk($params)
-    {
-        if (isset($params['fk'])) {
-            $this->setFK($params['fk']);
-            unset($params['fk']);
-        }
-    }
-
-    /**
      * @return array
      */
     public function getParams(): array
@@ -474,39 +460,6 @@ abstract class Relation
         $return = $arrayHelper->pluck($collection, $this->getFK());
 
         return array_unique($return);
-    }
-
-    /**
-     * @return string
-     */
-    public function getFK()
-    {
-        if ($this->fk == null) {
-            $this->initFK();
-        }
-
-        return $this->fk;
-    }
-
-    /**
-     * @param $name
-     */
-    public function setFK($name)
-    {
-        $this->fk = $name;
-    }
-
-    protected function initFK()
-    {
-        $this->setFK($this->generateFK());
-    }
-
-    /**
-     * @return string
-     */
-    protected function generateFK()
-    {
-        return $this->getManager()->getPrimaryFK();
     }
 
     /**
