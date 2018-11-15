@@ -16,6 +16,7 @@ use Nip\Records\RecordManager;
 use Nip\Records\Relations\Exceptions\RelationsNeedsAName;
 use Nip\Records\Relations\Traits\HasForeignKeyTrait;
 use Nip\Records\Relations\Traits\HasManagerTrait;
+use Nip\Records\Relations\Traits\HasPrimaryKeyTrait;
 use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
 use Nip\Records\Traits\Relations\HasRelationsRecordTrait;
 use Nip_Helper_Arrays as ArraysHelper;
@@ -28,6 +29,7 @@ abstract class Relation
 {
     use HasManagerTrait;
     use HasForeignKeyTrait;
+    use HasPrimaryKeyTrait;
 
     /**
      * @var
@@ -278,6 +280,7 @@ abstract class Relation
         $this->checkParamWith($params);
         $this->checkParamTable($params);
         $this->checkParamFk($params);
+        $this->checkParamPrimaryKey($params);
         $this->setParams($params);
     }
 
@@ -395,8 +398,8 @@ abstract class Relation
      */
     public function isPopulatable()
     {
-        $pk1 = $this->getManager()->getPrimaryKey();
-        return !empty($this->getItem()->{$pk1});
+        $primaryKey = $this->getPrimaryKey();
+        return !empty($this->getItem()->{$primaryKey});
     }
 
     /**

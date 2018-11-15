@@ -92,7 +92,7 @@ class HasAndBelongsToMany extends HasOneOrMany
      */
     public function populateQuerySpecific(AbstractQuery $query)
     {
-        $pk1 = $this->getManager()->getPrimaryKey();
+        $pk1 = $this->getPrimaryKey();
         $fk1 = $this->getManager()->getPrimaryFK();
 
         $query->where("`{$this->getTable()}`.`$fk1` = ?", $this->getItem()->{$pk1});

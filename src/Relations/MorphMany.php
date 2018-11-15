@@ -19,8 +19,8 @@ class MorphMany extends MorphOneOrMany
     {
         $query->where($this->getMorphTypeField() . ' = ?', $this->getMorphValue());
 
-        $pk = $this->getManager()->getPrimaryKey();
-        $query->where('`' . $this->getFK() . '` = ?', $this->getItem()->{$pk});
+        $primaryKey = $this->getPrimaryKey();
+        $query->where('`' . $this->getFK() . '` = ?', $this->getItem()->{$primaryKey});
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection

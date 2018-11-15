@@ -77,9 +77,9 @@ class MorphToMany extends HasAndBelongsToMany
         if ($this->isInverse()) {
             return parent::populateQuerySpecific($query);
         }
-        $pk1 = $this->getManager()->getPrimaryKey();
+        $primaryKey = $this->getPrimaryKey();
 
-        $query->where("`{$this->getTable()}`.`pivotal_id` = ?", $this->getItem()->{$pk1});
+        $query->where("`{$this->getTable()}`.`pivotal_id` = ?", $this->getItem()->{$primaryKey});
 
         return $query;
     }

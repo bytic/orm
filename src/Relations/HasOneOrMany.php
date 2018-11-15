@@ -51,8 +51,9 @@ abstract class HasOneOrMany extends Relation
      */
     public function saveResult(Record $item)
     {
-        $primaryKey = $this->getManager()->getPrimaryKey();
+        $primaryKey = $this->getPrimaryKey();
         $foreignKey = $this->getFK();
+
         $item->{$foreignKey} = $this->getItem()->{$primaryKey};
         $item->saveRecord();
     }
