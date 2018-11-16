@@ -101,7 +101,7 @@ abstract class HasOneOrMany extends Relation
         if ($collection->isEmpty()) {
             return [];
         }
-        $key = $collection->getManager()->getPrimaryKey();
+        $key = $this->getPrimaryKey();
         /** @var ArraysHelper $arrayHelper */
         $arrayHelper = HelperBroker::get('Arrays');
         $return = $arrayHelper->pluck($collection, $key);
@@ -117,7 +117,8 @@ abstract class HasOneOrMany extends Relation
      */
     public function getResultsFromCollectionDictionary($dictionary, $collection, $record)
     {
-        $foreignKey = $record->getManager()->getPrimaryKey();
+        /** Use Relation Primary Key in case it is overwritten */
+        $foreignKey = $this->getPrimaryKey();
         $primaryKey = $record->{$foreignKey};
         $collection = $this->newCollection();
 

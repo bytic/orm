@@ -25,7 +25,7 @@ class HasPrimaryKeyTraitTest extends AbstractTest
 
         $relation->setManager($users);
         self::assertEquals('id', $relation->getPrimaryKey());
-        
+
         $relation->setPrimaryKey(null);
         self::assertEquals('id_test', $relation->getPrimaryKey());
     }

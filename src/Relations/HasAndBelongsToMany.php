@@ -29,6 +29,14 @@ class HasAndBelongsToMany extends HasOneOrMany
      */
     protected $joinFields = null;
 
+    /**
+     * @inheritdoc
+     */
+    public function addParams($params)
+    {
+        parent::addParams($params);
+        $this->addPivotParams($params);
+    }
 
     /** @noinspection PhpMissingParentCallCommonInspection
      * @return SelectQuery
@@ -133,7 +141,7 @@ class HasAndBelongsToMany extends HasOneOrMany
         $results = $this->getDB()->execute($query);
         if ($results->numRows() > 0) {
             $i = 1;
-            $rows = $results->fetchResult();
+            $rows = $results->fetchResults();
             foreach ($rows as $row) {
                 $row['relation_key'] = $i++;
                 $item = $this->getWith()->getNew($row);
