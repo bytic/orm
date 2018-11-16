@@ -2,9 +2,13 @@
 
 namespace Nip\Records\Relations\Traits;
 
+use Nip\Records\RecordManager;
+
 /**
  * Trait HasForeignKeyTrait
  * @package Nip\Records\Relations\Traits
+ *
+ * @method RecordManager getManager()
  */
 trait HasForeignKeyTrait
 {

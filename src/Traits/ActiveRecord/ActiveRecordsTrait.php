@@ -14,6 +14,7 @@ use Nip\Paginator;
 use Nip\Records\AbstractModels\Record;
 use Nip\Records\Collections\Collection as RecordCollection;
 use Nip\Records\Traits\Unique\RecordsTrait as UniqueRecordsTrait;
+use Nip\Records\Traits\HasForeignKey\RecordsTrait as HasForeignKeyTrait;
 
 /**
  * Class ActiveRecordsTrait
@@ -22,6 +23,7 @@ use Nip\Records\Traits\Unique\RecordsTrait as UniqueRecordsTrait;
 trait ActiveRecordsTrait
 {
     use UniqueRecordsTrait;
+    use HasForeignKeyTrait;
 
     /**
      * @var Connection
@@ -40,11 +42,6 @@ trait ActiveRecordsTrait
      */
     protected $primaryKey = null;
     protected $fields = null;
-
-    /**
-     * @var null|string
-     */
-    protected $foreignKey = null;
 
     /**
      * @return SelectQuery

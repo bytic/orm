@@ -133,7 +133,8 @@ class HasAndBelongsToMany extends HasOneOrMany
         $results = $this->getDB()->execute($query);
         if ($results->numRows() > 0) {
             $i = 1;
-            while ($row = $results->fetchResult()) {
+            $rows = $results->fetchResult();
+            foreach ($rows as $row) {
                 $row['relation_key'] = $i++;
                 $item = $this->getWith()->getNew($row);
                 $return->add($item, 'relation_key');
@@ -158,8 +159,8 @@ class HasAndBelongsToMany extends HasOneOrMany
     {
         $query = $this->newDeleteQuery();
         $query->where(
-            "{$this->getManager()->getPrimaryFK()} = ?",
-            $this->getItem()->{$this->getManager()->getPrimaryKey()}
+            "{$this->getFK()} = ?",
+            $this->getItemRelationPrimaryKey()
         );
 //        echo $query;
         $query->execute();
@@ -262,8 +263,8 @@ class HasAndBelongsToMany extends HasOneOrMany
         );
 
         $query->where(
-            "{$this->getManager()->getPrimaryFK()} = ?",
-            $this->getItem()->{$this->getManager()->getPrimaryKey()}
+            "{$this->getFK()} = ?",
+            $this->getItemRelationPrimaryKey()
         );
     }
 

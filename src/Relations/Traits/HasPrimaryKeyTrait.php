@@ -2,9 +2,13 @@
 
 namespace Nip\Records\Relations\Traits;
 
+use Nip\Records\AbstractModels\RecordManager;
+
 /**
  * Trait HasForeignKeyTrait
  * @package Nip\Records\Relations\Traits
+ *
+ * @method RecordManager getManager()
  */
 trait HasPrimaryKeyTrait
 {
@@ -54,6 +58,6 @@ trait HasPrimaryKeyTrait
      */
     protected function generatePrimaryKey()
     {
-        return $this->getManager()->getPrimaryFK();
+        return $this->hasManager() ? $this->getManager()->getPrimaryKey() : 'id';
     }
 }

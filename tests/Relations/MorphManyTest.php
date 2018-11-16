@@ -28,7 +28,8 @@ class MorphManyTest extends AbstractTest
 
     public function testGetQuery()
     {
-        ModelLocator::instance()->getConfiguration()->addNamespace('Nip\Records\Tests\Fixtures\Records');
+        ModelLocator::instance()->getConfiguration()
+            ->addNamespace('Nip\Records\Tests\Fixtures\Records');
 
         $relation = new MorphMany();
         $relation->setName('Books');

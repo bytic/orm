@@ -15,10 +15,10 @@ use Nip\Records\Record;
 use Nip\Records\RecordManager;
 use Nip\Records\Relations\Exceptions\RelationsNeedsAName;
 use Nip\Records\Relations\Traits\HasForeignKeyTrait;
+use Nip\Records\Relations\Traits\HasItemTrait;
 use Nip\Records\Relations\Traits\HasManagerTrait;
 use Nip\Records\Relations\Traits\HasPrimaryKeyTrait;
 use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
-use Nip\Records\Traits\Relations\HasRelationsRecordTrait;
 use Nip_Helper_Arrays as ArraysHelper;
 
 /**
@@ -30,6 +30,7 @@ abstract class Relation
     use HasManagerTrait;
     use HasForeignKeyTrait;
     use HasPrimaryKeyTrait;
+    use HasItemTrait;
 
     /**
      * @var
@@ -40,11 +41,6 @@ abstract class Relation
      * @var string
      */
     protected $type = 'relation';
-
-    /**
-     * @var Record
-     */
-    protected $item;
 
     /**
      * @var RecordManager
@@ -208,24 +204,7 @@ abstract class Relation
         return ModelLocator::get($name);
     }
 
-    /**
-     * @return Record
-     */
-    public function getItem()
-    {
-        return $this->item;
-    }
 
-    /**
-     * @param Record|HasRelationsRecordTrait $item
-     * @return $this
-     */
-    public function setItem(Record $item)
-    {
-        $this->item = $item;
-
-        return $this;
-    }
 
     /**
      * @param AbstractQuery $query
@@ -398,8 +377,7 @@ abstract class Relation
      */
     public function isPopulatable()
     {
-        $primaryKey = $this->getPrimaryKey();
-        return !empty($this->getItem()->{$primaryKey});
+        return !empty($this->getItemRelationPrimaryKey());
     }
 
     /**
@@ -430,7 +408,6 @@ abstract class Relation
     /**
      * @param RecordCollection $collection
      * @return Query
-     * @throws Exception
      */
     public function getEagerQuery(RecordCollection $collection)
     {
@@ -443,7 +420,6 @@ abstract class Relation
      * @param Query $query
      * @param array $fkList
      * @return Query
-     * @throws Exception
      */
     protected function populateEagerQueryFromFkList($query, $fkList)
     {
@@ -467,7 +443,6 @@ abstract class Relation
 
     /**
      * @return string
-     * @throws Exception
      */
     public function getWithPK()
     {

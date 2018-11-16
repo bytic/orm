@@ -18,9 +18,7 @@ class MorphMany extends MorphOneOrMany
     public function populateQuerySpecific(AbstractQuery $query)
     {
         $query->where($this->getMorphTypeField() . ' = ?', $this->getMorphValue());
-
-        $primaryKey = $this->getPrimaryKey();
-        $query->where('`' . $this->getFK() . '` = ?', $this->getItem()->{$primaryKey});
+        $query->where('`' . $this->getFK() . '` = ?', $this->getItemRelationPrimaryKey());
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection
