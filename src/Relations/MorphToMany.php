@@ -163,7 +163,7 @@ class MorphToMany extends HasAndBelongsToMany
     /**
      * @return mixed
      */
-    protected function getPivotFK()
+    public function getPivotFK()
     {
         if ($this->isInverse()) {
             return 'pivotal_id';
