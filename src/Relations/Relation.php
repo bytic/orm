@@ -11,8 +11,8 @@ use Nip\Records\Collections\Collection;
 use Nip\Records\Collections\Collection as RecordCollection;
 use Nip\Records\Locator\Exceptions\InvalidModelException;
 use Nip\Records\Locator\ModelLocator;
-use Nip\Records\Record;
-use Nip\Records\RecordManager;
+use Nip\Records\AbstractModels\Record;
+use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Relations\Exceptions\RelationsNeedsAName;
 use Nip\Records\Relations\Traits\HasForeignKeyTrait;
 use Nip\Records\Relations\Traits\HasItemTrait;
@@ -109,7 +109,6 @@ abstract class Relation
 
     /**
      * @return Query
-     * @throws Exception
      */
     public function newQuery()
     {
@@ -149,11 +148,12 @@ abstract class Relation
         $this->setWithClass($className);
     }
 
-    /**
+    /** @noinspection PhpDocMissingThrowsInspection
      * @return string
      */
     public function getWithClass()
     {
+        /** @noinspection PhpUnhandledExceptionInspection */
         return inflector()->pluralize($this->getName());
     }
 
@@ -177,9 +177,8 @@ abstract class Relation
         $this->name = $name;
     }
 
-    /**
+    /** @noinspection PhpDocMissingThrowsInspection
      * @param string $name
-     * @throws Exception
      */
     public function setWithClass($name)
     {
@@ -187,6 +186,7 @@ abstract class Relation
             $manager = $this->getModelManagerInstance($name);
             $this->setWith($manager);
         } catch (InvalidModelException $exception) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             throw new Exception(
                 'Cannot instance records [' . $name . '] in ' . $this->debugString()
                 . '|| with message ' . $exception->getMessage()
@@ -196,14 +196,12 @@ abstract class Relation
 
     /**
      * @param $name
-     * @return RecordManager
-     * @throws InvalidModelException
+     * @return \Nip\Records\AbstractModels\RecordManager
      */
     public function getModelManagerInstance($name)
     {
         return ModelLocator::get($name);
     }
-
 
 
     /**
@@ -251,7 +249,6 @@ abstract class Relation
 
     /**
      * @param $params
-     * @throws Exception
      */
     public function addParams($params)
     {
@@ -265,11 +262,11 @@ abstract class Relation
 
     /**
      * @param $params
-     * @throws Exception
      */
     public function checkParamClass($params)
     {
         if (isset($params['class'])) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             $this->setWithClass($params['class']);
             unset($params['class']);
         }
@@ -340,7 +337,6 @@ abstract class Relation
 
     /**
      * @return string
-     * @throws Exception
      */
     protected function generateTable()
     {
@@ -462,6 +458,7 @@ abstract class Relation
         foreach ($collection as $record) {
             /** @var Record $record */
             $results = $this->getResultsFromCollectionDictionary($dictionary, $collection, $record);
+            /** @noinspection PhpUnhandledExceptionInspection */
             $record->getRelation($this->getName())->setResults($results);
         }
 
@@ -496,7 +493,7 @@ abstract class Relation
         return $this->type;
     }
 
-    /**
+    /** @noinspection PhpDocMissingThrowsInspection
      * @return string
      */
     protected function debugString()

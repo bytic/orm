@@ -3,10 +3,14 @@
 namespace Nip\Records\Filters\Column\Traits;
 
 use Nip\Records\Filters\AbstractFilter;
+use Nip\Records\Filters\FilterManager;
 
 /**
  * Trait HasDbNameTrait
  * @package Nip\Records\Filters\Column\Traits
+ *
+ * @method FilterManager getManager()
+ * @method string getField()
  */
 trait HasDbNameTrait
 {
@@ -40,5 +44,4 @@ trait HasDbNameTrait
 
         return $this;
     }
-
 }

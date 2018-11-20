@@ -252,16 +252,6 @@ abstract class Record
     }
 
     /**
-     * Clone the relations records from a sibling
-     * @param self $from
-     * @return \Nip\Records\Traits\Relations\HasRelationsRecordTrait
-     */
-    public function cloneRelations($from)
-    {
-        return $this->getManager()->cloneRelations($from, $this);
-    }
-
-    /**
      * @return \Nip\Request
      */
     protected function getRequest()

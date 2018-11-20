@@ -5,6 +5,11 @@ checks:
 build:
     environment:
         php: '7.1'
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
 tools:
     php_code_coverage:
         enabled: true

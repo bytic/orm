@@ -20,7 +20,7 @@ abstract class AbstractFilter extends \Nip\Records\Filters\AbstractFilter implem
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getField()
     {
