@@ -12,7 +12,6 @@ use Nip\Records\Tests\AbstractTest;
  */
 class HasPrimaryKeyTraitTest extends AbstractTest
 {
-
     public function testGetQuery()
     {
         $relation = new HasMany();

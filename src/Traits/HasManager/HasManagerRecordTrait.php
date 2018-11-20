@@ -80,5 +80,4 @@ trait HasManagerRecordTrait
         }
         throw new Exception('invalid manager name [' . $class . ']');
     }
-
 }
