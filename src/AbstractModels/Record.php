@@ -96,18 +96,6 @@ abstract class Record
     }
 
     /**
-     * @return mixed
-     */
-    public function getPrimaryKey()
-    {
-        $pk = $this->getManager()->getPrimaryKey();
-
-        return $this->{$pk};
-    }
-
-
-
-    /**
      * @return string
      */
     public function toJSON()

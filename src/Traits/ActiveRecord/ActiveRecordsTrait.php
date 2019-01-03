@@ -15,6 +15,7 @@ use Nip\Records\Traits\HasDatabase\HasDatabaseRecordsTrait;
 use Nip\Records\Traits\TableStructure\TableStructureRecordsTrait;
 use Nip\Records\Traits\Unique\RecordsTrait as UniqueRecordsTrait;
 use Nip\Records\Traits\HasForeignKey\RecordsTrait as HasForeignKeyTrait;
+use Nip\Records\Traits\HasPrimaryKey\RecordsTrait as HasPrimaryKeyTrait;
 
 /**
  * Class ActiveRecordsTrait
@@ -25,6 +26,7 @@ trait ActiveRecordsTrait
     use UniqueRecordsTrait;
 
     use HasForeignKeyTrait;
+    use HasPrimaryKeyTrait;
     use TableStructureRecordsTrait;
     use HasDatabaseRecordsTrait;
 
@@ -32,11 +34,6 @@ trait ActiveRecordsTrait
      * @var null|string
      */
     protected $table = null;
-
-    /**
-     * @var null|string
-     */
-    protected $primaryKey = null;
 
     /**
      * @return SelectQuery
@@ -156,47 +153,7 @@ trait ActiveRecordsTrait
         return false;
     }
 
-    /**
-     * @return string
-     */
-    public function getPrimaryKey()
-    {
-        if ($this->primaryKey === null) {
-            $this->initPrimaryKey();
-        }
 
-        return $this->primaryKey;
-    }
-
-    /**
-     * @param null|string $primaryKey
-     */
-    public function setPrimaryKey($primaryKey)
-    {
-        $this->primaryKey = $primaryKey;
-    }
-
-    protected function initPrimaryKey()
-    {
-        $this->setPrimaryKey($this->generatePrimaryKey());
-    }
-
-    /**
-     * @return string
-     */
-    public function generatePrimaryKey()
-    {
-        $structure = $this->getTableStructure();
-        $primaryKey = false;
-        if (is_array($structure) && isset($structure['indexes']['PRIMARY']['fields'])) {
-            $primaryKey = $structure['indexes']['PRIMARY']['fields'];
-            if (count($primaryKey) == 1) {
-                $primaryKey = reset($primaryKey);
-            }
-        }
-
-        return $primaryKey;
-    }
 
     /**
      * @return UpdateQuery
