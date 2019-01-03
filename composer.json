@@ -34,10 +34,10 @@
     "bytic/collections": "^1.0",
     "bytic/database": "^0.9",
     "bytic/helpers": "^0.9",
-    "bytic/inflector": "^0.9",
     "bytic/http": "^0.9",
+    "bytic/inflector": "^0.9",
     "bytic/utility": "^1.0",
-    "league/pipeline": "^0.3"
+    "bytic/pipeline": "^1.0"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.0",
