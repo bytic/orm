@@ -13,8 +13,26 @@ trait RecordTrait
      */
     public function getPrimaryKey()
     {
-        $pk = $this->getManager()->getPrimaryKey();
+        $primaryKey = $this->getManager()->getPrimaryKey();
 
-        return $this->{$pk};
+        if (is_array($primaryKey)) {
+            return $this->generateCompositePrimaryKey($primaryKey);
+        }
+
+        return $this->{$primaryKey};
+    }
+
+    /**
+     * @param null $primaryKey
+     * @return array
+     */
+    protected function generateCompositePrimaryKey($primaryKey = null)
+    {
+        $primaryKey = $primaryKey ? $primaryKey : $this->getManager()->getPrimaryKey();
+        $return = [];
+        foreach ($primaryKey as $key) {
+            $return[$key] = $this->{$key};
+        }
+        return $return;
     }
 }
