@@ -40,24 +40,4 @@ class MorphMany extends MorphOneOrMany
         $item->{$this->getMorphTypeField()} = $value;
         return parent::saveResult($item);
     }
-
-    /** @noinspection PhpMissingParentCallCommonInspection
-     * @inheritdoc
-     */
-    public function populateEagerQueryFromFkList($query, $fkList)
-    {
-        $value = $this->hasManager() ? $this->getMorphValue() : '';
-        $query->where($this->getMorphTypeField() . ' = ?', $value);
-        return parent::populateEagerQueryFromFkList($query, $fkList);
-    }
-
-    /**
-     * @param Record $item
-     */
-    public function saveResult(Record $item)
-    {
-        $value = $this->hasManager() ? $this->getMorphValue() : '';
-        $item->{$this->getMorphTypeField()} = $value;
-        return parent::saveResult($item);
-    }
 }
