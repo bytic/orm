@@ -62,8 +62,16 @@ class NamespaceSearch extends AbstractStage
 
         $return[] = implode('\\', $elements);
 
-        $elements[] = end($elements);
-        $return[] = implode('\\', $elements);
+        $lastElement = array_pop($elements);
+        $base = trim(implode('\\', $elements) . '\\' . $lastElement, '\\');
+        $return[] = $base . '\\' . $lastElement;
+
+        $preLastElement = array_pop($elements);
+        if ($preLastElement) {
+            $return[] = $base . '\\' . $preLastElement.$lastElement;
+        }
+//        $elements[] = end($elements);
+//        $return[] = implode('\\', $elements);
 
         return $return;
     }

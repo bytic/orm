@@ -24,7 +24,7 @@ trait HasRelationsRecordsTrait
     protected $relationTypes = ['belongsTo', 'hasMany', 'hasAndBelongsToMany'];
 
 
-    /**
+    /** @noinspection PhpDocMissingThrowsInspection
      * Get a specified relationship.
      * @param  string $relation
      * @return null|Relation
@@ -32,6 +32,7 @@ trait HasRelationsRecordsTrait
      */
     public function getRelation($relation)
     {
+        /** @noinspection PhpUnhandledExceptionInspection */
         $this->checkInitRelations();
 
         return $this->relations[$relation];

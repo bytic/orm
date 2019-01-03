@@ -41,6 +41,17 @@ trait HasRelationsRecordTrait
     }
 
     /**
+     * Clone the relations records from a sibling
+     * @param self $from
+     * @return \Nip\Records\Traits\Relations\HasRelationsRecordTrait
+     * @throws \Exception
+     */
+    public function cloneRelations($from)
+    {
+        return $this->getManager()->cloneRelations($from, $this);
+    }
+
+    /**
      * @param string $name
      * @param $arguments
      * @return bool|\Nip\Records\AbstractModels\Record|\Nip\Records\Collections\Collection

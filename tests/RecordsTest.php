@@ -4,10 +4,12 @@ namespace Nip\Records\Tests;
 
 use Mockery as m;
 use Nip\Database\Connections\Connection;
+use Nip\Helpers\View\Url;
 use Nip\Records\Collections\Collection;
 use Nip\Records\RecordManager as Records;
 use Nip\Request;
 use Nip\Records\Tests\AbstractTest;
+use Nip_Helper_Url;
 
 /**
  * Class RecordsTest
@@ -175,6 +177,13 @@ class RecordsTest extends AbstractTest
     public function testGetCollectionClass()
     {
         self::assertEquals(Collection::class, $this->_object->getCollectionClass());
+    }
+
+    public function testGetUrlHelper()
+    {
+        $records = new Records();
+        $urlHelper = $records->Url();
+        self::assertInstanceOf(Nip_Helper_Url::class, $urlHelper);
     }
 
     protected function setUp()

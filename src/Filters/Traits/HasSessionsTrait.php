@@ -8,6 +8,9 @@ use Nip\Records\Filters\Sessions\Session;
 /**
  * Trait HasSessionsTrait
  * @package Nip\Records\Filters\Traits
+ *
+ * @method getClonedFilters()
+ * @method getRequest()
  */
 trait HasSessionsTrait
 {

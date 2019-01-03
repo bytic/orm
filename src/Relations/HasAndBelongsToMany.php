@@ -29,6 +29,14 @@ class HasAndBelongsToMany extends HasOneOrMany
      */
     protected $joinFields = null;
 
+    /**
+     * @inheritdoc
+     */
+    public function addParams($params)
+    {
+        parent::addParams($params);
+        $this->addPivotParams($params);
+    }
 
     /** @noinspection PhpMissingParentCallCommonInspection
      * @return SelectQuery
@@ -92,8 +100,8 @@ class HasAndBelongsToMany extends HasOneOrMany
      */
     public function populateQuerySpecific(AbstractQuery $query)
     {
-        $pk1 = $this->getManager()->getPrimaryKey();
-        $fk1 = $this->getManager()->getPrimaryFK();
+        $pk1 = $this->getPrimaryKey();
+        $fk1 = $this->getFK();
 
         $query->where("`{$this->getTable()}`.`$fk1` = ?", $this->getItem()->{$pk1});
 
@@ -107,14 +115,11 @@ class HasAndBelongsToMany extends HasOneOrMany
      */
     public function getLinkQuery($specific = true)
     {
-        $pk = $this->getManager()->getPrimaryKey();
-        $fk = $this->getManager()->getPrimaryFK();
-
         $query = $this->getDB()->newSelect();
         $query->from($this->getTable());
 
         if ($specific) {
-            $query->where("`{$this->getTable()}`.`$fk` = ?", $this->getItem()->{$pk});
+            $query = $this->populateQuerySpecific($query);
         }
 
         return $query;
@@ -136,7 +141,8 @@ class HasAndBelongsToMany extends HasOneOrMany
         $results = $this->getDB()->execute($query);
         if ($results->numRows() > 0) {
             $i = 1;
-            while ($row = $results->fetchResult()) {
+            $rows = $results->fetchResults();
+            foreach ($rows as $row) {
                 $row['relation_key'] = $i++;
                 $item = $this->getWith()->getNew($row);
                 $return->add($item, 'relation_key');
@@ -161,8 +167,8 @@ class HasAndBelongsToMany extends HasOneOrMany
     {
         $query = $this->newDeleteQuery();
         $query->where(
-            "{$this->getManager()->getPrimaryFK()} = ?",
-            $this->getItem()->{$this->getManager()->getPrimaryKey()}
+            "{$this->getFK()} = ?",
+            $this->getItemRelationPrimaryKey()
         );
 //        echo $query;
         $query->execute();
@@ -265,8 +271,8 @@ class HasAndBelongsToMany extends HasOneOrMany
         );
 
         $query->where(
-            "{$this->getManager()->getPrimaryFK()} = ?",
-            $this->getItem()->{$this->getManager()->getPrimaryKey()}
+            "{$this->getFK()} = ?",
+            $this->getItemRelationPrimaryKey()
         );
     }
 

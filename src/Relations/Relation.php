@@ -11,12 +11,14 @@ use Nip\Records\Collections\Collection;
 use Nip\Records\Collections\Collection as RecordCollection;
 use Nip\Records\Locator\Exceptions\InvalidModelException;
 use Nip\Records\Locator\ModelLocator;
-use Nip\Records\Record;
-use Nip\Records\RecordManager;
+use Nip\Records\AbstractModels\Record;
+use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Relations\Exceptions\RelationsNeedsAName;
+use Nip\Records\Relations\Traits\HasForeignKeyTrait;
+use Nip\Records\Relations\Traits\HasItemTrait;
 use Nip\Records\Relations\Traits\HasManagerTrait;
+use Nip\Records\Relations\Traits\HasPrimaryKeyTrait;
 use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
-use Nip\Records\Traits\Relations\HasRelationsRecordTrait;
 use Nip_Helper_Arrays as ArraysHelper;
 
 /**
@@ -26,6 +28,9 @@ use Nip_Helper_Arrays as ArraysHelper;
 abstract class Relation
 {
     use HasManagerTrait;
+    use HasForeignKeyTrait;
+    use HasPrimaryKeyTrait;
+    use HasItemTrait;
 
     /**
      * @var
@@ -38,11 +43,6 @@ abstract class Relation
     protected $type = 'relation';
 
     /**
-     * @var Record
-     */
-    protected $item;
-
-    /**
      * @var RecordManager
      */
     protected $with = null;
@@ -51,11 +51,6 @@ abstract class Relation
      * @var null|string
      */
     protected $table = null;
-
-    /**
-     * @var null|string
-     */
-    protected $fk = null;
 
     /**
      * @var Query
@@ -114,20 +109,19 @@ abstract class Relation
 
     /**
      * @return Query
-     * @throws Exception
      */
     public function newQuery()
     {
         return $this->getWith()->paramsToQuery();
     }
 
-    /**
+    /** @noinspection PhpDocMissingThrowsInspection
      * @return RecordManager
-     * @throws Exception
      */
     public function getWith()
     {
         if ($this->with == null) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             $this->initWith();
         }
 
@@ -154,11 +148,12 @@ abstract class Relation
         $this->setWithClass($className);
     }
 
-    /**
+    /** @noinspection PhpDocMissingThrowsInspection
      * @return string
      */
     public function getWithClass()
     {
+        /** @noinspection PhpUnhandledExceptionInspection */
         return inflector()->pluralize($this->getName());
     }
 
@@ -182,9 +177,8 @@ abstract class Relation
         $this->name = $name;
     }
 
-    /**
+    /** @noinspection PhpDocMissingThrowsInspection
      * @param string $name
-     * @throws Exception
      */
     public function setWithClass($name)
     {
@@ -192,41 +186,23 @@ abstract class Relation
             $manager = $this->getModelManagerInstance($name);
             $this->setWith($manager);
         } catch (InvalidModelException $exception) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             throw new Exception(
                 'Cannot instance records [' . $name . '] in ' . $this->debugString()
-                .'|| with message ' . $exception->getMessage()
+                . '|| with message ' . $exception->getMessage()
             );
         }
     }
 
     /**
      * @param $name
-     * @return RecordManager
-     * @throws InvalidModelException
+     * @return \Nip\Records\AbstractModels\RecordManager
      */
     public function getModelManagerInstance($name)
     {
         return ModelLocator::get($name);
     }
 
-    /**
-     * @return Record
-     */
-    public function getItem()
-    {
-        return $this->item;
-    }
-
-    /**
-     * @param Record|HasRelationsRecordTrait $item
-     * @return $this
-     */
-    public function setItem(Record $item)
-    {
-        $this->item = $item;
-
-        return $this;
-    }
 
     /**
      * @param AbstractQuery $query
@@ -273,7 +249,6 @@ abstract class Relation
 
     /**
      * @param $params
-     * @throws Exception
      */
     public function addParams($params)
     {
@@ -281,16 +256,17 @@ abstract class Relation
         $this->checkParamWith($params);
         $this->checkParamTable($params);
         $this->checkParamFk($params);
+        $this->checkParamPrimaryKey($params);
         $this->setParams($params);
     }
 
     /**
      * @param $params
-     * @throws Exception
      */
     public function checkParamClass($params)
     {
         if (isset($params['class'])) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             $this->setWithClass($params['class']);
             unset($params['class']);
         }
@@ -315,17 +291,6 @@ abstract class Relation
         if (isset($params['table'])) {
             $this->setTable($params['table']);
             unset($params['table']);
-        }
-    }
-
-    /**
-     * @param $params
-     */
-    public function checkParamFk($params)
-    {
-        if (isset($params['fk'])) {
-            $this->setFK($params['fk']);
-            unset($params['fk']);
         }
     }
 
@@ -372,7 +337,6 @@ abstract class Relation
 
     /**
      * @return string
-     * @throws Exception
      */
     protected function generateTable()
     {
@@ -407,6 +371,14 @@ abstract class Relation
     /**
      * @return bool
      */
+    public function isPopulatable()
+    {
+        return !empty($this->getItemRelationPrimaryKey());
+    }
+
+    /**
+     * @return bool
+     */
     public function isPopulated()
     {
         return $this->populated == true;
@@ -432,7 +404,6 @@ abstract class Relation
     /**
      * @param RecordCollection $collection
      * @return Query
-     * @throws Exception
      */
     public function getEagerQuery(RecordCollection $collection)
     {
@@ -445,7 +416,6 @@ abstract class Relation
      * @param Query $query
      * @param array $fkList
      * @return Query
-     * @throws Exception
      */
     protected function populateEagerQueryFromFkList($query, $fkList)
     {
@@ -470,40 +440,6 @@ abstract class Relation
     /**
      * @return string
      */
-    public function getFK()
-    {
-        if ($this->fk == null) {
-            $this->initFK();
-        }
-
-        return $this->fk;
-    }
-
-    /**
-     * @param $name
-     */
-    public function setFK($name)
-    {
-        $this->fk = $name;
-    }
-
-    protected function initFK()
-    {
-        $this->setFK($this->generateFK());
-    }
-
-    /**
-     * @return string
-     */
-    protected function generateFK()
-    {
-        return $this->getManager()->getPrimaryFK();
-    }
-
-    /**
-     * @return string
-     * @throws Exception
-     */
     public function getWithPK()
     {
         return $this->getWith()->getPrimaryKey();
@@ -522,6 +458,7 @@ abstract class Relation
         foreach ($collection as $record) {
             /** @var Record $record */
             $results = $this->getResultsFromCollectionDictionary($dictionary, $collection, $record);
+            /** @noinspection PhpUnhandledExceptionInspection */
             $record->getRelation($this->getName())->setResults($results);
         }
 
@@ -556,13 +493,13 @@ abstract class Relation
         return $this->type;
     }
 
-    /**
+    /** @noinspection PhpDocMissingThrowsInspection
      * @return string
      */
     protected function debugString()
     {
         return 'Relation'
-        . ' Manager:[' . ($this->hasManager() ? $this->getManager()->getClassName() : '') . ']'
+            . ' Manager:[' . ($this->hasManager() ? $this->getManager()->getClassName() : '') . ']'
             . ' name:[' . $this->getName() . '] '
             . ' params:[' . serialize($this->getParams()) . ']';
     }

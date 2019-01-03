@@ -11,6 +11,17 @@ use Nip\Database\Query\Select as SelectQuery;
  */
 trait HasPivotTable
 {
+    use HasPivotForeignKey;
+    use HasPivotPrimaryKey;
+
+    /**
+     * @param $params
+     */
+    public function addPivotParams($params)
+    {
+        $this->checkParamPivotFk($params);
+        $this->checkParamPivotPrimaryKey($params);
+    }
 
     /**
      * @return Connection
@@ -48,16 +59,8 @@ trait HasPivotTable
      */
     protected function hydrateQueryWithPivotConstraints($query)
     {
-        $pk = $this->getWith()->getPrimaryKey();
+        $pk = $this->getPivotPrimaryKey();
         $fk = $this->getPivotFK();
         $query->where("`{$this->getTable()}`.`$fk` = `{$this->getWith()->getTable()}`.`$pk`");
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function getPivotFK()
-    {
-        return $this->getWith()->getPrimaryFK();
     }
 }

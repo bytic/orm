@@ -28,7 +28,8 @@ class MorphManyTest extends AbstractTest
 
     public function testGetQuery()
     {
-        ModelLocator::instance()->getConfiguration()->addNamespace('Nip\Records\Tests\Fixtures\Records');
+        ModelLocator::instance()->getConfiguration()
+            ->addNamespace('Nip\Records\Tests\Fixtures\Records');
 
         $relation = new MorphMany();
         $relation->setName('Books');
@@ -73,7 +74,7 @@ class MorphManyTest extends AbstractTest
         }
 
         self::assertEquals(
-            "SELECT `books`.* FROM `books` WHERE parent_type = 'nip-records' AND parent_id IN (3, 4)",
+            "SELECT `books`.* FROM `books` WHERE parent_type = 'nip_records' AND parent_id IN (3, 4)",
             $relation->getEagerQuery($collection)->getString()
         );
     }
@@ -100,7 +101,7 @@ class MorphManyTest extends AbstractTest
         $relation->saveResult($book);
 
         self::assertEquals(3, $book->parent_id);
-        self::assertEquals('nip-records', $book->parent_type);
+        self::assertEquals('nip_records', $book->parent_type);
     }
 
 

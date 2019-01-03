@@ -2,8 +2,6 @@
 
 namespace Nip\Records\Traits\ActiveRecord;
 
-use Nip\Container\Container;
-use Nip\Database\Connections\Connection;
 use Nip\Database\Query\AbstractQuery as Query;
 use Nip\Database\Query\Delete as DeleteQuery;
 use Nip\Database\Query\Insert as InsertQuery;
@@ -13,7 +11,10 @@ use Nip\Database\Result;
 use Nip\Paginator;
 use Nip\Records\AbstractModels\Record;
 use Nip\Records\Collections\Collection as RecordCollection;
+use Nip\Records\Traits\HasDatabase\HasDatabaseRecordsTrait;
+use Nip\Records\Traits\TableStructure\TableStructureRecordsTrait;
 use Nip\Records\Traits\Unique\RecordsTrait as UniqueRecordsTrait;
+use Nip\Records\Traits\HasForeignKey\RecordsTrait as HasForeignKeyTrait;
 
 /**
  * Class ActiveRecordsTrait
@@ -23,28 +24,19 @@ trait ActiveRecordsTrait
 {
     use UniqueRecordsTrait;
 
-    /**
-     * @var Connection
-     */
-    protected $connection = null;
+    use HasForeignKeyTrait;
+    use TableStructureRecordsTrait;
+    use HasDatabaseRecordsTrait;
 
     /**
      * @var null|string
      */
     protected $table = null;
 
-    protected $tableStructure = null;
-
     /**
      * @var null|string
      */
     protected $primaryKey = null;
-    protected $fields = null;
-
-    /**
-     * @var null|string
-     */
-    protected $foreignKey = null;
 
     /**
      * @return SelectQuery
@@ -69,61 +61,6 @@ trait ActiveRecordsTrait
         return $query;
     }
 
-    /**
-     * @return Connection
-     */
-    public function getDB()
-    {
-        if ($this->connection == null) {
-            $this->initDB();
-        }
-
-        $this->checkDB();
-
-        return $this->connection;
-    }
-
-    protected function initDB()
-    {
-        $this->setDB($this->newDbConnection());
-    }
-
-    /**
-     * @param Connection $connection
-     * @return $this
-     */
-    public function setDB($connection)
-    {
-        $this->connection = $connection;
-
-        return $this;
-    }
-
-    /**
-     * @return Connection
-     */
-    protected function newDbConnection()
-    {
-        if (function_exists('app')) {
-            return app('db.connection');
-        }
-        return Container::getInstance()->get('db.connection');
-    }
-
-    public function checkDB()
-    {
-        if (!$this->hasDB()) {
-            trigger_error("Database connection missing for [" . get_class($this) . "]", E_USER_ERROR);
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasDB()
-    {
-        return $this->connection instanceof Connection;
-    }
 
     /**
      * @return string
@@ -166,49 +103,6 @@ trait ActiveRecordsTrait
         $database = $this->getDB()->getDatabase();
 
         return $database ? $database . '.' . $this->getTable() : $this->getTable();
-    }
-
-    /**
-     * @return null
-     */
-    public function getFields()
-    {
-        if ($this->fields === null) {
-            $this->initFields();
-        }
-
-        return $this->fields;
-    }
-
-    public function initFields()
-    {
-        $structure = $this->getTableStructure();
-        $this->fields = array_keys($structure['fields']);
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function getTableStructure()
-    {
-        if ($this->tableStructure == null) {
-            $this->initTableStructure();
-        }
-
-        return $this->tableStructure;
-    }
-
-    /**
-     * @param null $tableStructure
-     */
-    public function setTableStructure($tableStructure)
-    {
-        $this->tableStructure = $tableStructure;
-    }
-
-    protected function initTableStructure()
-    {
-        $this->setTableStructure($this->getDB()->getMetadata()->describeTable($this->getTable()));
     }
 
     /**
