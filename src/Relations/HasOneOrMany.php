@@ -122,7 +122,7 @@ abstract class HasOneOrMany extends Relation
         $primaryKey = $record->{$foreignKey};
         $collection = $this->newCollection();
 
-        if (isset($dictionary[$primaryKey])) {
+        if (isset($dictionary[$primaryKey]) && is_array($dictionary[$primaryKey])) {
             foreach ($dictionary[$primaryKey] as $record) {
                 $collection->add($record);
             }

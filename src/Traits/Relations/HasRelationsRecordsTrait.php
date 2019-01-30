@@ -28,6 +28,7 @@ trait HasRelationsRecordsTrait
      * Get a specified relationship.
      * @param  string $relation
      * @return null|Relation
+     * @throws \Exception
      */
     public function getRelation($relation)
     {
@@ -40,6 +41,7 @@ trait HasRelationsRecordsTrait
     /**
      * Check if the model needs to initRelations
      * @return void
+     * @throws \Exception
      */
     protected function checkInitRelations()
     {
@@ -48,6 +50,9 @@ trait HasRelationsRecordsTrait
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function initRelations()
     {
         $this->relations = [];
@@ -58,6 +63,7 @@ trait HasRelationsRecordsTrait
 
     /**
      * @param string $type
+     * @throws \Exception
      */
     protected function initRelationsType($type)
     {
@@ -70,6 +76,7 @@ trait HasRelationsRecordsTrait
     /**
      * @param string $type
      * @param $array
+     * @throws \Exception
      */
     public function initRelationsFromArray($type, $array)
     {
@@ -85,6 +92,7 @@ trait HasRelationsRecordsTrait
      * @param string $name
      * @param array $params
      * @return Relation
+     * @throws \Exception
      */
     protected function initRelation($type, $name, $params)
     {
@@ -206,6 +214,7 @@ trait HasRelationsRecordsTrait
      * Determine if the given relation is loaded.
      * @param  string $key
      * @return bool
+     * @throws \Exception
      */
     public function hasRelation($key)
     {

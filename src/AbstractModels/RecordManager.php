@@ -135,13 +135,13 @@ abstract class RecordManager
         $params['module'] = $module ? $module : request()->getModuleName();
 
         $routeName = $params['module'] . '.' . $params['controller'] . '.' . $params['action'];
-        if ($this->Url()->getRouter()->hasRoute($routeName)) {
+        if (app()->get('router')->hasRoute($routeName)) {
             unset($params['module'], $params['controller'], $params['action']);
         } else {
             $routeName = $params['module'] . '.default';
         }
 
-        return $this->Url()->assemble($routeName, $params);
+        return app()->get('router')->assembleFull($routeName, $params);
     }
 
     /**
@@ -360,8 +360,8 @@ abstract class RecordManager
     /**
      * Factory
      *
-     * @return Record
      * @param array $data [optional]
+     * @return Record
      */
     public function getNew($data = [])
     {
@@ -429,9 +429,7 @@ abstract class RecordManager
     protected function inflectModel()
     {
         $class = $this->getClassName();
-        if ($this->model == null) {
-            $this->model = $this->generateModelClass($class);
-        }
+        $this->model = $this->generateModelClass($class);
     }
 
     /**
