@@ -55,16 +55,16 @@ abstract class RecordManager
     /**
      * Overloads findByRecord, findByField, deleteByRecord, deleteByField, countByRecord, countByField
      *
-     * @example findByCategory(Category $item)
-     * @example deleteByProduct(Product $item)
-     * @example findByIdUser(2)
-     * @example deleteByTitle(array('Lorem ipsum', 'like'))
-     * @example countByIdCategory(1)
-     *
      * @param string $name
      * @param array $arguments
      *
      * @return mixed
+     * @example deleteByTitle(array('Lorem ipsum', 'like'))
+     * @example countByIdCategory(1)
+     *
+     * @example findByCategory(Category $item)
+     * @example deleteByProduct(Product $item)
+     * @example findByIdUser(2)
      */
     public function __call($name, $arguments)
     {
@@ -360,8 +360,8 @@ abstract class RecordManager
     /**
      * Factory
      *
-     * @return Record
      * @param array $data [optional]
+     * @return Record
      */
     public function getNew($data = [])
     {
@@ -429,9 +429,7 @@ abstract class RecordManager
     protected function inflectModel()
     {
         $class = $this->getClassName();
-        if ($this->model == null) {
-            $this->model = $this->generateModelClass($class);
-        }
+        $this->model = $this->generateModelClass($class);
     }
 
     /**

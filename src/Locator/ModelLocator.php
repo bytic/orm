@@ -29,7 +29,21 @@ class ModelLocator
      */
     public function getManager($alias)
     {
-        $manager = $this->locateManager($alias);
+        return $this->locateManager($alias);
+    }
+
+    /**
+     * @param $alias
+     * @return RecordManager
+     * @throws InvalidModelException
+     */
+    protected function locateManager($alias)
+    {
+        if ($this->getModelRegistry()->has($alias)) {
+            return $this->getModelRegistry()->get($alias);
+        }
+
+        $manager = $this->locateManagerPipeline($alias);
         $this->getModelRegistry()->set($alias, $manager);
         $this->getModelRegistry()->set($manager->getClassName(), $manager);
         return $manager;
@@ -40,7 +54,7 @@ class ModelLocator
      * @return RecordManager
      * @throws InvalidModelException
      */
-    protected function locateManager($alias)
+    protected function locateManagerPipeline($alias)
     {
         $command = CommandsFactory::create($alias, $this);
         $pipeline = $this->buildCallPipeline();
