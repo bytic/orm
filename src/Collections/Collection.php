@@ -125,15 +125,28 @@ class Collection extends AbstractCollection
     public function getRecordKey(Record $record, $index = null)
     {
         if ($index) {
-            $index = $record->{$index};
-        } else {
-            $index = $this->getIndexKey();
-            $index = $index ? $record->{$index} : $record->getPrimaryKey();
-            if (!$index) {
-                $index = null;
-            }
+            return $this->generateRecordKeyByIndex($record, $index);
+        }
+        $index = $this->getIndexKey();
+        $index = $index ?  $this->generateRecordKeyByIndex($record, $index) : $record->getPrimaryKey();
+        if (!$index) {
+            $index = null;
         }
         return $index;
+    }
+
+    /**
+     * @param Record $record
+     * @param $index
+     * @return mixed
+     */
+    protected function generateRecordKeyByIndex(Record $record, $index)
+    {
+        if (is_array($index)) {
+            return $record->implodeFields($index);
+        }
+
+        return $record->{$index};
     }
 
     /**

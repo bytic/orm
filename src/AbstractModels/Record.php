@@ -113,6 +113,20 @@ abstract class Record
     }
 
     /**
+     * @param $fields
+     * @param string $glue
+     * @return string
+     */
+    public function implodeFields($fields, $glue = '-')
+    {
+        $return = [];
+        foreach ($fields as $field) {
+            $return[] = $this->{$field};
+        }
+        return implode($glue, $return);
+    }
+
+    /**
      * @return mixed
      */
     public function toApiArray()
