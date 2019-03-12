@@ -15,7 +15,7 @@ trait ActiveRecordTrait
     use RecordTrait;
     use HasPrimaryKeyTrait;
 
-    protected $_dbData = [];
+    protected $dbData = [];
 
     /**
      * @param bool|array $data
@@ -23,7 +23,7 @@ trait ActiveRecordTrait
     public function writeDBData($data = false)
     {
         foreach ($data as $key => $value) {
-            $this->_dbData[$key] = $value;
+            $this->dbData[$key] = $value;
         }
     }
 
@@ -32,7 +32,25 @@ trait ActiveRecordTrait
      */
     public function getDBData()
     {
-        return $this->_dbData;
+        return $this->dbData;
+    }
+
+    /**
+     * @param $field
+     * @return bool
+     */
+    public function fieldUpdatedFromDb($field)
+    {
+        if (!isset($this->{$field})) {
+            return false;
+        }
+        if (!isset($this->dbData[$field])) {
+            return false;
+        }
+        if ($this->{$field} == $this->dbData[$field]) {
+            return false;
+        }
+        return true;
     }
 
     /**
