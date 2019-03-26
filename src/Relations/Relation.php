@@ -18,7 +18,7 @@ use Nip\Records\Relations\Traits\HasForeignKeyTrait;
 use Nip\Records\Relations\Traits\HasItemTrait;
 use Nip\Records\Relations\Traits\HasManagerTrait;
 use Nip\Records\Relations\Traits\HasPrimaryKeyTrait;
-use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
+use Nip\Records\Relations\Traits\HasWithTrait;
 use Nip_Helper_Arrays as ArraysHelper;
 
 /**
@@ -28,6 +28,7 @@ use Nip_Helper_Arrays as ArraysHelper;
 abstract class Relation
 {
     use HasManagerTrait;
+    use HasWithTrait;
     use HasForeignKeyTrait;
     use HasPrimaryKeyTrait;
     use HasItemTrait;
@@ -41,11 +42,6 @@ abstract class Relation
      * @var string
      */
     protected $type = 'relation';
-
-    /**
-     * @var RecordManager
-     */
-    protected $with = null;
 
     /**
      * @var null|string
@@ -115,48 +111,6 @@ abstract class Relation
         return $this->getWith()->paramsToQuery();
     }
 
-    /** @noinspection PhpDocMissingThrowsInspection
-     * @return RecordManager
-     */
-    public function getWith()
-    {
-        if ($this->with == null) {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $this->initWith();
-        }
-
-        return $this->with;
-    }
-
-    /**
-     * @param RecordManager|HasRelationsRecordsTrait $object
-     * @return $this
-     */
-    public function setWith($object)
-    {
-        $this->with = $object;
-
-        return $this;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function initWith()
-    {
-        $className = $this->getWithClass();
-        $this->setWithClass($className);
-    }
-
-    /** @noinspection PhpDocMissingThrowsInspection
-     * @return string
-     */
-    public function getWithClass()
-    {
-        /** @noinspection PhpUnhandledExceptionInspection */
-        return inflector()->pluralize($this->getName());
-    }
-
     /**
      * @return mixed
      * @throws RelationsNeedsAName
@@ -175,23 +129,6 @@ abstract class Relation
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /** @noinspection PhpDocMissingThrowsInspection
-     * @param string $name
-     */
-    public function setWithClass($name)
-    {
-        try {
-            $manager = $this->getModelManagerInstance($name);
-            $this->setWith($manager);
-        } catch (InvalidModelException $exception) {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            throw new Exception(
-                'Cannot instance records [' . $name . '] in ' . $this->debugString()
-                . '|| with message ' . $exception->getMessage()
-            );
-        }
     }
 
     /**
@@ -254,6 +191,7 @@ abstract class Relation
     {
         $this->checkParamClass($params);
         $this->checkParamWith($params);
+        $this->checkParamWithPK($params);
         $this->checkParamTable($params);
         $this->checkParamFk($params);
         $this->checkParamPrimaryKey($params);
@@ -269,17 +207,6 @@ abstract class Relation
             /** @noinspection PhpUnhandledExceptionInspection */
             $this->setWithClass($params['class']);
             unset($params['class']);
-        }
-    }
-
-    /**
-     * @param $params
-     */
-    public function checkParamWith($params)
-    {
-        if (isset($params['with'])) {
-            $this->setWith($params['with']);
-            unset($params['with']);
         }
     }
 
@@ -435,14 +362,6 @@ abstract class Relation
         $return = $arrayHelper->pluck($collection, $this->getFK());
 
         return array_unique($return);
-    }
-
-    /**
-     * @return string
-     */
-    public function getWithPK()
-    {
-        return $this->getWith()->getPrimaryKey();
     }
 
     /**
