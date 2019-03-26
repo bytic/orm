@@ -54,7 +54,7 @@ class BelongsToTest extends \Nip\Records\Tests\AbstractTest
         }
 
         static::assertEquals('id_book', $relation->getFK());
-        static::assertEquals([3,4], $relation->getEagerFkList($collection));
+        static::assertEquals([3, 4], $relation->getEagerFkList($collection));
         static::assertEquals(
             'SELECT `books`.* FROM `books` WHERE id IN (3, 4)',
             $relation->getEagerQuery($collection)->getString()
@@ -72,10 +72,14 @@ class BelongsToTest extends \Nip\Records\Tests\AbstractTest
         $this->_user = new Record();
 
         $users = m::namedMock('Users', 'Nip\Records\RecordManager')->makePartial();
-        $users->shouldReceive('instance')->andReturnSelf();
-        $users->shouldReceive('findByField')->withArgs(['id_custom', 3])->andReturn($this->_user)->getMock();
         $users->setPrimaryKey('id');
         $users->setPrimaryFK('id_user');
+
+        $users->shouldReceive('instance')->andReturnSelf();
+        $users->shouldReceive('findByField')
+            ->withArgs(['id_custom', 3])
+            ->andReturn(new Collection([$this->_user]));
+
 //        m::namedMock('User', 'Record');
 
         $this->object->setWith($users);
