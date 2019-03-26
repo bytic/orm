@@ -67,12 +67,14 @@ class BelongsToTest extends \Nip\Records\Tests\AbstractTest
 
         $this->object = new BelongsTo();
         $this->object->setName('User');
+        $this->object->addParams(['withPK' => 'id_custom']);
 
         $this->_user = new Record();
 
-        $users = m::namedMock('Users', 'Nip\Records\RecordManager')->shouldDeferMissing()
-            ->shouldReceive('instance')->andReturnSelf()
-            ->shouldReceive('findOne')->andReturn($this->_user)->getMock();
+        $users = m::namedMock('Users', 'Nip\Records\RecordManager')->makePartial();
+        $users->shouldReceive('instance')->andReturnSelf();
+        $users->shouldReceive('findByField')->withArgs(['id_custom', 3])->andReturn($this->_user)->getMock();
+        $users->setPrimaryKey('id');
         $users->setPrimaryFK('id_user');
 //        m::namedMock('User', 'Record');
 

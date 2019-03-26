@@ -12,7 +12,6 @@ use Nip\Records\Collections\Collection as RecordCollection;
  */
 class BelongsTo extends Relation
 {
-
     /**
      * @var string
      */
@@ -28,9 +27,9 @@ class BelongsTo extends Relation
 
     public function initResults()
     {
-        $manager = $this->getWith();
+        $withManager = $this->getWith();
         $foreignKey = $this->getItem()->{$this->getFK()};
-        $this->setResults($manager->findOne($foreignKey));
+        $this->setResults($withManager->findByField($this->getWithPK(), $foreignKey));
     }
 
     /**
