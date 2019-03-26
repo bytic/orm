@@ -151,10 +151,10 @@ class MorphToTest extends AbstractTest
         $user = new Record();
         $user->id = 3;
 
-        $users = m::namedMock('Users', 'Nip\Records\RecordManager')->shouldDeferMissing()
-            ->shouldReceive('instance')->andReturnSelf()
-            ->shouldReceive('findOne')->with(3)->andReturn($user)
-            ->getMock();
+        $users = m::namedMock('Users', 'Nip\Records\RecordManager')->makePartial();
+        $users->setPrimaryKey('id');
+        $users->shouldReceive('instance')->andReturnSelf();
+        $users->shouldReceive('findByField')->andReturn(new Collection([$user]));
 
         ModelLocator::set('users', $users);
 

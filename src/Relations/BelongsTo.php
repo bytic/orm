@@ -25,11 +25,21 @@ class BelongsTo extends Relation
         return $this->getWith()->getPrimaryFK();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function initResults()
     {
         $withManager = $this->getWith();
         $foreignKey = $this->getItem()->{$this->getFK()};
-        $this->setResults($withManager->findByField($this->getWithPK(), $foreignKey));
+        $results = $withManager->findByField($this->getWithPK(), $foreignKey);
+        if (count($results) > 0) {
+            $this->setResults($results->rewind());
+            return;
+        }
+
+        return $this->setResults(false);
+
     }
 
     /**
