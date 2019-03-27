@@ -7,6 +7,7 @@ use Nip\Database\Query\Insert as InsertQuery;
 use Nip\HelperBroker;
 use Nip\Records\Collections\Collection as RecordCollection;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordsTrait;
+use Nip\Records\Traits\HasUrl\HasUrlRecordManagerTrait;
 use Nip\Utility\Traits\NameWorksTrait;
 
 /**
@@ -19,6 +20,7 @@ abstract class RecordManager
 {
     use NameWorksTrait;
     use ActiveRecordsTrait;
+    use HasUrlRecordManagerTrait;
 
     /**
      * Collection class for current record manager
@@ -205,44 +207,6 @@ abstract class RecordManager
     }
 
     /**
-     * When searching by primary key, look for items in current registry before
-     * fetching them from the database
-     *
-     * @param array $pk_list
-     * @return RecordCollection
-     */
-    public function findByPrimary($pk_list = [])
-    {
-        $pk = $this->getPrimaryKey();
-        $return = $this->newCollection();
-
-        if ($pk_list) {
-            $pk_list = array_unique($pk_list);
-            foreach ($pk_list as $key => $value) {
-                $item = $this->getRegistry()->get($value);
-                if ($item) {
-                    unset($pk_list[$key]);
-                    $return[$item->{$pk}] = $item;
-                }
-            }
-            if ($pk_list) {
-                $query = $this->paramsToQuery();
-                $query->where("$pk IN ?", $pk_list);
-                $items = $this->findByQuery($query);
-
-                if (count($items)) {
-                    foreach ($items as $item) {
-                        $this->getRegistry()->set($item->{$pk}, $item);
-                        $return[$item->{$pk}] = $item;
-                    }
-                }
-            }
-        }
-
-        return $return;
-    }
-
-    /**
      * @return RecordCollection
      */
     public function newCollection()
@@ -412,37 +376,6 @@ abstract class RecordManager
         $this->initDB();
     }
 
-
-    /**
-     * Finds one Record using params array
-     *
-     * @param array $params
-     * @return Record|null
-     */
-    public function findOneByParams(array $params = [])
-    {
-        $params['limit'] = 1;
-        $records = $this->findByParams($params);
-        if (count($records) > 0) {
-            return $records->rewind();
-        }
-
-        return null;
-    }
-
-    /**
-     * Finds Records using params array
-     *
-     * @param array $params
-     * @return RecordCollection
-     */
-    public function findByParams($params = [])
-    {
-        $query = $this->paramsToQuery($params);
-
-        return $this->findByQuery($query, $params);
-    }
-
     /**
      * @return RecordCollection
      */
@@ -453,58 +386,6 @@ abstract class RecordManager
         }
 
         return $this->getRegistry()->get("all");
-    }
-
-    /**
-     * @return RecordCollection
-     */
-    public function findAll()
-    {
-        return $this->findByParams();
-    }
-
-    /**
-     * @param int $count
-     * @return RecordCollection
-     */
-    public function findLast($count = 9)
-    {
-        return $this->findByParams([
-            'limit' => $count,
-        ]);
-    }
-
-    /**
-     * Inserts a Record into the database
-     * @param Record $model
-     * @param array|bool $onDuplicate
-     * @return integer
-     */
-    public function insert($model, $onDuplicate = false)
-    {
-        $query = $this->insertQuery($model, $onDuplicate);
-        $query->execute();
-
-        return $this->getDB()->lastInsertID();
-    }
-
-    /**
-     * @param Record $model
-     * @param $onDuplicate
-     * @return InsertQuery
-     */
-    public function insertQuery($model, $onDuplicate)
-    {
-        $inserts = $this->getQueryModelData($model);
-
-        $query = $this->newInsertQuery();
-        $query->data($inserts);
-
-        if ($onDuplicate !== false) {
-            $query->onDuplicate($onDuplicate);
-        }
-
-        return $query;
     }
 
     /**

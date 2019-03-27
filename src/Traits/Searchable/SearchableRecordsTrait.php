@@ -45,6 +45,25 @@ trait SearchableRecordsTrait
     }
 
     /**
+     * @return RecordCollection
+     */
+    public function findAll()
+    {
+        return $this->findByParams();
+    }
+
+    /**
+     * @param int $count
+     * @return RecordCollection
+     */
+    public function findLast($count = 9)
+    {
+        return $this->findByParams([
+            'limit' => $count,
+        ]);
+    }
+
+    /**
      * Checks the registry before fetching from the database
      * @param mixed $primary
      * @return Record
@@ -69,6 +88,75 @@ trait SearchableRecordsTrait
         }
 
         return $item;
+    }
+
+    /**
+     * When searching by primary key, look for items in current registry before
+     * fetching them from the database
+     *
+     * @param array $pk_list
+     * @return RecordCollection
+     */
+    public function findByPrimary($pk_list = [])
+    {
+        $pk = $this->getPrimaryKey();
+        $return = $this->newCollection();
+
+        if ($pk_list) {
+            $pk_list = array_unique($pk_list);
+            foreach ($pk_list as $key => $value) {
+                $item = $this->getRegistry()->get($value);
+                if ($item) {
+                    unset($pk_list[$key]);
+                    $return[$item->{$pk}] = $item;
+                }
+            }
+            if ($pk_list) {
+                $query = $this->paramsToQuery();
+                $query->where("$pk IN ?", $pk_list);
+                $items = $this->findByQuery($query);
+
+                if (count($items)) {
+                    foreach ($items as $item) {
+                        $this->getRegistry()->set($item->{$pk}, $item);
+                        $return[$item->{$pk}] = $item;
+                    }
+                }
+            }
+        }
+
+        return $return;
+    }
+
+
+    /**
+     * Finds one Record using params array
+     *
+     * @param array $params
+     * @return Record|null
+     */
+    public function findOneByParams(array $params = [])
+    {
+        $params['limit'] = 1;
+        $records = $this->findByParams($params);
+        if (count($records) > 0) {
+            return $records->rewind();
+        }
+
+        return null;
+    }
+
+    /**
+     * Finds Records using params array
+     *
+     * @param array $params
+     * @return RecordCollection
+     */
+    public function findByParams($params = [])
+    {
+        $query = $this->paramsToQuery($params);
+
+        return $this->findByQuery($query, $params);
     }
 
     /**
