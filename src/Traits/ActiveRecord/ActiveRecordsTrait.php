@@ -103,6 +103,39 @@ trait ActiveRecordsTrait
     }
 
     /**
+     * Inserts a Record into the database
+     * @param Record $model
+     * @param array|bool $onDuplicate
+     * @return integer
+     */
+    public function insert($model, $onDuplicate = false)
+    {
+        $query = $this->insertQuery($model, $onDuplicate);
+        $query->execute();
+
+        return $this->getDB()->lastInsertID();
+    }
+
+    /**
+     * @param Record $model
+     * @param $onDuplicate
+     * @return InsertQuery
+     */
+    public function insertQuery($model, $onDuplicate)
+    {
+        $inserts = $this->getQueryModelData($model);
+
+        $query = $this->newInsertQuery();
+        $query->data($inserts);
+
+        if ($onDuplicate !== false) {
+            $query->onDuplicate($onDuplicate);
+        }
+
+        return $query;
+    }
+
+    /**
      * @return InsertQuery
      */
     public function newInsertQuery()
