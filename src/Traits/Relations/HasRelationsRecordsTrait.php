@@ -152,6 +152,17 @@ trait HasRelationsRecordsTrait
         return $this->initRelation('hasMany', $name, $params);
     }
 
+    /**
+     * @param $name
+     * @param array $params
+     * @return Relation
+     * @throws \Exception
+     */
+    public function hasOne($name, $params = [])
+    {
+        return $this->initRelation('hasOne', $name, $params);
+    }
+
     /** @noinspection PhpMethodNamingConventionInspection
      * @param $name
      * @param array $params

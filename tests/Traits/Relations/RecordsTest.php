@@ -8,6 +8,7 @@ use Nip\Records\RecordManager as Records;
 use Nip\Records\Relations\BelongsTo;
 use Nip\Records\Relations\HasAndBelongsToMany;
 use Nip\Records\Relations\HasMany;
+use Nip\Records\Relations\HasOne;
 use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
 use Nip\Request;
 use Nip\Records\Tests\AbstractTest;
@@ -20,54 +21,42 @@ use Nip\Records\Tests\AbstractTest;
  */
 class RecordsTest extends AbstractTest
 {
-    public function testGetRelationClass()
+    /**
+     * @dataProvider dataRelationClasses
+     * @param $class
+     * @param $name
+     */
+    public function testGetRelationClass($class, $name)
     {
-        self::assertEquals(BelongsTo::class, $this->object->getRelationClass('BelongsTo'));
-        self::assertEquals(BelongsTo::class, $this->object->getRelationClass('belongsTo'));
-
-        self::assertEquals(HasMany::class, $this->object->getRelationClass('HasMany'));
-        self::assertEquals(HasMany::class, $this->object->getRelationClass('hasMany'));
-
-        self::assertEquals(HasAndBelongsToMany::class, $this->object->getRelationClass('HasAndBelongsToMany'));
-        self::assertEquals(HasAndBelongsToMany::class, $this->object->getRelationClass('hasAndBelongsToMany'));
+        self::assertEquals($class, $this->object->getRelationClass($name));
     }
 
-    public function testNewRelation()
+    /**
+     * @dataProvider dataRelationClasses
+     * @param $class
+     * @param $name
+     */
+    public function testNewRelation($class, $name)
     {
-        self::assertInstanceOf(BelongsTo::class, $this->object->newRelation('BelongsTo'));
-        self::assertInstanceOf(BelongsTo::class, $this->object->newRelation('belongsTo'));
-
-        self::assertInstanceOf(HasMany::class, $this->object->newRelation('HasMany'));
-        self::assertInstanceOf(HasMany::class, $this->object->newRelation('hasMany'));
-
-        self::assertInstanceOf(HasAndBelongsToMany::class, $this->object->newRelation('HasAndBelongsToMany'));
-        self::assertInstanceOf(HasAndBelongsToMany::class, $this->object->newRelation('hasAndBelongsToMany'));
+        self::assertInstanceOf($class, $this->object->newRelation($name));
     }
 
-//    public function testInitRelationsFromArrayBelongsToSimple()
-//    {
-    /** @var Records $users */
-//        $users = m::namedMock('Users', Records::class)->shouldDeferMissing()
-//            ->shouldReceive('instance')->andReturnSelf()
-//            ->getMock();
-
-//        $users->setPrimaryFK('id_user');
-//
-//        m::namedMock('User', Records::class);
-//        m::namedMock('Articles', Records::class);
-
-//        $this->object->setPrimaryFK('idobject');
-//
-//        $this->object->initRelationsFromArray('belongsTo', ['User']);
-//        $this->_testInitRelationsFromArrayBelongsToUser('User');
-//
-//        $this->object->initRelationsFromArray('belongsTo', [
-//            'UserName' => ['with' => $users],
-//        ]);
-//        $this->_testInitRelationsFromArrayBelongsToUser('UserName');
-//
-//        self::assertSame($users, $this->object->getRelation('User')->getWith());
-//    }
+    /**
+     * @return array
+     */
+    public function dataRelationClasses()
+    {
+        return [
+            [BelongsTo::class, 'BelongsTo'],
+            [BelongsTo::class, 'belongsTo'],
+            [HasOne::class, 'HasOne'],
+            [HasOne::class, 'hasOne'],
+            [HasMany::class, 'HasMany'],
+            [HasMany::class, 'hasMany'],
+            [HasAndBelongsToMany::class, 'HasAndBelongsToMany'],
+            [HasAndBelongsToMany::class, 'hasAndBelongsToMany'],
+        ];
+    }
 
     protected function _testInitRelationsFromArrayBelongsToUser($name)
     {
