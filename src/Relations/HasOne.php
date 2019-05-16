@@ -3,26 +3,26 @@
 namespace Nip\Records\Relations;
 
 use Nip\Database\Query\AbstractQuery;
-use Nip\Records\AbstractModels\Record;
+use Nip\Records\AbstractModels\Record as Record;
 use Nip\Records\Collections\Collection as RecordCollection;
 
 /**
- * Class BelongsTo
+ * Class HasOneOrMany
  * @package Nip\Records\Relations
  */
-class BelongsTo extends Relation
+class HasOne extends Relation
 {
     /**
      * @var string
      */
-    protected $type = 'belongsTo';
+    protected $type = 'hasOne';
 
     /** @noinspection PhpMissingParentCallCommonInspection
      * @return string
      */
     public function generateFK()
     {
-        return $this->getWith()->getPrimaryFK();
+        return $this->getManager()->getPrimaryFK();
     }
 
     /**
@@ -31,8 +31,8 @@ class BelongsTo extends Relation
     public function initResults()
     {
         $withManager = $this->getWith();
-        $foreignKey = $this->getItem()->{$this->getFK()};
-        $results = $withManager->findByField($this->getWithPK(), $foreignKey);
+        $foreignKey = $this->getItem()->{$this->getPrimaryKey()};
+        $results = $withManager->findByField($this->getFK(), $foreignKey);
         if (count($results) > 0) {
             $this->setResults($results->rewind());
             return;
@@ -49,7 +49,7 @@ class BelongsTo extends Relation
      */
     public function getResultsFromCollectionDictionary($dictionary, $collection, $record)
     {
-        $primaryKey = $record->{$this->getFK()};
+        $primaryKey = $record->{$this->getPrimaryKey()};
         if (isset($dictionary[$primaryKey])) {
             return $dictionary[$primaryKey];
         }
@@ -83,7 +83,7 @@ class BelongsTo extends Relation
      */
     protected function getDictionaryKey(Record $record)
     {
-        $withPK = $this->getWithPK();
+        $withPK = $this->getPrimaryKey();
 
         return $record->{$withPK};
     }
