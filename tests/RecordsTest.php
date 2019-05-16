@@ -76,31 +76,6 @@ class RecordsTest extends AbstractTest
         self::assertEquals($controller, $records->getController());
     }
 
-//    public function testInitRelationsFromArrayBelongsToSimple()
-//    {
-    /** @var Records $users */
-//        $users = m::namedMock('Users', Records::class)->shouldDeferMissing()
-//            ->shouldReceive('instance')->andReturnSelf()
-//            ->getMock();
-
-//        $users->setPrimaryFK('id_user');
-//
-//        m::namedMock('User', Records::class);
-//        m::namedMock('Articles', Records::class);
-
-//        $this->_object->setPrimaryFK('id_object');
-//
-//        $this->_object->initRelationsFromArray('belongsTo', ['User']);
-//        $this->_testInitRelationsFromArrayBelongsToUser('User');
-//
-//        $this->_object->initRelationsFromArray('belongsTo', [
-//            'UserName' => ['with' => $users],
-//        ]);
-//        $this->_testInitRelationsFromArrayBelongsToUser('UserName');
-//
-//        self::assertSame($users, $this->_object->getRelation('User')->getWith());
-//    }
-
     public function testNewCollection()
     {
         $collection = $this->_object->newCollection();

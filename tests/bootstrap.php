@@ -20,3 +20,5 @@ $connection->setAdapter($adapter);
 
 Container::setInstance(new Container());
 Container::getInstance()->set('db.connection', $connection);
+
+Container::getInstance()->set('inflector', new \Nip\Inflector\Inflector());
