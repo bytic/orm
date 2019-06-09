@@ -29,7 +29,7 @@ trait RecordsTrait
         foreach ($where as $key => $value) {
             if (strpos($key, 'UNQ') !== false) {
                 $uniqueWhere[] = $value;
-                unset($params[$where][$key]);
+                unset($params['where'][$key]);
             }
         }
 
