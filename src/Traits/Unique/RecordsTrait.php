@@ -2,7 +2,6 @@
 
 namespace Nip\Records\Traits\Unique;
 
-use Nip\Database\Query\Condition\Condition;
 use Nip\Records\AbstractModels\Record;
 
 /**
@@ -24,6 +23,18 @@ trait RecordsTrait
         if (!$params) {
             return false;
         }
+
+        $where = $params['where'];
+        $uniqueWhere = [];
+        foreach ($where as $key => $value) {
+            if (strpos($key, 'UNQ') !== false) {
+                $uniqueWhere[] = $value;
+                unset($params['where'][$key]);
+            }
+        }
+
+        $params['where'][] = implode(' OR ', $uniqueWhere);
+
         return $this->findOneByParams($params);
     }
 
@@ -33,28 +44,48 @@ trait RecordsTrait
      */
     public function generateExistsParams(Record $item)
     {
-        $params = [];
-        $params['where'] = [];
+        $conditions = $this->generateUniqueConditions($item);
 
-        $uniqueFields = $this->getUniqueFields();
-
-        if (!$uniqueFields) {
+        if (count($conditions) < 1) {
             return false;
         }
 
-        foreach ($uniqueFields as $uniqueName => $fields) {
-            $conditions = [];
-            foreach ($fields as $field) {
-                $conditions[] = "`$field` = '{$item->{$field}}'";
-            }
-            $params['where'][$uniqueName . '-UNQ'] = implode(' AND ', $conditions);
-        }
+        $params = [];
+        $params['where'] = $conditions;
 
         $pk = $this->getPrimaryKey();
         if ($item->getPrimaryKey()) {
             $params['where'][] = ["$pk != ?", $item->getPrimaryKey()];
         }
         return $params;
+    }
+
+    /**
+     * @param Record $item
+     * @return array|bool
+     */
+    public function generateUniqueConditions(Record $item)
+    {
+        $uniqueFields = $this->getUniqueFields();
+        $conditions = [];
+        foreach ($uniqueFields as $uniqueName => $fields) {
+            $conditions[$uniqueName . '-UNQ'] = $this->generateUniqueCondition($item, $fields);
+        }
+        return $conditions;
+    }
+
+    /**
+     * @param Record $item
+     * @param $fields
+     * @return string
+     */
+    protected function generateUniqueCondition(Record $item, $fields)
+    {
+        $conditions = [];
+        foreach ($fields as $field) {
+            $conditions[] = "`$field` = '{$item->{$field}}'";
+        }
+        return implode(' AND ', $conditions);
     }
 
     /**

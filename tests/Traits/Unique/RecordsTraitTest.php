@@ -12,6 +12,24 @@ use Nip\Records\Tests\Fixtures\Records\Books\Books;
  */
 class RecordsTraitTest extends AbstractTest
 {
+
+    public function testExists()
+    {
+        $manager = $this->getManagerWithUnique();
+        $manager->shouldReceive('findOneByParams')
+            ->andReturnUsing(function ($argument) {
+                return $argument;
+            });
+
+
+        $item = new Book();
+
+        self::assertSame(
+            ['where' => ["`id_event` = '' AND `id_volunteer` = '' OR `hash` = ''"]],
+            $manager->exists($item)
+        );
+    }
+
     public function testGenerateExistsParams()
     {
         $manager = $this->getManagerWithUnique();
@@ -49,11 +67,12 @@ class RecordsTraitTest extends AbstractTest
     }
 
     /**
-     * @return Books
+     * @return Books|\Mockery\MockInterface
      */
     protected function getManagerWithUnique()
     {
-        $manager = new Books();
+        $manager = \Mockery::mock(Books::class)->makePartial();
+
         $structure = require TEST_FIXTURE_PATH
             . DIRECTORY_SEPARATOR . 'database_structure' . DIRECTORY_SEPARATOR . 'table_with_unique.php';
         $manager->setTableStructure($structure);
