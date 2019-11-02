@@ -11,11 +11,11 @@ use Nip\Database\Result;
 use Nip\Records\AbstractModels\Record;
 use Nip\Records\Collections\Collection as RecordCollection;
 use Nip\Records\Traits\HasDatabase\HasDatabaseRecordsTrait;
+use Nip\Records\Traits\HasForeignKey\RecordsTrait as HasForeignKeyTrait;
+use Nip\Records\Traits\HasPrimaryKey\RecordsTrait as HasPrimaryKeyTrait;
 use Nip\Records\Traits\Searchable\SearchableRecordsTrait;
 use Nip\Records\Traits\TableStructure\TableStructureRecordsTrait;
 use Nip\Records\Traits\Unique\RecordsTrait as UniqueRecordsTrait;
-use Nip\Records\Traits\HasForeignKey\RecordsTrait as HasForeignKeyTrait;
-use Nip\Records\Traits\HasPrimaryKey\RecordsTrait as HasPrimaryKeyTrait;
 
 /**
  * Class ActiveRecordsTrait
@@ -187,7 +187,6 @@ trait ActiveRecordsTrait
     }
 
 
-
     /**
      * @return UpdateQuery
      */
@@ -203,32 +202,28 @@ trait ActiveRecordsTrait
      */
     public function save(Record $model)
     {
-        $pk = $this->getPrimaryKey();
-
-        if (isset($model->{$pk})) {
+        if ($model->hasPrimaryKey()) {
             $model->update();
 
-            return $model->{$pk};
-        } else {
-            /** @var Record $previous */
-            $previous = $model->exists();
+            return $model->getPrimaryKey();
+        }
 
-            if ($previous) {
-                $data = $model->toArray();
+        /** @var Record $previous */
+        $previous = $model->exists();
+        if ($previous) {
+            $data = $model->toArray();
 
-                if ($data) {
-                    $previous->writeData($model->toArray());
-                }
-                $previous->update();
-
-                $model->writeData($previous->toArray());
-
-                return $model->getPrimaryKey();
+            if ($data) {
+                $previous->writeData($model->toArray());
             }
+            $previous->update();
+
+            $model->writeData($previous->toArray());
+
+            return $model->getPrimaryKey();
         }
 
         $model->insert();
-
         return $model->getPrimaryKey();
     }
 
