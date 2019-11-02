@@ -5,6 +5,7 @@ namespace Nip\Records\AbstractModels;
 use Nip\HelperBroker;
 use \Exception;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordTrait;
+use Nip\Records\Traits\HasHelpers\HasHelpersRecordTrait;
 use Nip\Records\Traits\HasManager\HasManagerRecordTrait;
 use Nip\Utility\Traits\NameWorksTrait;
 
@@ -18,11 +19,10 @@ abstract class Record
 {
     use NameWorksTrait;
     use ActiveRecordTrait;
+    use HasHelpersRecordTrait;
     use HasManagerRecordTrait;
 
     protected $_name = null;
-
-    protected $_helpers = [];
 
     protected $_data;
 
@@ -59,7 +59,7 @@ abstract class Record
      */
     public function __call($name, $arguments)
     {
-        if ($name === ucfirst($name)) {
+        if ($this->isHelperCall($name)) {
             return $this->getHelper($name);
         }
 
@@ -67,14 +67,6 @@ abstract class Record
         return null;
     }
 
-    /**
-     * @param string $name
-     * @return \Nip\Helpers\AbstractHelper
-     */
-    public function getHelper($name)
-    {
-        return HelperBroker::get($name);
-    }
 
     /**
      * @return mixed

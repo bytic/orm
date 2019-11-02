@@ -30,6 +30,22 @@ class RecordTraitTest extends AbstractTest
         static::assertEquals(['id_parent' => 99, 'type' => 'book'], $this->object->getPrimaryKey());
     }
 
+    public function testHasPrimaryKeyComposite()
+    {
+        $this->object->getManager()->setPrimaryKey(['id_parent', 'type']);
+        static::assertFalse($this->object->hasPrimaryKey());
+
+        $this->object->id_parent = null;
+        $this->object->type = '';
+        static::assertFalse($this->object->hasPrimaryKey());
+
+        $this->object->id_parent = 0;
+        static::assertFalse($this->object->hasPrimaryKey());
+
+        $this->object->id_parent = 1;
+        static::assertTrue($this->object->hasPrimaryKey());
+    }
+
     protected function setUp()
     {
         parent::setUp();

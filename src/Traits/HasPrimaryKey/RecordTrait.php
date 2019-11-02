@@ -35,4 +35,16 @@ trait RecordTrait
         }
         return $return;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasPrimaryKey()
+    {
+        $key = $this->getPrimaryKey();
+        if (is_array($key)) {
+            $key = array_filter($key);
+        }
+        return !empty($key);
+    }
 }

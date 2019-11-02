@@ -3,6 +3,7 @@
 namespace Nip\Records\Traits\Relations;
 
 use Nip\Records\AbstractModels\Record;
+use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Relations\HasMany;
 use Nip\Records\Relations\Relation;
 use Nip\Records\Traits\AbstractTrait\RecordTrait;
@@ -11,7 +12,7 @@ use Nip\Records\Traits\AbstractTrait\RecordTrait;
  * Trait HasRelationsRecordTrait
  * @package Nip\Records\Traits\Relations
  *
- * @method HasRelationsRecordsTrait getManager
+ * @method HasRelationsRecordsTrait|RecordManager getManager
  */
 trait HasRelationsRecordTrait
 {
