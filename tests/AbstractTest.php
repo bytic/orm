@@ -2,16 +2,19 @@
 
 namespace Nip\Records\Tests;
 
+use Mockery as m;
+use Nip\Records\Record;
 use PHPUnit\Framework\TestCase;
-use \Mockery as m;
 
 /**
  * Class AbstractTest
  */
 abstract class AbstractTest extends TestCase
 {
+    /**
+     * @var Record
+     */
     protected $object;
-
 
     protected function tearDown()
     {
