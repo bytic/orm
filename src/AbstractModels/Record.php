@@ -5,6 +5,7 @@ namespace Nip\Records\AbstractModels;
 use Nip\HelperBroker;
 use \Exception;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordTrait;
+use Nip\Records\Traits\HasAttributes\HasAttributesRecordTrait;
 use Nip\Records\Traits\HasHelpers\HasHelpersRecordTrait;
 use Nip\Records\Traits\HasManager\HasManagerRecordTrait;
 use Nip\Utility\Traits\NameWorksTrait;
@@ -21,34 +22,9 @@ abstract class Record
     use ActiveRecordTrait;
     use HasHelpersRecordTrait;
     use HasManagerRecordTrait;
+    use HasAttributesRecordTrait;
 
     protected $_name = null;
-
-    protected $_data;
-
-    public function &__get($name)
-    {
-        if (!$this->__isset($name)) {
-            $this->_data[$name] = null;
-        }
-
-        return $this->_data[$name];
-    }
-
-    public function __set($name, $value)
-    {
-        $this->_data[$name] = $value;
-    }
-
-    public function __isset($name)
-    {
-        return isset($this->_data[$name]);
-    }
-
-    public function __unset($name)
-    {
-        unset($this->_data[$name]);
-    }
 
     /**
      * Overloads Ucfirst() helper
@@ -149,16 +125,6 @@ abstract class Record
         $this->writeData($data);
 
         unset($this->{$this->getManager()->getPrimaryKey()}, $this->created);
-    }
-
-    /**
-     * @param bool|array $data
-     */
-    public function writeData($data = false)
-    {
-        foreach ($data as $key => $value) {
-            $this->__set($key, $value);
-        }
     }
 
     /**
