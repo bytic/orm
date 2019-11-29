@@ -8,6 +8,7 @@ use Nip\Records\Traits\ActiveRecord\ActiveRecordTrait;
 use Nip\Records\Traits\HasAttributes\HasAttributesRecordTrait;
 use Nip\Records\Traits\HasHelpers\HasHelpersRecordTrait;
 use Nip\Records\Traits\HasManager\HasManagerRecordTrait;
+use Nip\Records\Traits\Serializable\SerializableRecord;
 use Nip\Utility\Traits\NameWorksTrait;
 
 /**
@@ -16,13 +17,14 @@ use Nip\Utility\Traits\NameWorksTrait;
  *
  * @method \Nip_Helper_Url URL()
  */
-abstract class Record
+abstract class Record implements \Serializable
 {
     use NameWorksTrait;
     use ActiveRecordTrait;
     use HasHelpersRecordTrait;
     use HasManagerRecordTrait;
     use HasAttributesRecordTrait;
+    use SerializableRecord;
 
     protected $_name = null;
 
