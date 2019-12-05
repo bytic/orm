@@ -26,8 +26,6 @@ abstract class Record implements \Serializable
     use HasAttributesRecordTrait;
     use SerializableRecord;
 
-    protected $_name = null;
-
     /**
      * Overloads Ucfirst() helper
      *
@@ -43,26 +41,6 @@ abstract class Record implements \Serializable
 
         trigger_error("Call to undefined method $name", E_USER_ERROR);
         return null;
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        if ($this->_name == null) {
-            $this->_name = inflector()->unclassify(get_class($this));
-        }
-        return $this->_name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->_name = $name;
     }
 
     /**
