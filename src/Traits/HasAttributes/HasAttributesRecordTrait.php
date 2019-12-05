@@ -63,12 +63,12 @@ trait HasAttributesRecordTrait
         }
 
         $method = 'set' . Str::studly($key);
-        if (method_exists($this, $key)) {
+        if (method_exists($this, $method)) {
             $this->$method($value);
             return;
         }
         $method .= 'Attribute';
-        if (method_exists($this, $key)) {
+        if (method_exists($this, $method)) {
             $this->$method($value);
             return;
         }
