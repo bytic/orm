@@ -32,13 +32,16 @@ class BelongsTo extends Relation
     {
         $withManager = $this->getWith();
         $foreignKey = $this->getItem()->{$this->getFK()};
+        if (empty($foreignKey)) {
+            return $this->setResults(false);
+        }
         $results = $withManager->findByField($this->getWithPK(), $foreignKey);
-        if (count($results) > 0) {
-            $this->setResults($results->rewind());
-            return;
+        if (count($results) < 1) {
+            return $this->setResults(false);
         }
 
-        return $this->setResults(false);
+        $this->setResults($results->rewind());
+        return;
     }
 
     /**
