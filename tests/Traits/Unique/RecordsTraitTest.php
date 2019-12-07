@@ -12,7 +12,6 @@ use Nip\Records\Tests\Fixtures\Records\Books\Books;
  */
 class RecordsTraitTest extends AbstractTest
 {
-
     public function testExists()
     {
         $manager = $this->getManagerWithUnique();
