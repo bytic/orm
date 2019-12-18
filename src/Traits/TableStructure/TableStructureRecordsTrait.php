@@ -10,6 +10,9 @@ trait TableStructureRecordsTrait
 {
     protected $tableStructure = null;
 
+    /**
+     * @var null|array
+     */
     protected $fields = null;
 
     /**
@@ -17,17 +20,32 @@ trait TableStructureRecordsTrait
      */
     public function getFields()
     {
+        $this->checkFieldsIsInitiated();
+
+        return $this->fields;
+    }
+
+    protected function checkFieldsIsInitiated()
+    {
         if ($this->fields === null) {
             $this->initFields();
         }
-
-        return $this->fields;
     }
 
     public function initFields()
     {
         $structure = $this->getTableStructure();
         $this->fields = array_keys($structure['fields']);
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasField(string $name)
+    {
+        $this->checkFieldsIsInitiated();
+        return isset($this->fields[$name]);
     }
 
     /**
