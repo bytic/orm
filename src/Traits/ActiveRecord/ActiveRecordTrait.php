@@ -3,7 +3,6 @@
 namespace Nip\Records\Traits\ActiveRecord;
 
 use Nip\Records\AbstractModels\Record;
-use Nip\Records\Traits\AbstractTrait\RecordTrait;
 use Nip\Records\Traits\HasPrimaryKey\RecordTrait as HasPrimaryKeyTrait;
 
 /**
@@ -12,7 +11,6 @@ use Nip\Records\Traits\HasPrimaryKey\RecordTrait as HasPrimaryKeyTrait;
  */
 trait ActiveRecordTrait
 {
-    use RecordTrait;
     use HasPrimaryKeyTrait;
 
     protected $dbData = [];
