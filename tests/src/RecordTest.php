@@ -38,7 +38,7 @@ class RecordTest extends AbstractTest
         self::assertSame($managerName, $record->getManagerName());
     }
 
-    protected function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $wrapper = new Connection(false);

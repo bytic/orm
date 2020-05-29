@@ -35,7 +35,7 @@ class RecordTest extends AbstractTest
         static::assertSame($users, $relation->getWith());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $wrapper = new Connection(false);

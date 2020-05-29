@@ -16,7 +16,7 @@ abstract class AbstractTest extends TestCase
      */
     protected $object;
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         m::close();
