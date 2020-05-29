@@ -25,7 +25,7 @@ class HasOneTest extends \Nip\Records\Tests\AbstractTest
         static::assertSame($this->_user, $this->object->getResults());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

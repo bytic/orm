@@ -46,7 +46,7 @@ class RecordTraitTest extends AbstractTest
         static::assertTrue($this->object->hasPrimaryKey());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $wrapper = new Connection(false);

@@ -186,7 +186,7 @@ class RecordsTest extends AbstractTest
         self::assertInstanceOf(Nip_Helper_Url::class, $urlHelper);
     }
 
-    protected function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

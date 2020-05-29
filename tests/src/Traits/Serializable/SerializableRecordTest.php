@@ -26,7 +26,7 @@ class SerializableRecordTest extends AbstractTest
         self::assertSame(false, $object->property2);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $wrapper = new Connection(false);
