@@ -28,7 +28,7 @@
     }
   },
   "require": {
-    "php": "^7.0",
+    "php": "^7.1",
     "bytic/cache": "^0.9|^1.0",
     "bytic/container": "^0.9|^1.0",
     "bytic/collections": "^1.0",
@@ -41,6 +41,7 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^7.2|^8.0|^9.0",
-    "mockery/mockery": "^1.0"
+    "mockery/mockery": "^1.0",
+    "bytic/event-dispatcher": "^0.9|^1.0"
   }
 }
