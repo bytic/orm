@@ -11,7 +11,9 @@ define('TEST_BASE_PATH', __DIR__);
 define('TEST_FIXTURE_PATH', __DIR__ . DIRECTORY_SEPARATOR . 'fixtures');
 
 $connection = new Connection(false);
-$adapter = m::namedMock('TestAdapter', \Nip\Database\Adapters\MySQLi::class)->shouldDeferMissing()
+$adapter = m::namedMock('TestAdapter', \Nip\Database\Adapters\MySQLi::class)->makePartial()
+    ->shouldReceive('query')->andReturn(true)
+    ->shouldReceive('lastInsertID')->andReturn(99)
     ->shouldReceive('cleanData')->andReturnUsing(function ($arg) {
         return $arg;
     })

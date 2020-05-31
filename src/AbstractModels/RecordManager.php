@@ -6,6 +6,7 @@ use Nip\Collections\Registry;
 use Nip\Database\Query\Insert as InsertQuery;
 use Nip\HelperBroker;
 use Nip\Records\Collections\Collection as RecordCollection;
+use Nip\Records\EventManager\HasEvents;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordsTrait;
 use Nip\Records\Traits\HasUrl\HasUrlRecordManagerTrait;
 use Nip\Utility\Traits\NameWorksTrait;
@@ -20,6 +21,7 @@ abstract class RecordManager
 {
     use NameWorksTrait;
     use ActiveRecordsTrait;
+    use HasEvents;
     use HasUrlRecordManagerTrait;
 
     /**

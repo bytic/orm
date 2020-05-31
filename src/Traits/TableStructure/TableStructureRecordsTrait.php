@@ -70,6 +70,14 @@ trait TableStructureRecordsTrait
 
     protected function initTableStructure()
     {
-        $this->setTableStructure($this->getDB()->getMetadata()->describeTable($this->getTable()));
+        $this->setTableStructure($this->generateTableStructure());
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function generateTableStructure()
+    {
+        return $this->getDB()->getMetadata()->describeTable($this->getTable());
     }
 }

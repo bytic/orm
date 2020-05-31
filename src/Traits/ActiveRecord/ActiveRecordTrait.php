@@ -56,13 +56,7 @@ trait ActiveRecordTrait
      */
     public function insert()
     {
-        $pk = $this->getManager()->getPrimaryKey();
-        $lastId = $this->getManager()->insert($this);
-        if ($pk == 'id') {
-            $this->{$pk} = $lastId;
-        }
-
-        return $lastId > 0;
+        return $this->getManager()->insert($this);
     }
 
     /**

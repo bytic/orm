@@ -10,6 +10,7 @@ use Nip\Database\Query\Update as UpdateQuery;
 use Nip\Database\Result;
 use Nip\Records\AbstractModels\Record;
 use Nip\Records\Collections\Collection as RecordCollection;
+use Nip\Records\EventManager\Events\Observe;
 use Nip\Records\Traits\HasDatabase\HasDatabaseRecordsTrait;
 use Nip\Records\Traits\HasForeignKey\RecordsTrait as HasForeignKeyTrait;
 use Nip\Records\Traits\HasPrimaryKey\RecordsTrait as HasPrimaryKeyTrait;
@@ -110,9 +111,7 @@ trait ActiveRecordsTrait
     public function insert($model, $onDuplicate = false)
     {
         $query = $this->insertQuery($model, $onDuplicate);
-        $query->execute();
-
-        return $this->getDB()->lastInsertID();
+        return $this->performInsert($query, $model);
     }
 
     /**
@@ -140,6 +139,30 @@ trait ActiveRecordsTrait
     public function newInsertQuery()
     {
         return $this->newQuery('insert');
+    }
+
+    /**
+     * @param Query $query
+     * @param Record $record
+     * @return bool
+     */
+    protected function performInsert(Query $query, Record $record)
+    {
+        if ($this->fireModelEvent(Observe::CREATING, $record) === false) {
+            return false;
+        }
+
+        $pk = $this->getPrimaryKey();
+        $query->execute();
+        $lastId = $this->getDB()->lastInsertID();
+
+        if ($pk == 'id') {
+            $this->{$pk} = $lastId;
+        }
+
+        $this->fireModelEvent(Observe::CREATED, $record);
+
+        return true;
     }
 
     /**
