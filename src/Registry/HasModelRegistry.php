@@ -1,10 +1,10 @@
 <?php
 
-namespace Nip\Records\Locator\Registry;
+namespace Nip\Records\Registry;
 
 /**
  * Trait HasModelRegistry
- * @package Nip\Records\Locator\Registry
+ * @package Nip\Records\Registry
  */
 trait HasModelRegistry
 {
@@ -32,9 +32,16 @@ trait HasModelRegistry
         $this->modelRegistry = $modelRegistry;
     }
 
-
     protected function initModelRegistry()
     {
-        $this->modelRegistry = (new ModelRegistry);
+        $this->modelRegistry = $this->generateModelRegistry();
+    }
+
+    /**
+     * @return ModelRegistry
+     */
+    protected function generateModelRegistry()
+    {
+        return new ModelRegistry();
     }
 }

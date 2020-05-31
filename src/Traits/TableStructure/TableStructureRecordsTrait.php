@@ -25,6 +25,14 @@ trait TableStructureRecordsTrait
         return $this->fields;
     }
 
+    /**
+     * @param array|null $fields
+     */
+    public function setFields(?array $fields): void
+    {
+        $this->fields = $fields;
+    }
+
     protected function checkFieldsIsInitiated()
     {
         if ($this->fields === null) {
@@ -35,7 +43,7 @@ trait TableStructureRecordsTrait
     public function initFields()
     {
         $structure = $this->getTableStructure();
-        $this->fields = array_keys($structure['fields']);
+        $this->setFields(array_keys($structure['fields']));
     }
 
     /**
@@ -51,7 +59,7 @@ trait TableStructureRecordsTrait
     /**
      * @return mixed
      */
-    protected function getTableStructure()
+    public function getTableStructure()
     {
         if ($this->tableStructure == null) {
             $this->initTableStructure();

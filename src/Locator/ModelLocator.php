@@ -5,11 +5,10 @@ namespace Nip\Records\Locator;
 use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Locator\Configuration\HasConfigurationTrait;
 use Nip\Records\Locator\Exceptions\InvalidModelException;
-use Nip\Records\Locator\ModelLocator\Traits\StaticMethodsTrait;
-use Nip\Records\Locator\Registry\HasModelRegistry;
 use Nip\Records\Locator\Resolver\Commands\Command;
 use Nip\Records\Locator\Resolver\Commands\CommandsFactory;
 use Nip\Records\Locator\Resolver\HasResolverPipelineTrait;
+use Nip\Records\Registry\HasModelRegistry;
 
 /**
  * Class ModelLocator
@@ -17,7 +16,7 @@ use Nip\Records\Locator\Resolver\HasResolverPipelineTrait;
  */
 class ModelLocator
 {
-    use StaticMethodsTrait;
+    use ModelLocator\Traits\StaticMethodsTrait;
     use HasResolverPipelineTrait;
     use HasConfigurationTrait;
     use HasModelRegistry;

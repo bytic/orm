@@ -5,7 +5,7 @@ namespace Nip\Records\Locator\Resolver\Commands;
 
 use Nip\Records\Locator\Configuration\Configuration;
 use Nip\Records\Locator\ModelLocator;
-use Nip\Records\Locator\Registry\ModelRegistry;
+use Nip\Records\Registry\ModelRegistry;
 
 /**
  * Class CommandsFactory
