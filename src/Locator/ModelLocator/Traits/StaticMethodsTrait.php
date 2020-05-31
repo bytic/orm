@@ -26,6 +26,19 @@ trait StaticMethodsTrait
     }
 
     /**
+     * @param $entity
+     * @return RecordManager
+     */
+    public static function for($entity)
+    {
+        if (is_object($entity)) {
+            $entity = method_exists($entity, 'getClassName') ? $entity->getClassName() : get_class($entity);
+        }
+        $entityName = ucfirst(inflector()->pluralize($entity));
+        return self::get($entityName);
+    }
+
+    /**
      * @param string $alias
      * @param RecordManager $entityManager
      * @return void`

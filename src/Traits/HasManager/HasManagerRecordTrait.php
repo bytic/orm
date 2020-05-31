@@ -22,6 +22,11 @@ trait HasManagerRecordTrait
      */
     public function getManager()
     {
+        if (!$this->hasManagerName()) {
+            $manager = ModelLocator::for($this);
+            $this->setManager($manager);
+            return $manager;
+        }
         return ModelLocator::get($this->getManagerName());
     }
 
@@ -40,7 +45,7 @@ trait HasManagerRecordTrait
      */
     public function getManagerName()
     {
-        if ($this->managerName === null) {
+        if ($this->hasManagerName() === false) {
             $this->initManagerName();
         }
 
@@ -55,6 +60,14 @@ trait HasManagerRecordTrait
         $this->managerName = $managerName;
     }
 
+    /**
+     * @return bool
+     */
+    public function hasManagerName()
+    {
+        return is_string($this->managerName);
+    }
+
     protected function initManagerName()
     {
         $this->setManagerName($this->inflectManagerName());
@@ -66,18 +79,5 @@ trait HasManagerRecordTrait
     protected function inflectManagerName()
     {
         return ucfirst(inflector()->pluralize($this->getClassName()));
-    }
-
-    /**
-     * @param string $class
-     * @return RecordManager
-     * @throws Exception
-     */
-    protected function getManagerInstance($class)
-    {
-        if (class_exists($class)) {
-            return call_user_func([$class, 'instance']);
-        }
-        throw new Exception('invalid manager name [' . $class . ']');
     }
 }
