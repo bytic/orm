@@ -4,6 +4,7 @@ namespace Nip\Records\EventManager\Events;
 
 use Nip\Records\AbstractModels\Record;
 use Nip\Records\AbstractModels\RecordManager;
+use Nip\Records\EventManager\EventManager;
 
 /**
  * Class Event
@@ -14,7 +15,7 @@ class Event
     /**
      * @var string
      */
-    protected $name;
+    protected $stage;
 
     /**
      * @var RecordManager
@@ -28,23 +29,43 @@ class Event
 
     /**
      * Event constructor.
-     * @param string $name
+     * @param string $stage
      * @param RecordManager $manager
      * @param Record $record
      */
-    public function __construct(string $name, RecordManager $manager, Record $record)
+    public function __construct(string $stage, RecordManager $manager, Record $record = null)
     {
-        $this->name = $name;
+        $this->stage = $stage;
         $this->manager = $manager;
-        $this->record = $record;
+        if ($record instanceof Record) {
+            $this->withRecord($record);
+        }
+    }
+
+    /**
+     * @param string $name
+     * @param RecordManager $manager
+     * @return Event
+     */
+    public static function create(string $name, RecordManager $manager)
+    {
+        return (new self($name, $manager));
     }
 
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName()
     {
-        return $this->name;
+        return EventManager::eventName($this->getStage(), $this->getManager());
+    }
+
+    /**
+     * @return string
+     */
+    public function getStage(): string
+    {
+        return $this->stage;
     }
 
     /**
@@ -53,6 +74,16 @@ class Event
     public function getManager(): RecordManager
     {
         return $this->manager;
+    }
+
+    /**
+     * @param Record $record
+     * @return Event
+     */
+    public function withRecord(Record $record)
+    {
+        $this->record = $record;
+        return $this;
     }
 
     /**

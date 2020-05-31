@@ -2,6 +2,8 @@
 
 namespace Nip\Records\EventManager;
 
+use Nip\Records\EventManager\Events\Observe;
+
 /**
  * Trait HasObservables
  * @package Nip\Records\Events
