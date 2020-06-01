@@ -12,7 +12,7 @@ trait CanBootRecordsTrait
 
     public function bootIfNotBooted()
     {
-        if ($this->booted === false) {
+        if ($this->booted !== false) {
             return;
         }
 //        $this->fireModelEvent('booting', false);

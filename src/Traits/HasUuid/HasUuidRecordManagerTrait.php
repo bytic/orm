@@ -4,7 +4,10 @@ namespace Nip\Records\Traits\HasUuid;
 
 
 use Exception;
+use Nip\Records\EventManager\Events\Event;
+use Nip\Records\RecordManager;
 use Nip\Utility\Uuid;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 
 /**
  * Trait HasUuidRecordManagerTrait
@@ -28,7 +31,26 @@ trait HasUuidRecordManagerTrait
 
     public function bootHasUuidRecordManagerTrait()
     {
+        static::creating(function (Event $event) {
+            $record = $event->getRecord();
+            /** @var static|RecordManager $manager */
+            $manager = $event->getManager();
+            $columns = $manager->uuidColumns();
+            foreach ($columns as $column) {
+                /* @var \Ramsey\Uuid\Uuid $uuid */
+                $uuid = $manager->generateUuid();
 
+                if (isset($record->{$column}) && !is_null($record->{$column})) {
+                    try {
+                        $uuid = $uuid->fromString(strtolower($record->{$column}));
+                    } catch (InvalidUuidStringException $e) {
+                        $uuid = $uuid->fromBytes($record->{$column});
+                    }
+                }
+
+                $record->{$column} = strtolower($uuid->toString());
+            }
+        });
     }
 
     /**
@@ -39,6 +61,16 @@ trait HasUuidRecordManagerTrait
     public function uuidColumn(): string
     {
         return 'uuid';
+    }
+
+    /**
+     * The names of the columns that should be used for the UUID.
+     *
+     * @return array
+     */
+    public function uuidColumns(): array
+    {
+        return [$this->uuidColumn()];
     }
 
     /**
@@ -62,16 +94,16 @@ trait HasUuidRecordManagerTrait
     }
 
     /**
-     * @return string
-     * @throws \Exception
+     * @return \Ramsey\Uuid\UuidInterface
+     * @throws Exception
      */
-    protected function generateUuid(): string
+    protected function generateUuid()
     {
         $version = $this->resolveUuidVersion();
 
         switch ($version) {
             case 4:
-                return Uuid::v4()->toString();
+                return Uuid::v4();
         }
 
         throw new Exception("UUID version [{$version}] not supported.");

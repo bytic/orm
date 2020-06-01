@@ -4,6 +4,7 @@ namespace Nip\Records\EventManager;
 
 use Nip\Records\AbstractModels\Record;
 use Nip\Records\EventManager\Events\Event;
+use Nip\Records\EventManager\Events\Observe;
 
 /**
  * Trait HasEvents
@@ -76,7 +77,7 @@ trait HasEvents
      */
     public static function creating($callback)
     {
-        static::registerModelEvent('creating', $callback);
+        static::registerModelEvent(Observe::CREATING, $callback);
     }
 
     /**
@@ -87,7 +88,7 @@ trait HasEvents
      */
     public static function created($callback)
     {
-        static::registerModelEvent('created', $callback);
+        static::registerModelEvent(Observe::CREATED, $callback);
     }
 
     /**
