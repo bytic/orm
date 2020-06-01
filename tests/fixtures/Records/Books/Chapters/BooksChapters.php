@@ -22,4 +22,9 @@ class BooksChapters extends \Nip\Records\RecordManager
     {
         return 'id';
     }
+
+    public function generateTableStructure()
+    {
+        return require TEST_FIXTURE_PATH . '/database_structure/table_with_unique.php';
+    }
 }

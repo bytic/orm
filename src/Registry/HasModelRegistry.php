@@ -27,7 +27,7 @@ trait HasModelRegistry
     /**
      * @param modelRegistry $modelRegistry
      */
-    protected function setModelRegistry(ModelRegistry $modelRegistry)
+    public function setModelRegistry(ModelRegistry $modelRegistry)
     {
         $this->modelRegistry = $modelRegistry;
     }

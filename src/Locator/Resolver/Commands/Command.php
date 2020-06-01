@@ -4,6 +4,7 @@
 namespace Nip\Records\Locator\Resolver\Commands;
 
 use Nip\Records\AbstractModels\RecordManager;
+use Nip\Records\Instantiator\HasInstantiatorTrait;
 use Nip\Records\Locator\Configuration\Configuration;
 use Nip\Records\Registry\ModelRegistry;
 
@@ -13,6 +14,8 @@ use Nip\Records\Registry\ModelRegistry;
  */
 class Command
 {
+    use HasInstantiatorTrait;
+
     /**
      * @var string
      */

@@ -3,6 +3,7 @@
 namespace Nip\Records\Locator;
 
 use Nip\Records\AbstractModels\RecordManager;
+use Nip\Records\Instantiator\HasInstantiatorTrait;
 use Nip\Records\Locator\Configuration\HasConfigurationTrait;
 use Nip\Records\Locator\Exceptions\InvalidModelException;
 use Nip\Records\Locator\Resolver\Commands\Command;
@@ -20,6 +21,7 @@ class ModelLocator
     use HasResolverPipelineTrait;
     use HasConfigurationTrait;
     use HasModelRegistry;
+    use HasInstantiatorTrait;
 
     /**
      * @param string $alias

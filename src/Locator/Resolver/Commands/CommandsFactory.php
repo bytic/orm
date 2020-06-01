@@ -23,6 +23,7 @@ class CommandsFactory
     {
         $command = new Command();
         $command->setAlias($alias);
+        $command->setInstantiator($modelLocator->getInstantiator());
         $command = self::hydrateConfiguration($command, $modelLocator->getConfiguration());
         $command = self::hydrateModelRegistry($command, $modelLocator->getModelRegistry());
         return $command;

@@ -36,6 +36,7 @@ class CanCacheTest extends AbstractTest
     public function test_init_flagsCache()
     {
         $manager = MappingManager::instance();
+        $manager->needsCaching(false);
         self::assertFalse($manager->needsCaching());
 
         $books = Books::instance();
