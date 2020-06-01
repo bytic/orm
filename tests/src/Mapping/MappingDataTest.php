@@ -20,7 +20,7 @@ class MappingDataTest extends AbstractTest
         $data->setTableStructure(['test-structure']);
         $data->setFields(['test-field']);
         $data->setBootTraits(['test-boot']);
-        
+
         $serialized = serialize($data);
         self::assertIsString($serialized);
 
