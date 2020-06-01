@@ -8,6 +8,8 @@ use Nip\HelperBroker;
 use Nip\Records\Collections\Collection as RecordCollection;
 use Nip\Records\EventManager\HasEvents;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordsTrait;
+use Nip\Records\Traits\HasController\HasControllerRecordsTrait;
+use Nip\Records\Traits\HasModelName\HasModelNameRecordsTrait;
 use Nip\Records\Traits\HasUrl\HasUrlRecordManagerTrait;
 use Nip\Utility\Traits\NameWorksTrait;
 
@@ -21,6 +23,8 @@ abstract class RecordManager
 {
     use NameWorksTrait;
     use ActiveRecordsTrait;
+    use HasControllerRecordsTrait;
+    use HasModelNameRecordsTrait;
     use HasEvents;
     use HasUrlRecordManagerTrait;
 
@@ -37,22 +41,6 @@ abstract class RecordManager
      * @var null|string
      */
     protected $urlPK = null;
-
-    /**
-     * Model class name
-     * @var null|string
-     */
-    protected $model = null;
-
-    /**
-     * @var null|string
-     */
-    protected $controller = null;
-
-    /**
-     * @var null|string
-     */
-    protected $modelNamespacePath = null;
 
     protected $registry = null;
 
@@ -91,84 +79,6 @@ abstract class RecordManager
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getController()
-    {
-        if ($this->controller === null) {
-            $this->initController();
-        }
-
-        return $this->controller;
-    }
-
-    /**
-     * @param null|string $controller
-     */
-    public function setController($controller)
-    {
-        $this->controller = $controller;
-    }
-
-    protected function initController()
-    {
-        if ($this->isNamespaced()) {
-            $controller = $this->generateControllerNamespaced();
-        } else {
-            $controller = $this->generateControllerGeneric();
-        }
-        $this->setController($controller);
-    }
-
-    /**
-     * @return string
-     */
-    protected function generateControllerNamespaced()
-    {
-        $class = $this->getModelNamespacePath();
-        $class = trim($class, '\\');
-
-        return inflector()->unclassify($class);
-    }
-
-    /**
-     * @return string
-     */
-    public function getModelNamespacePath()
-    {
-        if ($this->modelNamespacePath == null) {
-            $this->initModelNamespacePath();
-        }
-
-        return $this->modelNamespacePath;
-    }
-
-    public function initModelNamespacePath()
-    {
-        if ($this->isNamespaced()) {
-            $path = $this->generateModelNamespacePathFromClassName() . '\\';
-        } else {
-            $controller = $this->generateControllerGeneric();
-            $path = inflector()->classify($controller) . '\\';
-        }
-        $this->modelNamespacePath = $path;
-    }
-
-    /**
-     * @return string
-     */
-    protected function generateModelNamespacePathFromClassName()
-    {
-        $className = $this->getClassName();
-        $rootNamespace = $this->getRootNamespace();
-        $path = str_replace($rootNamespace, '', $className);
-
-        $nsParts = explode('\\', $path);
-        array_pop($nsParts);
-
-        return implode($nsParts, '\\');
-    }
 
     /**
      * @return string
@@ -179,16 +89,6 @@ abstract class RecordManager
             return app('app')->getRootNamespace() . 'Models\\';
         }
         return 'App\\Models\\';
-    }
-
-    /**
-     * @return string
-     */
-    protected function generateControllerGeneric()
-    {
-        $class = $this->getClassName();
-
-        return inflector()->unclassify($class);
     }
 
     /**
@@ -315,55 +215,6 @@ abstract class RecordManager
         return $record;
     }
 
-    /**
-     * @return string
-     */
-    public function getModel()
-    {
-        if ($this->model == null) {
-            $this->inflectModel();
-        }
-
-        return $this->model;
-    }
-
-    /**
-     * @param null $model
-     */
-    public function setModel($model)
-    {
-        $this->model = $model;
-    }
-
-    protected function inflectModel()
-    {
-        $class = $this->getClassName();
-        $this->model = $this->generateModelClass($class);
-    }
-
-    /**
-     * @param string $class
-     * @return string
-     */
-    public function generateModelClass($class = null)
-    {
-        $class = $class ? $class : get_class($this);
-
-        if (strpos($class, '\\')) {
-            $nsParts = explode('\\', $class);
-            $class = array_pop($nsParts);
-
-            if ($class == 'Table') {
-                $class = 'Row';
-            } else {
-                $class = ucfirst(inflector()->singularize($class));
-            }
-
-            return implode($nsParts, '\\') . '\\' . $class;
-        }
-
-        return ucfirst(inflector()->singularize($class));
-    }
 
     /**
      * @return \Nip\Request
