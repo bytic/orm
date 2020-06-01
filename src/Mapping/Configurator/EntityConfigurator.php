@@ -18,8 +18,11 @@ class EntityConfigurator
     public static function wire(RecordManager $manager, MappingData $data)
     {
         static::wireTable($manager, $data);
+        static::wireController($manager, $data);
+        static::wireModel($manager, $data);
         static::wireFields($manager, $data);
         static::wireTableStructure($manager, $data);
+        static::wireBootTraits($manager, $data);
     }
 
     /**
@@ -32,6 +35,30 @@ class EntityConfigurator
             return;
         }
         $manager->setTable($data->getTable());
+    }
+
+    /**
+     * @param RecordManager $manager
+     * @param MappingData $data
+     */
+    protected static function wireController(RecordManager $manager, MappingData $data)
+    {
+        if (!$data->hasController()) {
+            return;
+        }
+        $manager->setController($data->getController());
+    }
+
+    /**
+     * @param RecordManager $manager
+     * @param MappingData $data
+     */
+    protected static function wireModel(RecordManager $manager, MappingData $data)
+    {
+        if (!$data->hasModel()) {
+            return;
+        }
+        $manager->setModel($data->getModel());
     }
 
     /**
@@ -56,5 +83,17 @@ class EntityConfigurator
             return;
         }
         $manager->setTableStructure($data->getTableStructure());
+    }
+
+    /**
+     * @param RecordManager $manager
+     * @param MappingData $data
+     */
+    protected static function wireBootTraits(RecordManager $manager, MappingData $data)
+    {
+        if (!$data->hasBootTraits()) {
+            return;
+        }
+        $manager->setBootTraits($data->getBootTraits());
     }
 }

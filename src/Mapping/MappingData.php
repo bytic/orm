@@ -9,8 +9,11 @@ namespace Nip\Records\Mapping;
 class MappingData implements \Serializable
 {
     protected $table;
+    protected $controller;
+    protected $model;
     protected $tableStructure;
     protected $fields;
+    protected $bootTraits;
 
     /**
      * @return mixed
@@ -35,6 +38,49 @@ class MappingData implements \Serializable
     {
         $this->table = $table;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    /**
+     * @param mixed $controller
+     */
+    public function setController($controller): void
+    {
+        $this->controller = $controller;
+    }
+
+    public function hasController(): bool
+    {
+        return !empty($this->controller);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    /**
+     * @param mixed $model
+     */
+    public function setModel($model): void
+    {
+        $this->model = $model;
+    }
+
+    public function hasModel(): bool
+    {
+        return !empty($this->model);
+    }
+
 
     /**
      * @return mixed
@@ -73,7 +119,7 @@ class MappingData implements \Serializable
      */
     public function hasFields(): bool
     {
-        return $this->fields;
+        return is_array($this->fields);
     }
 
     /**
@@ -85,12 +131,34 @@ class MappingData implements \Serializable
     }
 
     /**
+     * @return mixed
+     */
+    public function getBootTraits()
+    {
+        return $this->bootTraits;
+    }
+
+    /**
+     * @param mixed $bootTraits
+     */
+    public function setBootTraits($bootTraits): void
+    {
+        $this->bootTraits = $bootTraits;
+    }
+
+    public function hasBootTraits(): bool
+    {
+        return is_array($this->bootTraits);
+    }
+
+
+    /**
      * @inheritDoc
      */
     public function serialize()
     {
         $data = [];
-        $properties = ['tableStructure', 'fields'];
+        $properties = ['table', 'controller', 'tableStructure', 'fields', 'bootTraits'];
         foreach ($properties as $property) {
             $data[$property] = $this->{$property};
         }
