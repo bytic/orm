@@ -158,7 +158,7 @@ class MappingData implements \Serializable
     public function serialize()
     {
         $data = [];
-        $properties = ['table', 'controller', 'tableStructure', 'fields', 'bootTraits'];
+        $properties = ['table', 'model', 'controller', 'tableStructure', 'fields', 'bootTraits'];
         foreach ($properties as $property) {
             $data[$property] = $this->{$property};
         }
@@ -185,7 +185,7 @@ class MappingData implements \Serializable
     public function fromArray($data)
     {
         foreach ($data as $key=>$value) {
-            if (property_exists($key, $value)) {
+            if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }
         }
