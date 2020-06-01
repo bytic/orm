@@ -8,6 +8,8 @@ use Nip\HelperBroker;
 use Nip\Records\Collections\Collection as RecordCollection;
 use Nip\Records\EventManager\HasEvents;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordsTrait;
+use Nip\Records\Traits\CanBoot\CanBootRecordsTrait;
+use Nip\Records\Traits\CanBootTraits\CanBootTraitsRecordsTrait;
 use Nip\Records\Traits\HasController\HasControllerRecordsTrait;
 use Nip\Records\Traits\HasModelName\HasModelNameRecordsTrait;
 use Nip\Records\Traits\HasUrl\HasUrlRecordManagerTrait;
@@ -23,6 +25,8 @@ abstract class RecordManager
 {
     use NameWorksTrait;
     use ActiveRecordsTrait;
+    use CanBootRecordsTrait;
+    use CanBootTraitsRecordsTrait;
     use HasControllerRecordsTrait;
     use HasModelNameRecordsTrait;
     use HasEvents;
@@ -43,6 +47,11 @@ abstract class RecordManager
     protected $urlPK = null;
 
     protected $registry = null;
+
+    public function __construct()
+    {
+        $this->bootIfNotBooted();
+    }
 
     /**
      * Overloads findByRecord, findByField, deleteByRecord, deleteByField, countByRecord, countByField
@@ -79,6 +88,16 @@ abstract class RecordManager
         return $this;
     }
 
+    /**
+     * When a model is being unserialized, check if it needs to be booted.
+     *
+     * @return void
+     */
+    public function __wakeup()
+    {
+        $this->initDB();
+        $this->bootIfNotBooted();
+    }
 
     /**
      * @return string
@@ -222,11 +241,6 @@ abstract class RecordManager
     public function getRequest()
     {
         return request();
-    }
-
-    public function __wakeup()
-    {
-        $this->initDB();
     }
 
     /**

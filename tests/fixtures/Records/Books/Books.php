@@ -2,6 +2,7 @@
 
 namespace Nip\Records\Tests\Fixtures\Records\Books;
 
+use Nip\Records\Traits\HasUuid\HasUuidRecordManagerTrait;
 use Nip\Utility\Traits\SingletonTrait;
 
 /**
@@ -11,6 +12,7 @@ use Nip\Utility\Traits\SingletonTrait;
 class Books extends \Nip\Records\RecordManager
 {
     use SingletonTrait;
+    use HasUuidRecordManagerTrait;
 
     protected function generateTable()
     {

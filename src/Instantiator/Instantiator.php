@@ -4,6 +4,7 @@ namespace Nip\Records\Instantiator;
 
 use Nip\Records\Mapping\Configurator\EntityConfigurator;
 use Nip\Records\Mapping\MappingManager;
+use Nip\Records\RecordManager;
 use Nip\Records\Registry\HasModelRegistry;
 
 /**
@@ -43,6 +44,18 @@ class Instantiator
         }
 
         $mapping = MappingManager::for($className);
+        EntityConfigurator::wire($manager, $mapping);
+        return $manager;
+    }
+
+    /**
+     * @param RecordManager $manager
+     * @return RecordManager
+     */
+    protected function prepare(RecordManager $manager)
+    {
+        $manager->bootIfNotBooted();
+        $mapping = MappingManager::for($manager);
         EntityConfigurator::wire($manager, $mapping);
         return $manager;
     }

@@ -26,6 +26,11 @@ trait HasUuidRecordManagerTrait
         'ordered',
     ];
 
+    public function bootHasUuidRecordManagerTrait()
+    {
+
+    }
+
     /**
      * The name of the column that should be used for the UUID.
      *

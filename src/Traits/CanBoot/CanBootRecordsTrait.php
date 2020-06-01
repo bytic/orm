@@ -8,15 +8,21 @@ namespace Nip\Records\Traits\CanBoot;
  */
 trait CanBootRecordsTrait
 {
-    protected function bootIfNotBooted()
+    protected $booted = false;
+
+    public function bootIfNotBooted()
     {
+        if ($this->booted === false) {
+            return;
+        }
 //        $this->fireModelEvent('booting', false);
 
-        static::booting();
-        static::boot();
-        static::booted();
+        $this->booting();
+        $this->boot();
+        $this->booted();
 
 //        $this->fireModelEvent('booted', false);
+        $this->booted = true;
     }
 
     /**
@@ -24,7 +30,7 @@ trait CanBootRecordsTrait
      *
      * @return void
      */
-    protected static function booting()
+    protected function booting()
     {
         //
     }
@@ -34,9 +40,9 @@ trait CanBootRecordsTrait
      *
      * @return void
      */
-    protected static function boot()
+    protected function boot()
     {
-//        static::bootTraits();
+        $this->bootTraits();
     }
 
     /**
@@ -44,7 +50,7 @@ trait CanBootRecordsTrait
      *
      * @return void
      */
-    protected static function booted()
+    protected function booted()
     {
         //
     }
