@@ -185,7 +185,7 @@ class MappingData implements \Serializable
     public function fromArray($data)
     {
         foreach ($data as $key=>$value) {
-            if (property_exists($this, $value)) {
+            if (property_exists($key, $value)) {
                 $this->{$key} = $value;
             }
         }

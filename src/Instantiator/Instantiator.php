@@ -43,9 +43,7 @@ class Instantiator
             $manager = new $className();
         }
 
-        $mapping = MappingManager::for($manager);
-        EntityConfigurator::wire($manager, $mapping);
-        return $manager;
+        return $this->prepare($manager);
     }
 
     /**
