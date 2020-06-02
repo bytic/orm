@@ -77,6 +77,12 @@ class MappingManager
         if ($this->booted === true) {
             return;
         }
+        $this->boot();
+        $this->booted = true;
+    }
+
+    protected function boot()
+    {
         $this->initFromCache();
     }
 }
