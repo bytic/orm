@@ -110,8 +110,14 @@ trait ActiveRecordsTrait
      */
     public function insert($model, $onDuplicate = false)
     {
+        if ($this->fireModelEvent(Observe::CREATING, $model) === false) {
+            return false;
+        }
         $query = $this->insertQuery($model, $onDuplicate);
-        return $this->performInsert($query, $model);
+        $return = $this->performInsert($query, $model);
+
+        $this->fireModelEvent(Observe::CREATED, $model);
+        return $return;
     }
 
     /**
@@ -148,10 +154,6 @@ trait ActiveRecordsTrait
      */
     protected function performInsert(Query $query, Record $record)
     {
-        if ($this->fireModelEvent(Observe::CREATING, $record) === false) {
-            return false;
-        }
-
         $pk = $this->getPrimaryKey();
         $query->execute();
         $lastId = $this->getDB()->lastInsertID();
@@ -159,8 +161,6 @@ trait ActiveRecordsTrait
         if ($pk == 'id') {
             $this->{$pk} = $lastId;
         }
-
-        $this->fireModelEvent(Observe::CREATED, $record);
 
         return true;
     }
