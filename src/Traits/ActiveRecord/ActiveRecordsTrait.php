@@ -159,7 +159,7 @@ trait ActiveRecordsTrait
         $lastId = $this->getDB()->lastInsertID();
 
         if ($pk == 'id') {
-            $this->{$pk} = $lastId;
+            $record->{$pk} = $lastId;
         }
 
         return true;
