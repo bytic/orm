@@ -21,7 +21,7 @@ class MappingRepositoryTest extends AbstractTest
 
         $cache = $repository->generateCache();
         self::assertSame(
-            'a:1:{s:4:"test";C:31:"Nip\Records\Mapping\MappingData":108:{a:5:{s:5:"table";s:4:"test";s:10:"controller";N;s:14:"tableStructure";N;s:6:"fields";N;s:10:"bootTraits";N;}}}',
+            'a:1:{s:4:"test";C:31:"Nip\Records\Mapping\MappingData":122:{a:6:{s:5:"table";s:4:"test";s:5:"model";N;s:10:"controller";N;s:14:"tableStructure";N;s:6:"fields";N;s:10:"bootTraits";N;}}}',
             $cache
         );
     }
