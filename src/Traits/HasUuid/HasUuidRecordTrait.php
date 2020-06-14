@@ -8,5 +8,4 @@ namespace Nip\Records\Traits\HasUuid;
  */
 trait HasUuidRecordTrait
 {
-
 }

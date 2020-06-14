@@ -2,7 +2,6 @@
 
 namespace Nip\Records\Traits\HasUuid;
 
-
 use Exception;
 use Nip\Records\EventManager\Events\Event;
 use Nip\Records\RecordManager;
