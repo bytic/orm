@@ -48,5 +48,4 @@ class HasEventsTests extends AbstractTest
         }
         return $data;
     }
-
 }

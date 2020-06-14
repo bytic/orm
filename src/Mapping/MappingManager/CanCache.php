@@ -2,7 +2,6 @@
 
 namespace Nip\Records\Mapping\MappingManager;
 
-
 use DateInterval;
 use Nip\Cache\Stores\Repository;
 use Nip\Container\Container;
@@ -31,7 +30,6 @@ trait CanCache
 
     protected function checkInitFromCache()
     {
-
     }
 
     protected function initFromCache()

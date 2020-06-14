@@ -63,5 +63,4 @@ trait HasControllerRecordsTrait
 
         return inflector()->unclassify($class);
     }
-
 }

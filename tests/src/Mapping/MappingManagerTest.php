@@ -23,6 +23,6 @@ class MappingManagerTest extends AbstractTest
 
         $manager->repository();
         $manager->repository();
-        self::assertInstanceOf(MappingRepository::class,$manager->repository());
+        self::assertInstanceOf(MappingRepository::class, $manager->repository());
     }
 }
