@@ -55,7 +55,7 @@ trait HasModelNameRecordsTrait
         $nsParts = explode('\\', $path);
         array_pop($nsParts);
 
-        return implode($nsParts, '\\');
+        return implode('\\', $nsParts);
     }
 
     /**
@@ -102,7 +102,7 @@ trait HasModelNameRecordsTrait
                 $class = ucfirst(inflector()->singularize($class));
             }
 
-            return implode($nsParts, '\\') . '\\' . $class;
+            return implode('\\', $nsParts) . '\\' . $class;
         }
 
         return ucfirst(inflector()->singularize($class));
