@@ -1,5 +1,5 @@
-# View
-ByTIC Database component
+# ORM
+ByTIC ORM component
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/bytic/orm.svg?style=flat-square)](https://packagist.org/packages/bytic/orm)
 [![Latest Stable Version](https://poser.pugx.org/bytic/orm/v/stable)](https://packagist.org/packages/bytic/orm)

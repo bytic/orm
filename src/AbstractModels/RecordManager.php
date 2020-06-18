@@ -7,6 +7,7 @@ use Nip\Database\Query\Insert as InsertQuery;
 use Nip\HelperBroker;
 use Nip\Records\Collections\Collection as RecordCollection;
 use Nip\Records\EventManager\HasEvents;
+use Nip\Records\Legacy\AbstractModels\RecordManagerLegacyTrait;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordsTrait;
 use Nip\Records\Traits\CanBoot\CanBootRecordsTrait;
 use Nip\Records\Traits\CanBootTraits\CanBootTraitsRecordsTrait;
@@ -31,6 +32,8 @@ abstract class RecordManager
     use HasModelNameRecordsTrait;
     use HasEvents;
     use HasUrlRecordManagerTrait;
+
+    use RecordManagerLegacyTrait;
 
     /**
      * Collection class for current record manager
@@ -232,15 +235,6 @@ abstract class RecordManager
         $record->writeData($data);
 
         return $record;
-    }
-
-
-    /**
-     * @return \Nip\Request
-     */
-    public function getRequest()
-    {
-        return request();
     }
 
     /**

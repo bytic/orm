@@ -86,23 +86,10 @@ abstract class Record implements \Serializable
     /**
      * @return Record
      */
-    public function getCloneWithRelations()
-    {
-        $item = $this->getClone();
-        $item->cloneRelations($this);
-
-        return $item;
-    }
-
-    /**
-     * @return Record
-     */
     public function getClone()
     {
         $clone = $this->getManager()->getNew();
         $clone->updateDataFromRecord($this);
-
-        unset($clone->{$this->getManager()->getPrimaryKey()}, $clone->created);
 
         return $clone;
     }
@@ -113,9 +100,12 @@ abstract class Record implements \Serializable
     public function updateDataFromRecord($record)
     {
         $data = $record->toArray();
-        $this->writeData($data);
+        $cleanup = [$this->getManager()->getPrimaryKey(), 'created'];
+        foreach ($cleanup as $key) {
+            unset($data[$key]);
+        }
 
-        unset($this->{$this->getManager()->getPrimaryKey()}, $this->created);
+        $this->writeData($data);
     }
 
     /**
