@@ -2,12 +2,14 @@
 
 namespace Nip\Records\Registry;
 
-use Nip\Collections\Collection;
+use Nip\Collections\Lazy\AbstractLazyCollection;
+use Nip\Records\Registry\Traits\IsCachedTrait;
 
 /**
  * Class ModelRegistry
  * @package Nip\Records\Registry
  */
-class ModelRegistry extends Collection
+class ModelRegistry extends AbstractLazyCollection
 {
+    use IsCachedTrait;
 }

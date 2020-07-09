@@ -12,63 +12,27 @@ use Nip\Container\Container;
  */
 trait CanCache
 {
-    protected $needsCaching = false;
-
-    protected $cacheStore = null;
+    use \Nip\Cache\Cacheable\CanCache;
 
     /**
-     * @param null $needCaching
-     * @return bool
+     * @return mixed
      */
-    public function needsCaching($needCaching = null): bool
+    protected function generateCacheData()
     {
-        if (is_bool($needCaching)) {
-            $this->needsCaching = $needCaching;
-        }
-        return $this->needsCaching;
-    }
-
-    protected function checkInitFromCache()
-    {
+        return $this->repository->generateCache();
     }
 
     protected function initFromCache()
     {
-        $data = $this->cacheStore()->get('orm.mapping.data');
+        $data = $this->getDataFromCache();
         $this->repository->initFromCache($data);
     }
 
-
-    protected function checkSaveCache()
-    {
-        if ($this->needsCaching() !== true) {
-            return;
-        }
-        $data = $this->repository->generateCache();
-        $this->cacheStore()->set('orm.mapping.data', $data, DateInterval::createFromDateString('10 years'));
-    }
-
-
     /**
-     * @return Repository
+     * @inheritDoc
      */
-    protected function cacheStore()
+    protected function dataCacheKey($key= null)
     {
-        if ($this->cacheStore === null) {
-            $this->cacheStore = $this->generateCacheStore();
-        }
-        return $this->cacheStore;
-    }
-
-    /**
-     * @return Repository
-     */
-    protected function generateCacheStore()
-    {
-        if (function_exists('app')) {
-            return app('cache.store');
-        }
-
-        return Container::getInstance()->get('cache.store');
+        return 'orm.mapping.data';
     }
 }
