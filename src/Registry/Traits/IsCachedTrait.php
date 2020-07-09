@@ -3,6 +3,7 @@
 namespace Nip\Records\Registry\Traits;
 
 use Nip\Cache\Cacheable\CanCache;
+use Nip\Records\Instantiator\Instantiator;
 
 /**
  * Trait IsCachedTrait
@@ -31,13 +32,28 @@ trait IsCachedTrait
      */
     protected function generateCacheData()
     {
-        return $this->all();
+        return array_map(
+            function ($manager) {
+                return get_class($manager);
+            },
+            $this->all()
+        );
     }
 
     protected function doLoad(): void
     {
         $data = $this->getDataFromCache();
-        if (is_array($data)) {
+
+        $instantiator = new Instantiator();
+        $instantiator->setModelRegistry($this);
+
+        if (is_array($data) && count($data)) {
+            $data = array_map(
+                function ($manager) use ($instantiator){
+                    return $instantiator->instantiate($manager);
+                },
+                $data
+            );
             $this->setItems($data);
         }
     }

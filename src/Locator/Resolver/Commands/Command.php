@@ -6,6 +6,7 @@ namespace Nip\Records\Locator\Resolver\Commands;
 use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Instantiator\HasInstantiatorTrait;
 use Nip\Records\Locator\Configuration\Configuration;
+use Nip\Records\Registry\HasModelRegistry;
 use Nip\Records\Registry\ModelRegistry;
 
 /**
@@ -15,6 +16,7 @@ use Nip\Records\Registry\ModelRegistry;
 class Command
 {
     use HasInstantiatorTrait;
+    use HasModelRegistry;
 
     /**
      * @var string
@@ -25,11 +27,6 @@ class Command
      * @var Configuration
      */
     protected $configuration;
-
-    /**
-     * @var ModelRegistry
-     */
-    protected $modelRegistry;
 
     /**
      * @var []
@@ -119,22 +116,6 @@ class Command
     public function getNamespaces()
     {
         return $this->hasNamespaces() ? $this->getConfiguration()->getNamespaces() : [];
-    }
-
-    /**
-     * @return ModelRegistry
-     */
-    public function getModelRegistry(): ModelRegistry
-    {
-        return $this->modelRegistry;
-    }
-
-    /**
-     * @param ModelRegistry $modelRegistry
-     */
-    public function setModelRegistry(ModelRegistry $modelRegistry)
-    {
-        $this->modelRegistry = $modelRegistry;
     }
 
     /**

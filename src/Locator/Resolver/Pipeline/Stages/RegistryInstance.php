@@ -2,8 +2,6 @@
 
 namespace Nip\Records\Locator\Resolver\Pipeline\Stages;
 
-use Nip\Records\AbstractModels\RecordManager;
-
 /**
  * Class ClassInstance
  * @package Nip\Records\Locator\Resolver\Pipeline\Stages
