@@ -3,7 +3,7 @@
 namespace Nip\Records\Mapping\Configurator;
 
 use Nip\Records\Mapping\MappingData;
-use Nip\Records\RecordManager;
+use Nip\Records\AbstractModels\RecordManager;
 
 /**
  * Class EntityConfigurator

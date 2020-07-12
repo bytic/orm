@@ -4,7 +4,7 @@ namespace Nip\Records\Mapping;
 
 use Nip\Records\Mapping\Configurator\DataConfigurator;
 use Nip\Records\Mapping\MappingManager\CanCache;
-use Nip\Records\RecordManager;
+use Nip\Records\AbstractModels\RecordManager;
 use Nip\Utility\Traits\SingletonTrait;
 
 /**
