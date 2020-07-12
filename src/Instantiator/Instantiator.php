@@ -4,7 +4,7 @@ namespace Nip\Records\Instantiator;
 
 use Nip\Records\Mapping\Configurator\EntityConfigurator;
 use Nip\Records\Mapping\MappingManager;
-use Nip\Records\RecordManager;
+use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Registry\HasModelRegistry;
 
 /**
