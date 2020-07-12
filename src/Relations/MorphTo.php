@@ -6,7 +6,7 @@ use Exception;
 use MongoDB\Driver\Query;
 use Nip\Records\AbstractModels\Record;
 use Nip\Records\Collections\Collection;
-use Nip\Records\RecordManager;
+use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Relations\Exceptions\ModelNotLoadedInRelation;
 use Nip\Records\Relations\Traits\HasMorphTypeTrait;
 use Nip\HelperBroker;

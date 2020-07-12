@@ -2,7 +2,7 @@
 
 namespace Nip\Records\Relations\Traits;
 
-use Nip\Records\RecordManager;
+use Nip\Records\AbstractModels\RecordManager;
 
 /**
  * Trait HasForeignKeyTrait

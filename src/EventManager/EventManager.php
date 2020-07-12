@@ -4,7 +4,7 @@ namespace Nip\Records\EventManager;
 
 use Nip\Records\EventManager\Dispatcher\Dispatcher;
 use Nip\Records\EventManager\ListenerProviders\LifecycleListenerProvider;
-use Nip\Records\RecordManager;
+use Nip\Records\AbstractModels\RecordManager;
 use Nip\Utility\Traits\SingletonTrait;
 
 /**
