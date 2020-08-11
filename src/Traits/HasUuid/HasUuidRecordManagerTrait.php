@@ -7,6 +7,7 @@ use Nip\Records\EventManager\Events\Event;
 use Nip\Records\AbstractModels\RecordManager;
 use Nip\Utility\Uuid;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Trait HasUuidRecordManagerTrait
@@ -36,18 +37,7 @@ trait HasUuidRecordManagerTrait
             $manager = $event->getManager();
             $columns = $manager->uuidColumns();
             foreach ($columns as $column) {
-                /* @var \Ramsey\Uuid\Uuid $uuid */
-                $uuid = $manager->generateUuid();
-
-                if (isset($record->{$column}) && !is_null($record->{$column})) {
-                    try {
-                        $uuid = $uuid->fromString(strtolower($record->{$column}));
-                    } catch (InvalidUuidStringException $e) {
-                        $uuid = $uuid->fromBytes($record->{$column});
-                    }
-                }
-
-                $record->{$column} = strtolower($uuid->toString());
+                $this->bootUuidRecordColumn($manager, $record, $column);
             }
         });
     }
@@ -93,7 +83,28 @@ trait HasUuidRecordManagerTrait
     }
 
     /**
-     * @return \Ramsey\Uuid\UuidInterface
+     * @param $manager
+     * @param $record
+     * @param $column
+     */
+    protected function bootUuidRecordColumn($manager, $record, $column)
+    {
+        /* @var \Ramsey\Uuid\Uuid $uuid */
+        $uuid = $manager->generateUuid();
+
+        if (isset($record->{$column}) && !is_null($record->{$column})) {
+            try {
+                $uuid = Uuid::fromString(strtolower($record->{$column}));
+            } catch (InvalidUuidStringException $exception) {
+                $uuid = Uuid::fromBytes($record->{$column});
+            }
+        }
+
+        $record->{$column} = strtolower($uuid->toString());
+    }
+
+    /**
+     * @return UuidInterface
      * @throws Exception
      */
     protected function generateUuid()

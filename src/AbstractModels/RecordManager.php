@@ -258,9 +258,10 @@ abstract class RecordManager
         $data = [];
 
         $fields = $this->getFields();
+        $modelData = $model->getAttributes();
         foreach ($fields as $field) {
-            if (isset($model->{$field})) {
-                $data[$field] = $model->{$field};
+            if (isset($modelData[$field])) {
+                $data[$field] = $modelData[$field];
             }
         }
 

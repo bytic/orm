@@ -40,7 +40,7 @@ trait SerializableRecord
      */
     public function __sleep()
     {
-        return ['_data'];
+        return ['attributes'];
     }
 
     public function __wakeup()

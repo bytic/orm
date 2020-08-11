@@ -10,19 +10,15 @@ use Nip\Utility\Str;
  */
 trait HasAttributesRecordTrait
 {
-    protected $_data;
+    protected $attributes = [];
 
     /**
      * @param $name
      * @return mixed
      */
-    public function &__get($name)
+    public function __get($name)
     {
-        if (!$this->__isset($name)) {
-            $this->_data[$name] = null;
-        }
-
-        return $this->_data[$name];
+        return $this->getAttribute($name);
     }
 
     /**
@@ -35,20 +31,129 @@ trait HasAttributesRecordTrait
     }
 
     /**
-     * @param $name
+     * @param $key
      * @return bool
      */
-    public function __isset($name)
+    public function __isset($key)
     {
-        return isset($this->_data[$name]);
+        return $this->offsetExists($key);
     }
 
     /**
-     * @param $name
+     * @param $key
      */
-    public function __unset($name)
+    public function __unset($key)
     {
-        unset($this->_data[$name]);
+        $this->offsetUnset($key);
+    }
+
+    /**
+     * Determine if the given attribute exists.
+     *
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return !is_null($this->getAttribute($offset));
+    }
+
+    /**
+     * Get the value for a given offset.
+     *
+     * @param mixed $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->getAttribute($offset);
+    }
+
+    /**
+     * Set the value for a given offset.
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->setAttribute($offset, $value);
+    }
+
+    /**
+     * Unset the value for a given offset.
+     *
+     * @param mixed $offset
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->attributes[$offset]);
+    }
+
+    /**
+     * Get an attribute from the model.
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function getAttribute($key)
+    {
+        if (!$key) {
+            return;
+        }
+
+        if (array_key_exists($key, $this->attributes)
+//            || array_key_exists($key, $this->casts)
+            || $this->hasGetMutator($key)
+//            || $this->isClassCastable($key)
+        ) {
+            return $this->getAttributeValue($key);
+        }
+//        return $this->getRelationValue($key);
+        return;
+    }
+
+    /**
+     * Get a plain attribute (not a relationship).
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function getAttributeValue($key)
+    {
+        return $this->transformModelValue($key, $this->getAttributeFromArray($key));
+    }
+
+    /**
+     * Transform a raw model value using mutators, casts, etc.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return mixed
+     */
+    protected function transformModelValue($key, $value)
+    {
+        // If the attribute has a get mutator, we will call that then return what
+        // it returns as the value, which is useful for transforming values on
+        // retrieval from the model to a form that is more useful for usage.
+        if ($this->hasGetMutator($key)) {
+            return $this->mutateAttribute($key, $value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Get an attribute from the $attributes array.
+     *
+     * @param string $key
+     * @return mixed
+     */
+    protected function getAttributeFromArray($key)
+    {
+        return $this->getAttributes()[$key] ?? null;
     }
 
     /**
@@ -86,11 +191,43 @@ trait HasAttributesRecordTrait
     }
 
     /**
+     * @return mixed
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+
+    /**
      * @param $key
      * @param $value
      */
     protected function setDataValue($key, $value)
     {
-        $this->_data[$key] = $value;
+        $this->attributes[$key] = $value;
+    }
+
+    /**
+     * Determine if a get mutator exists for an attribute.
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function hasGetMutator($key)
+    {
+        return method_exists($this, 'get' . Str::studly($key) . 'Attribute');
+    }
+
+    /**
+     * Get the value of an attribute using its mutator.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return mixed
+     */
+    protected function mutateAttribute($key, $value)
+    {
+        return $this->{'get' . Str::studly($key) . 'Attribute'}($value);
     }
 }
