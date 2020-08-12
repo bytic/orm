@@ -56,6 +56,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
     public function addParams($params)
     {
         $this->checkParamMorphPrefix($params);
+        $this->checkParamMorphTypeField($params);
         parent::addParams($params);
     }
 }

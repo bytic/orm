@@ -52,6 +52,7 @@ class MorphTo extends BelongsTo
     public function addParams($params)
     {
         $this->checkParamMorphPrefix($params);
+        $this->checkParamMorphTypeField($params);
         parent::addParams($params);
     }
 

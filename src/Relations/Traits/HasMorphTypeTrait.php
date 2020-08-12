@@ -25,6 +25,17 @@ trait HasMorphTypeTrait
     }
 
     /**
+     * @param $params
+     */
+    public function checkParamMorphTypeField($params)
+    {
+        if (isset($params['morphTypeField'])) {
+            $this->setMorphTypeField($params['morphTypeField']);
+            unset($params['morphTypeField']);
+        }
+    }
+
+    /**
      * @return string
      */
     public function getMorphPrefix(): string
