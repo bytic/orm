@@ -56,8 +56,7 @@ abstract class Record implements \Serializable
      */
     public function toArray()
     {
-        $vars = get_object_vars($this);
-        return $vars['_data'];
+        return $this->attributes;
     }
 
     /**
