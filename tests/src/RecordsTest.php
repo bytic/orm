@@ -4,11 +4,9 @@ namespace Nip\Records\Tests;
 
 use Mockery as m;
 use Nip\Database\Connections\Connection;
-use Nip\Helpers\View\Url;
+use Nip\Http\Request;
 use Nip\Records\Collections\Collection;
 use Nip\Records\RecordManager as Records;
-use Nip\Request;
-use Nip\Records\Tests\AbstractTest;
 use Nip_Helper_Url;
 
 /**

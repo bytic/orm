@@ -4,7 +4,7 @@ namespace Nip\Records\Tests\Filters\Column;
 
 use Nip\Database\Query\Select;
 use Nip\Records\Filters\Column\BasicFilter;
-use Nip\Request;
+use Nip\Http\Request;
 
 /**
  * Class BasicFilterTest

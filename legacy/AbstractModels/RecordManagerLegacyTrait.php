@@ -10,7 +10,7 @@ trait RecordManagerLegacyTrait
 {
 
     /**
-     * @return \Nip\Request
+     * @return \Nip\Http\Request
      * @deprecated use request()
      */
     public function getRequest()

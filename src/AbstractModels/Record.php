@@ -108,7 +108,7 @@ abstract class Record implements \Serializable
     }
 
     /**
-     * @return \Nip\Request
+     * @return \Nip\Http\Request
      */
     protected function getRequest()
     {

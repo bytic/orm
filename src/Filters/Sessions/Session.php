@@ -5,7 +5,7 @@ namespace Nip\Records\Filters\Sessions;
 use Nip\Records\Filters\Sessions\Traits\HasFiltersArrayTrait;
 use Nip\Records\Filters\Sessions\Traits\HasFiltersTrait;
 use Nip\Records\Filters\Sessions\Traits\HasQueryTrait;
-use Nip\Request;
+use Nip\Http\Request;
 
 /**
  * Class Session

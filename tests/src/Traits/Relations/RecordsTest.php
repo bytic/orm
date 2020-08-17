@@ -10,7 +10,7 @@ use Nip\Records\Relations\HasAndBelongsToMany;
 use Nip\Records\Relations\HasMany;
 use Nip\Records\Relations\HasOne;
 use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
-use Nip\Request;
+use Nip\Http\Request;
 use Nip\Records\Tests\AbstractTest;
 
 /**

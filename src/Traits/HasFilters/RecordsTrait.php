@@ -4,7 +4,7 @@ namespace Nip\Records\Traits\HasFilters;
 
 use Nip\Database\Query\Select as SelectQuery;
 use Nip\Records\Filters\FilterManager;
-use Nip\Request;
+use Nip\Http\Request;
 
 /**
  * Class RecordsTrait

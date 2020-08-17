@@ -7,7 +7,7 @@ use Nip\Records\Filters\AbstractFilter;
 use Nip\Records\Filters\FilterManager;
 use Nip\Records\Filters\Sessions\Session;
 use Nip\Records\Tests\AbstractTest;
-use Nip\Request;
+use Nip\Http\Request;
 
 /**
  * Class FilterManagerTest
