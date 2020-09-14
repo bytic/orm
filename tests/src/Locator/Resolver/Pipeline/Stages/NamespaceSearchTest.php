@@ -29,11 +29,36 @@ class NamespaceSearchTest extends AbstractTest
     public function generateClassProvider()
     {
         return [
-            ['Books\Books',['Books\Books','Books\Books\Books','Books\Books\BooksBooks']],
-            ['race-entries',['Race\Entries','Race\Entries\Entries','Race\Entries\RaceEntries']],
-            ['race_entries',['RaceEntries','RaceEntries\RaceEntries']],
-            ['race_entries-logs',['RaceEntries\Logs','RaceEntries\Logs\Logs','RaceEntries\Logs\RaceEntriesLogs']],
-            ['races-waiting_entries',['Races\WaitingEntries','Races\WaitingEntries\WaitingEntries','Races\WaitingEntries\RacesWaitingEntries']]
+            [
+                'Books\Books',
+                ['Books\Books', 'Books\Books\Books', 'Books\Books\BooksBooks']
+            ],
+            [
+                'race-entries',
+                ['Race\Entries', 'Race\Entries\Entries', 'Race\Entries\RaceEntries', 'RaceEntries\RaceEntries']
+            ],
+            [
+                'race_entries',
+                ['RaceEntries', 'RaceEntries\RaceEntries']
+            ],
+            [
+                'race_entries-logs',
+                [
+                    'RaceEntries\Logs',
+                    'RaceEntries\Logs\Logs',
+                    'RaceEntries\Logs\RaceEntriesLogs',
+                    'RaceEntriesLogs\RaceEntriesLogs'
+                ]
+            ],
+            [
+                'races-waiting_entries',
+                [
+                    'Races\WaitingEntries',
+                    'Races\WaitingEntries\WaitingEntries',
+                    'Races\WaitingEntries\RacesWaitingEntries',
+                    'RacesWaitingEntries\RacesWaitingEntries'
+                ]
+            ]
         ];
     }
 }

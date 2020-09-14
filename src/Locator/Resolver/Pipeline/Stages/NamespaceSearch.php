@@ -55,10 +55,11 @@ class NamespaceSearch extends AbstractStage
      */
     public function buildAliasVariations($alias)
     {
-        $alias = str_replace('\\', '-', $alias);
-        $alias = inflector()->classify($alias);
-        $alias = ucwords(preg_replace('/[^A-Z^a-z^0-9]+/', ' ', $alias));
-        $elements = explode(" ", $alias);
+        $aliasProcessed = str_replace('\\', '-', $alias);
+        $aliasProcessed = inflector()->classify($aliasProcessed);
+        $aliasProcessed = ucwords(preg_replace('/[^A-Z^a-z^0-9]+/', ' ', $aliasProcessed));
+
+        $elements = explode(" ", $aliasProcessed);
 
         $return[] = implode('\\', $elements);
 
@@ -70,9 +71,19 @@ class NamespaceSearch extends AbstractStage
         if ($preLastElement) {
             $return[] = $base . '\\' . $preLastElement.$lastElement;
         }
+
+        $aliasProcessed = str_replace('-', '_', $alias);
+        $aliasProcessed = str_replace('\\', '-', $aliasProcessed);
+        $aliasProcessed = inflector()->classify($aliasProcessed);
+        $aliasProcessed = ucwords(preg_replace('/[^A-Z^a-z^0-9]+/', ' ', $aliasProcessed));
+        $elements = explode(" ", $aliasProcessed);
+
+        $elements[] = end($elements);
+        $return[] = implode('\\', $elements);
+
 //        $elements[] = end($elements);
 //        $return[] = implode('\\', $elements);
 
-        return $return;
+        return array_unique($return);
     }
 }
