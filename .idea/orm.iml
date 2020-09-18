@@ -22,6 +22,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/helpers" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/http" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/inflector" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/orm-filters" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/pipeline" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/profiler" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/request-detective" />
@@ -70,6 +71,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/ramsey/uuid" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/roave/better-reflection" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/roave/signature" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/cli-parser" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/code-unit" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/code-unit-reverse-lookup" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/comparator" />

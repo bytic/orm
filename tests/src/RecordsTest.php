@@ -81,29 +81,6 @@ class RecordsTest extends AbstractTest
         self::assertSame($this->_object, $collection->getManager());
     }
 
-    public function testRequestFilters()
-    {
-        $request = new Request();
-        $params = [
-            'title' => 'Test title',
-            'name' => 'Test name',
-        ];
-        $request->query->add($params);
-
-        $this->_object->getFilterManager()->addFilter(
-            $this->_object->getFilterManager()->newFilter('Column\BasicFilter')
-                ->setField('title')
-        );
-
-        $this->_object->getFilterManager()->addFilter(
-            $this->_object->getFilterManager()->newFilter('Column\BasicFilter')
-                ->setField('name')
-        );
-
-        $filtersArray = $this->_object->requestFilters($request);
-        self::assertSame($filtersArray, $params);
-    }
-
     /**
      * @return array
      */
