@@ -47,6 +47,8 @@ trait HasUrlRecordManagerTrait
             $action = substr($action, 5);
         }
 
+        $params = (array) $params;
+
         $params['action'] = (!empty($action)) ? $action : 'index';
         $params['controller'] = $controller;
 
