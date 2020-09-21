@@ -26,7 +26,8 @@ class RecordTest extends AbstractTest
         m::namedMock('User', Record::class);
 
         $manager = $this->object->getManager();
-        $relation = $manager->belongsTo('User');
+        $manager->belongsTo('User');
+        $relation = $manager->getRelation('User');
         $relation->setWith($users);
 
         $relation = $this->object->newRelation('User');

@@ -35,6 +35,10 @@ trait HasRelationsRecordsTrait
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->checkInitRelations();
 
+        if ($this->relations[$relation] instanceof \Closure) {
+            $this->relations[$relation] = $this->relations[$relation]();
+        }
+
         return $this->relations[$relation];
     }
 
@@ -96,13 +100,16 @@ trait HasRelationsRecordsTrait
      */
     protected function initRelation($type, $name, $params)
     {
-        $relation = $this->newRelation($type);
-        $relation->setName($name);
-        $relation->addParams($params);
+        $callback = (function () use ($type, $name, $params) {
+            $relation = $this->newRelation($type);
+            $relation->setName($name);
+            $relation->addParams($params);
+            return $relation;
+        });
 
-        $this->relations[$name] = $relation;
+        $this->relations[$name] = $callback;
 
-        return $relation;
+        return $callback;
     }
 
     /**
