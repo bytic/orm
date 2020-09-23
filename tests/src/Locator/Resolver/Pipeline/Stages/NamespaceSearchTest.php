@@ -11,7 +11,6 @@ use Nip\Records\Tests\AbstractTest;
  */
 class NamespaceSearchTest extends AbstractTest
 {
-
     /**
      * @dataProvider generateClassProvider
      * @param string $alias

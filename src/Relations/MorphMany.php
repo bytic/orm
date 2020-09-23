@@ -11,7 +11,6 @@ use Nip\Records\AbstractModels\Record;
  */
 class MorphMany extends MorphOneOrMany
 {
-
     /**
      * @param AbstractQuery $query
      */

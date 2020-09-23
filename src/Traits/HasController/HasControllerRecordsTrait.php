@@ -8,7 +8,6 @@ namespace Nip\Records\Traits\HasController;
  */
 trait HasControllerRecordsTrait
 {
-
     /**
      * @var null|string
      */

@@ -15,7 +15,6 @@ use Nip_Helper_Url;
  */
 class RecordsTest extends AbstractTest
 {
-
     /**
      * @var Records
      */
@@ -136,7 +135,7 @@ class RecordsTest extends AbstractTest
         self::assertInstanceOf(Nip_Helper_Url::class, $urlHelper);
     }
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 

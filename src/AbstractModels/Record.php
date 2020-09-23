@@ -3,7 +3,7 @@
 namespace Nip\Records\AbstractModels;
 
 use Nip\HelperBroker;
-use \Exception;
+use Exception;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordTrait;
 use Nip\Records\Traits\HasAttributes\HasAttributesRecordTrait;
 use Nip\Records\Traits\HasHelpers\HasHelpersRecordTrait;

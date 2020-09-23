@@ -14,7 +14,7 @@ class TableStructureRecordsTraitTest extends AbstractTest
     public function testHasField()
     {
         $manager = Books::instance();
-        $manager->setTableStructure(unserialize(file_get_contents(TEST_FIXTURE_PATH.'/database_structure/users.serialize')));
+        $manager->setTableStructure(unserialize(file_get_contents(TEST_FIXTURE_PATH . '/database_structure/users.serialize')));
 
         self::assertTrue($manager->hasField('first_name'));
         self::assertFalse($manager->hasField('no_field'));

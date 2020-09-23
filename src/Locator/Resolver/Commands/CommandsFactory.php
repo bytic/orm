@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Nip\Records\Locator\Resolver\Commands;
 
 use Nip\Records\Locator\Configuration\Configuration;
@@ -13,7 +12,6 @@ use Nip\Records\Registry\ModelRegistry;
  */
 class CommandsFactory
 {
-
     /**
      * @param string $alias
      * @param ModelLocator $modelLocator

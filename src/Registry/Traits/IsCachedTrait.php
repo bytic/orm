@@ -49,7 +49,7 @@ trait IsCachedTrait
 
         if (is_array($data) && count($data)) {
             $data = array_map(
-                function ($manager) use ($instantiator){
+                function ($manager) use ($instantiator) {
                     return $instantiator->instantiate($manager);
                 },
                 $data

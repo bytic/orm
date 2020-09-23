@@ -8,7 +8,6 @@ namespace Nip\Records\Legacy\AbstractModels;
  */
 trait RecordManagerLegacyTrait
 {
-
     /**
      * @return \Nip\Http\Request
      * @deprecated use request()

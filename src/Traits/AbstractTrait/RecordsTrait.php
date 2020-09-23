@@ -12,7 +12,6 @@ use Nip\Records\Record;
  */
 trait RecordsTrait
 {
-
     /**
      * @param array $data [optional]
      * @return Record

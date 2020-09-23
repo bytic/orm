@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Nip\Records\Locator\Resolver\Commands;
 
 use Nip\Records\AbstractModels\RecordManager;

@@ -54,7 +54,7 @@ abstract class AbstractStage implements StageInterface
     /**
      * @return Command
      */
-    public function getCommand() : Command
+    public function getCommand(): Command
     {
         return $this->command;
     }

@@ -69,7 +69,7 @@ class NamespaceSearch extends AbstractStage
 
         $preLastElement = array_pop($elements);
         if ($preLastElement) {
-            $return[] = $base . '\\' . $preLastElement.$lastElement;
+            $return[] = $base . '\\' . $preLastElement . $lastElement;
         }
 
         $aliasProcessed = str_replace('-', '_', $alias);
