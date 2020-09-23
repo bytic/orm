@@ -40,13 +40,14 @@ class ModelLocator
      */
     protected function locateManager($alias)
     {
-        if ($this->getModelRegistry()->has($alias)) {
-            return $this->getModelRegistry()->get($alias);
+        $registry = $this->getModelRegistry();
+        if ($registry->has($alias)) {
+            return $registry->get($alias);
         }
 
         $manager = $this->locateManagerPipeline($alias);
-        $this->getModelRegistry()->set($alias, $manager);
-        $this->getModelRegistry()->set($manager->getClassName(), $manager);
+        $registry->set($alias, $manager);
+        $registry->set($manager->getClassName(), $manager);
         return $manager;
     }
 
