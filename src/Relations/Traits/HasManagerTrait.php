@@ -14,7 +14,6 @@ use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
  */
 trait HasManagerTrait
 {
-
     /**
      * @var RecordManager
      */

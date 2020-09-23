@@ -12,7 +12,6 @@ use Nip\Records\Tests\Fixtures\Records\Books\Books;
  */
 class HasParamsTraitTest extends AbstractTest
 {
-
     public function test_setParam_class()
     {
         $relation = new BelongsTo();
@@ -73,5 +72,4 @@ class HasParamsTraitTest extends AbstractTest
 
         static::assertSame('my_table', $relation->getPrimaryKey());
     }
-
 }

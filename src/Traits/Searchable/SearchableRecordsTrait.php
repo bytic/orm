@@ -13,7 +13,6 @@ use Nip\Records\Collections\Collection as RecordCollection;
  */
 trait SearchableRecordsTrait
 {
-
     /**
      * Returns paginated results
      * @param Paginator $paginator

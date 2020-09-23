@@ -12,7 +12,6 @@ use Nip\Records\Tests\Fixtures\Records\Books\Books;
  */
 class CanCacheTest extends AbstractTest
 {
-
     public function test_init_flagsCache()
     {
         $manager = MappingManager::instance();

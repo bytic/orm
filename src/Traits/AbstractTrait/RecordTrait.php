@@ -13,7 +13,6 @@ use Nip\Records\AbstractModels\RecordManager;
  */
 trait RecordTrait
 {
-
     /**
      * @return RecordManager
      */

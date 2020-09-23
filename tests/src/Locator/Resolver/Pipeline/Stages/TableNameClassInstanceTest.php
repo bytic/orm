@@ -11,7 +11,6 @@ use Nip\Records\Tests\AbstractTest;
  */
 class TableNameClassInstanceTest extends AbstractTest
 {
-
     /**
      * @dataProvider generateClassProvider
      * @param $name

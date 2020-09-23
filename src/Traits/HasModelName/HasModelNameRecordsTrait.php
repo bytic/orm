@@ -8,7 +8,6 @@ namespace Nip\Records\Traits\HasModelName;
  */
 trait HasModelNameRecordsTrait
 {
-
     /**
      * Model class name
      * @var null|string

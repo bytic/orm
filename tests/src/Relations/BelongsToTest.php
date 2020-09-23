@@ -16,7 +16,6 @@ use Nip\Records\Tests\Fixtures\Records\Books\Books;
  */
 class BelongsToTest extends \Nip\Records\Tests\AbstractTest
 {
-
     /**
      * @var BelongsTo
      */

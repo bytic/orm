@@ -9,7 +9,6 @@ use Nip\Records\Relations\Traits\HasCollectionResults;
 
 class Associated extends RecordCollection
 {
-
     /**
      * @var Relation
      */

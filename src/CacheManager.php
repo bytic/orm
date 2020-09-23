@@ -10,7 +10,6 @@ use Nip\Records\AbstractModels\RecordManager as Records;
  */
 class CacheManager extends \Nip\Cache\Manager
 {
-
     /**
      * @var Records
      */

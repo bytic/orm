@@ -68,6 +68,6 @@ trait HasResolverPipelineTrait
 
     public function initCallPipeline()
     {
-        $this->callPipelineBuilder = (new PipelineBuilder);
+        $this->callPipelineBuilder = (new PipelineBuilder());
     }
 }

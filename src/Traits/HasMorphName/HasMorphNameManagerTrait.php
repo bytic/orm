@@ -8,7 +8,6 @@ namespace Nip\Records\Traits\HasMorphName;
  */
 trait HasMorphNameManagerTrait
 {
-
     /**
      * @var null|string
      */

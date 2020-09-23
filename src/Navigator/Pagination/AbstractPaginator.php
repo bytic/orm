@@ -10,7 +10,6 @@ use Nip\Database\Query\Select as SelectQuery;
  */
 abstract class AbstractPaginator
 {
-
     /**
      * @var SelectQuery
      */

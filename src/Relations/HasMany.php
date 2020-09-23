@@ -11,7 +11,6 @@ use Nip\Database\Query\Select as Query;
  */
 class HasMany extends HasOneOrMany
 {
-
     /**
      * @inheritdoc
      */

@@ -13,7 +13,6 @@ use Nip\Records\Tests\Fixtures\Records\Books\Books;
  */
 class CollectionTest extends AbstractTest
 {
-
     /**
      * @param $expected
      * @param $index

@@ -11,7 +11,6 @@ use Nip\Records\Traits\Relations\HasRelationsRecordTrait;
  */
 trait HasItemTrait
 {
-
     /**
      * @var Record
      */

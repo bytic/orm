@@ -11,7 +11,6 @@ use Psr\EventDispatcher\StoppableEventInterface;
  */
 class Dispatcher implements \Psr\EventDispatcher\EventDispatcherInterface
 {
-
     /**
      * @var ListenerProviderInterface
      */

@@ -35,6 +35,6 @@ trait HasConfigurationTrait
 
     public function initConfiguration()
     {
-        $this->configuration = (new Configuration);
+        $this->configuration = (new Configuration());
     }
 }

@@ -14,7 +14,6 @@ use Nip\Records\Tests\AbstractTest;
  */
 class RecordTest extends AbstractTest
 {
-
     /**
      * @return array
      */
@@ -38,7 +37,7 @@ class RecordTest extends AbstractTest
         self::assertSame($managerName, $record->getManagerName());
     }
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
         $wrapper = new Connection(false);

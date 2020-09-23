@@ -11,7 +11,6 @@ use Nip\Database\Connections\Connection;
  */
 trait HasDatabaseRecordsTrait
 {
-
     /**
      * @var Connection
      */

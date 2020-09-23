@@ -12,7 +12,6 @@ use Nip\Records\Collections\Associated as AssociatedCollection;
  */
 trait HasCollectionResults
 {
-
     /**
      * @return AssociatedCollection
      */

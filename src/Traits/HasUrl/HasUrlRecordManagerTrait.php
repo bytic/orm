@@ -8,7 +8,6 @@ namespace Nip\Records\Traits\HasUrl;
  */
 trait HasUrlRecordManagerTrait
 {
-
     /**
      * @param string $name
      * @param $arguments
