@@ -18,17 +18,6 @@ trait HasForeignKeyTrait
     protected $fk = null;
 
     /**
-     * @param $params
-     */
-    public function checkParamFk($params)
-    {
-        if (isset($params['fk'])) {
-            $this->setFK($params['fk']);
-            unset($params['fk']);
-        }
-    }
-
-    /**
      * @return string
      */
     public function getFK()

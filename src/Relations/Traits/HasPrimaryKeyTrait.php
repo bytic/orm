@@ -18,17 +18,6 @@ trait HasPrimaryKeyTrait
     protected $primaryKey = null;
 
     /**
-     * @param $params
-     */
-    public function checkParamPrimaryKey($params)
-    {
-        if (isset($params['primaryKey'])) {
-            $this->setPrimaryKey($params['primaryKey']);
-            unset($params['primaryKey']);
-        }
-    }
-
-    /**
      * @return string
      */
     public function getPrimaryKey()

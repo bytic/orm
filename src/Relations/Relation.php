@@ -2,23 +2,16 @@
 
 namespace Nip\Records\Relations;
 
+use Exception;
 use Nip\Database\Connections\Connection;
 use Nip\Database\Query\AbstractQuery;
 use Nip\Database\Query\Select as Query;
 use Nip\HelperBroker;
-use Exception;
+use Nip\Records\AbstractModels\Record;
 use Nip\Records\Collections\Collection;
 use Nip\Records\Collections\Collection as RecordCollection;
-use Nip\Records\Locator\Exceptions\InvalidModelException;
 use Nip\Records\Locator\ModelLocator;
-use Nip\Records\AbstractModels\Record;
-use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Relations\Exceptions\RelationsNeedsAName;
-use Nip\Records\Relations\Traits\HasForeignKeyTrait;
-use Nip\Records\Relations\Traits\HasItemTrait;
-use Nip\Records\Relations\Traits\HasManagerTrait;
-use Nip\Records\Relations\Traits\HasPrimaryKeyTrait;
-use Nip\Records\Relations\Traits\HasWithTrait;
 use Nip_Helper_Arrays as ArraysHelper;
 
 /**
@@ -27,11 +20,12 @@ use Nip_Helper_Arrays as ArraysHelper;
  */
 abstract class Relation
 {
-    use HasManagerTrait;
-    use HasWithTrait;
-    use HasForeignKeyTrait;
-    use HasPrimaryKeyTrait;
-    use HasItemTrait;
+    use Traits\HasManagerTrait;
+    use Traits\HasWithTrait;
+    use Traits\HasForeignKeyTrait;
+    use Traits\HasPrimaryKeyTrait;
+    use Traits\HasItemTrait;
+    use Traits\HasParamsTrait;
 
     /**
      * @var
@@ -57,11 +51,6 @@ abstract class Relation
      * @var bool
      */
     protected $populated = false;
-
-    /**
-     * @var array
-     */
-    protected $params = [];
 
     /**
      * @var null|Collection|Record
@@ -166,76 +155,6 @@ abstract class Relation
         return $this->getManager()->getDB();
     }
 
-    /**
-     * @param $key
-     * @return mixed
-     */
-    public function getParam($key)
-    {
-        return $this->hasParam($key) ? $this->params[$key] : null;
-    }
-
-    /**
-     * @param $key
-     * @return boolean
-     */
-    public function hasParam($key)
-    {
-        return isset($this->params[$key]);
-    }
-
-    /**
-     * @param $params
-     */
-    public function addParams($params)
-    {
-        $this->checkParamClass($params);
-        $this->checkParamWith($params);
-        $this->checkParamWithPK($params);
-        $this->checkParamTable($params);
-        $this->checkParamFk($params);
-        $this->checkParamPrimaryKey($params);
-        $this->setParams($params);
-    }
-
-    /**
-     * @param $params
-     */
-    public function checkParamClass($params)
-    {
-        if (isset($params['class'])) {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $this->setWithClass($params['class']);
-            unset($params['class']);
-        }
-    }
-
-    /**
-     * @param $params
-     */
-    public function checkParamTable($params)
-    {
-        if (isset($params['table'])) {
-            $this->setTable($params['table']);
-            unset($params['table']);
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function getParams(): array
-    {
-        return $this->params;
-    }
-
-    /**
-     * @param $params
-     */
-    public function setParams($params)
-    {
-        $this->params = $params;
-    }
 
     /**
      * @return string

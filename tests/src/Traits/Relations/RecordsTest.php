@@ -4,14 +4,15 @@ namespace Nip\Records\Tests\Traits\Relations;
 
 use Mockery as m;
 use Nip\Database\Connections\Connection;
+use Nip\Http\Request;
 use Nip\Records\RecordManager as Records;
 use Nip\Records\Relations\BelongsTo;
 use Nip\Records\Relations\HasAndBelongsToMany;
 use Nip\Records\Relations\HasMany;
 use Nip\Records\Relations\HasOne;
-use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
-use Nip\Http\Request;
+use Nip\Records\Relations\MorphToMany;
 use Nip\Records\Tests\AbstractTest;
+use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
 
 /**
  * Class RecordsTest
@@ -58,6 +59,15 @@ class RecordsTest extends AbstractTest
         ];
     }
 
+    public function test_morphedByMany()
+    {
+        $this->object->morphedByMany('Users', []);
+
+        $relation = $this->object->getRelation('Users');
+        self::assertInstanceOf(MorphToMany::class, $relation);
+    }
+
+
     protected function _testInitRelationsFromArrayBelongsToUser($name)
     {
         self::assertTrue($this->object->hasRelation($name));
@@ -76,7 +86,7 @@ class RecordsTest extends AbstractTest
 
         $wrapper = new Connection(null);
 
-        $this->object = m::mock(Records::class)->shouldDeferMissing()
+        $this->object = m::mock(Records::class)->makePartial()
             ->shouldReceive('getRequest')->andReturn(Request::create('/'))
             ->getMock();
 

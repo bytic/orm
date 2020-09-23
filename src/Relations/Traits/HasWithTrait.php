@@ -5,7 +5,6 @@ namespace Nip\Records\Relations\Traits;
 use Exception;
 use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Locator\Exceptions\InvalidModelException;
-use Nip\Records\Relations\Relation;
 use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
 
 /**
@@ -67,25 +66,11 @@ trait HasWithTrait
     }
 
     /**
-     * @param $params
+     * @param string $name
      */
-    public function checkParamWith($params)
+    public function setClass($name)
     {
-        if (isset($params['with'])) {
-            $this->setWith($params['with']);
-            unset($params['with']);
-        }
-    }
-
-    /**
-     * @param $params
-     */
-    public function checkParamWithPK($params)
-    {
-        if (isset($params['withPK'])) {
-            $this->setWithPK($params['withPK']);
-            unset($params['withPK']);
-        }
+        $this->setWithClass($name);
     }
 
     /** @noinspection PhpDocMissingThrowsInspection

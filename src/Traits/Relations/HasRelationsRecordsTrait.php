@@ -218,13 +218,13 @@ trait HasRelationsRecordsTrait
      * @param $name
      * @param array $params
      * @return MorphToMany
-     * @throws \Exception
      */
     public function morphedByMany($name, $params = [])
     {
         /** @var MorphToMany $relation */
+        $params['inverse'] = true;
+        /** @noinspection PhpUnhandledExceptionInspection */
         $relation = $this->initRelation('morphToMany', $name, $params);
-        $relation->setInverse(true);
         return $relation;
     }
 
