@@ -2,12 +2,11 @@
 
 namespace Nip\Records\AbstractModels;
 
-use Nip\HelperBroker;
-use Exception;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordTrait;
 use Nip\Records\Traits\HasAttributes\HasAttributesRecordTrait;
 use Nip\Records\Traits\HasHelpers\HasHelpersRecordTrait;
 use Nip\Records\Traits\HasManager\HasManagerRecordTrait;
+use Nip\Records\Traits\HasUrl\HasUrlRecordTrait;
 use Nip\Records\Traits\Serializable\SerializableRecord;
 use Nip\Utility\Traits\NameWorksTrait;
 
@@ -25,16 +24,22 @@ abstract class Record implements \Serializable
     use HasManagerRecordTrait;
     use HasAttributesRecordTrait;
     use SerializableRecord;
+    use HasUrlRecordTrait;
 
     /**
      * Overloads Ucfirst() helper
      *
      * @param string $name
      * @param array $arguments
-     * @return \Nip\Helpers\AbstractHelper|null
+     * @return \Nip\Helpers\AbstractHelper|null|mixed
      */
     public function __call($name, $arguments)
     {
+        /** @noinspection PhpAssignmentInConditionInspection */
+        if ($return = $this->isCallUrl($name, $arguments)) {
+            return $return;
+        }
+
         if ($this->isHelperCall($name)) {
             return $this->getHelper($name);
         }
@@ -112,6 +117,6 @@ abstract class Record implements \Serializable
      */
     protected function getRequest()
     {
-        return $this->getManager()->getRequest();
+        return request();
     }
 }
