@@ -67,6 +67,13 @@ trait HasUrlRecordTrait
     }
 
     /**
+     * @param $params
+     */
+    public function filterURLParams($params)
+    {
+    }
+
+    /**
      * @param $action
      * @param $params
      * @param null $module
