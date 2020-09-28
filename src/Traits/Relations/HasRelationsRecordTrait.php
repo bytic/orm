@@ -48,16 +48,25 @@ trait HasRelationsRecordTrait
      */
     protected function isCallRelationOperation($name, $arguments = [])
     {
-        if (substr($name, 0, 3) == "get") {
-            $relation = $this->getRelation(substr($name, 3));
-            if ($relation) {
-                $results = $relation->getResults();
-                // RETURN NULL TO DISTINCT FROM FALSE THAT MEANS NO RELATION
-                return ($results) ? $results : null;
-            }
+        if (substr($name, 0, 3) !== "get") {
+            return false;
         }
 
-        return false;
+        $relationName = substr($name, 3);
+
+        if ($this->getManager()->hasRelation($relationName) === false) {
+            return false;
+        }
+
+        $relation = $this->getRelation($relationName);
+        if (!is_object($relation)) {
+
+            return false;
+        }
+
+        $results = $relation->getResults();
+        // RETURN NULL TO DISTINCT FROM FALSE THAT MEANS NO RELATION
+        return ($results) ? $results : null;
     }
 
     /**
