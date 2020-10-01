@@ -250,25 +250,6 @@ abstract class RecordManager
     }
 
     /**
-     * @param Record $model
-     * @return array
-     */
-    public function getQueryModelData($model)
-    {
-        $data = [];
-
-        $fields = $this->getFields();
-        $modelData = $model->getAttributes();
-        foreach ($fields as $field) {
-            if (isset($modelData[$field])) {
-                $data[$field] = $modelData[$field];
-            }
-        }
-
-        return $data;
-    }
-
-    /**
      * The name of the field used as a foreign key in other tables
      * @return string
      */

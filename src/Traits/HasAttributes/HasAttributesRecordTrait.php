@@ -164,6 +164,7 @@ trait HasAttributesRecordTrait
     {
         if (property_exists($this, $key)) {
             $this->{$key} = $value;
+            $this->setDataValue($key, $value);
             return;
         }
 
