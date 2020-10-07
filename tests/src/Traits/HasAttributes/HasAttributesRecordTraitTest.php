@@ -26,4 +26,19 @@ class HasAttributesRecordTraitTest extends \Nip\Records\Tests\AbstractTest
         $book->field += 10;
         self::assertSame(20, $book->field);
     }
+
+    public function test_hasSetMutator()
+    {
+        $book = new Book();
+        self::assertTrue($book->hasSetMutator('name'));
+        self::assertTrue($book->hasSetMutator('title'));
+        self::assertFalse($book->hasSetMutator('author'));
+    }
+
+    public function test_setMutatedAttributeValue()
+    {
+        $book = new Book();
+        $book->title = 'title';
+        self::assertSame('TITLE', $book->title);
+    }
 }

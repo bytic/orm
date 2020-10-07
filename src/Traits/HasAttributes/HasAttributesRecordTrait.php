@@ -13,6 +13,16 @@ trait HasAttributesRecordTrait
     protected $attributes = [];
 
     /**
+     * The attributes that should use mutators.
+     *
+     * @var array
+     */
+    protected $mutators = [
+        'get' => [],
+        'set' => [],
+    ];
+
+    /**
      * @param $name
      * @return mixed
      */
@@ -34,7 +44,7 @@ trait HasAttributesRecordTrait
      * @param $key
      * @return bool
      */
-    public function __isset($key)
+    public function __isset($key): bool
     {
         return $this->offsetExists($key);
     }
@@ -53,7 +63,7 @@ trait HasAttributesRecordTrait
      * @param mixed $offset
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return !is_null($this->getAttribute($offset));
     }
@@ -93,12 +103,22 @@ trait HasAttributesRecordTrait
     }
 
     /**
+     * @param bool|array $data
+     */
+    public function writeData($data = false)
+    {
+        foreach ($data as $key => $value) {
+            $this->__set($key, $value);
+        }
+    }
+
+    /**
      * Get an attribute from the model.
      *
      * @param string $key
-     * @return mixed
+     * @return mixed|void
      */
-    public function getAttribute($key)
+    public function getAttribute(string $key)
     {
         if (!$key) {
             return;
@@ -121,7 +141,7 @@ trait HasAttributesRecordTrait
      * @param string $key
      * @return mixed
      */
-    public function getAttributeValue($key)
+    public function getAttributeValue(string $key)
     {
         return $this->transformModelValue($key, $this->getAttributeFromArray($key));
     }
@@ -133,7 +153,7 @@ trait HasAttributesRecordTrait
      * @param mixed $value
      * @return mixed
      */
-    protected function transformModelValue($key, $value)
+    protected function transformModelValue(string $key, $value)
     {
         // If the attribute has a get mutator, we will call that then return what
         // it returns as the value, which is useful for transforming values on
@@ -142,6 +162,12 @@ trait HasAttributesRecordTrait
             return $this->mutateAttribute($key, $value);
         }
 
+        // If the attribute exists within the cast array, we will convert it to
+        // an appropriate native PHP type dependent upon the associated value
+        // given with the key in the pair. Dayle made this comment line up.
+//        if ($this->hasCast($key)) {
+//            return $this->castAttribute($key, $value);
+//        }
         return $value;
     }
 
@@ -151,7 +177,7 @@ trait HasAttributesRecordTrait
      * @param string $key
      * @return mixed
      */
-    protected function getAttributeFromArray($key)
+    protected function getAttributeFromArray(string $key)
     {
         return $this->getAttributes()[$key] ?? null;
     }
@@ -162,33 +188,43 @@ trait HasAttributesRecordTrait
      */
     public function setAttribute($key, $value)
     {
-        if (property_exists($this, $key)) {
-            $this->{$key} = $value;
-            $this->setDataValue($key, $value);
+        // First we will check for the presence of a mutator for the set operation
+        // which simply lets the developers tweak the attribute as it is set on
+        // the model, such as "json_encoding" an listing of data for storage.
+        if ($this->hasSetMutator($key)) {
+            $this->setMutatedAttributeValue($key, $value);
             return;
         }
 
-        $method = 'set' . Str::studly($key);
-        if (method_exists($this, $method)) {
-            $this->$method($value);
-            return;
+        if (property_exists($this, $key)) {
+            $this->{$key} = $value;
         }
-        $method .= 'Attribute';
-        if (method_exists($this, $method)) {
-            $this->$method($value);
-            return;
-        }
+
         $this->setDataValue($key, $value);
     }
 
     /**
-     * @param bool|array $data
+     * Determine if a set mutator exists for an attribute.
+     *
+     * @param string $key
+     * @return bool
      */
-    public function writeData($data = false)
+    public function hasSetMutator(string $key): bool
     {
-        foreach ($data as $key => $value) {
-            $this->__set($key, $value);
-        }
+        return $this->hasMutator('set', $key);
+    }
+
+    /**
+     * Set the value of an attribute using its mutator.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    protected function setMutatedAttributeValue(string $key, $value)
+    {
+        $method = $this->mutators['set'][$key];
+        $this->{$method}($value);
     }
 
     /**
@@ -215,9 +251,9 @@ trait HasAttributesRecordTrait
      * @param string $key
      * @return bool
      */
-    public function hasGetMutator($key)
+    public function hasGetMutator(string $key): bool
     {
-        return method_exists($this, 'get' . Str::studly($key) . 'Attribute');
+        return $this->hasMutator('get', $key);
     }
 
     /**
@@ -227,8 +263,35 @@ trait HasAttributesRecordTrait
      * @param mixed $value
      * @return mixed
      */
-    protected function mutateAttribute($key, $value)
+    protected function mutateAttribute(string $key, $value)
     {
-        return $this->{'get' . Str::studly($key) . 'Attribute'}($value);
+        $method = $this->mutators['set'][$key];
+        return $this->$method($value);
+    }
+
+
+    /**
+     * Determine if a set mutator exists for an attribute.
+     *
+     * @param string $type
+     * @param string $key
+     * @return bool
+     */
+    public function hasMutator(string $type, string $key): bool
+    {
+        if (!isset($this->mutators[$type][$key])) {
+            $method = $type . Str::studly($key);
+            $mutator = false;
+            if (method_exists($this, $method)) {
+                $mutator = $method;
+            } else {
+                $method .= 'Attribute';
+                if (method_exists($this, $method)) {
+                    $mutator = $method;
+                }
+            }
+            $this->mutators[$type][$key] = $mutator;
+        }
+        return $this->mutators[$type][$key];
     }
 }
