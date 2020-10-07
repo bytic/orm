@@ -41,4 +41,11 @@ class HasAttributesRecordTraitTest extends \Nip\Records\Tests\AbstractTest
         $book->title = 'title';
         self::assertSame('TITLE', $book->title);
     }
+
+    public function test_mutateAttribute()
+    {
+        $book = new Book();
+        $book->author = 'author';
+        self::assertSame('AUTHOR', $book->author);
+    }
 }

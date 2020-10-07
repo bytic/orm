@@ -265,7 +265,7 @@ trait HasAttributesRecordTrait
      */
     protected function mutateAttribute(string $key, $value)
     {
-        $method = $this->mutators['set'][$key];
+        $method = $this->mutators['get'][$key];
         return $this->$method($value);
     }
 

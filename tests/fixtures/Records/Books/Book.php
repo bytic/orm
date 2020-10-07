@@ -26,4 +26,9 @@ class Book extends \Nip\Records\Record
     {
         $this->setDataValue('title', strtoupper($value));
     }
+
+    public function getAuthor(): string
+    {
+        return strtoupper($this->getAttributeFromArray('author'));
+    }
 }
