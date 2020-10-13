@@ -7,6 +7,8 @@ use Nip\Utility\Str;
 /**
  * Trait HasAttributesRecordTrait
  * @package Nip\Records\Traits\HasAttributes
+ *
+ * @deprecated use data-objects repository
  */
 trait HasAttributesRecordTrait
 {

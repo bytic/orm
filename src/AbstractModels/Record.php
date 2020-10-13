@@ -2,8 +2,8 @@
 
 namespace Nip\Records\AbstractModels;
 
+use ByTIC\DataObjects\BaseDto;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordTrait;
-use Nip\Records\Traits\HasAttributes\HasAttributesRecordTrait;
 use Nip\Records\Traits\HasHelpers\HasHelpersRecordTrait;
 use Nip\Records\Traits\HasManager\HasManagerRecordTrait;
 use Nip\Records\Traits\HasUrl\HasUrlRecordTrait;
@@ -16,13 +16,12 @@ use Nip\Utility\Traits\NameWorksTrait;
  *
  * @method \Nip_Helper_Url URL()
  */
-abstract class Record implements \Serializable
+abstract class Record extends BaseDto implements \Serializable
 {
     use NameWorksTrait;
     use ActiveRecordTrait;
     use HasHelpersRecordTrait;
     use HasManagerRecordTrait;
-    use HasAttributesRecordTrait;
     use SerializableRecord;
     use HasUrlRecordTrait;
 

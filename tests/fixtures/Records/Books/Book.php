@@ -10,7 +10,6 @@ namespace Nip\Records\Tests\Fixtures\Records\Books;
  */
 class Book extends \Nip\Records\Record
 {
-
     /**
      * @param $value
      */
@@ -30,5 +29,15 @@ class Book extends \Nip\Records\Record
     public function getAuthor(): string
     {
         return strtoupper($this->getAttributeFromArray('author'));
+    }
+
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    public function setCategory($name)
+    {
+        $this->category = $name;
     }
 }

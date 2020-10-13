@@ -33,6 +33,7 @@
     "bytic/container": "^0.9|^1.0",
     "bytic/collections": "^1.0",
     "bytic/database": "^0.9|^1.0",
+    "bytic/data-objects": "^1.0",
     "bytic/helpers": "^0.9|^1.0",
     "bytic/http": "^0.9|^1.0",
     "bytic/inflector": "^0.9|^1.0",
