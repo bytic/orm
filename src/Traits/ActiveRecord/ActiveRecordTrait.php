@@ -13,44 +13,6 @@ trait ActiveRecordTrait
 {
     use HasPrimaryKeyTrait;
 
-    protected $dbData = [];
-
-    /**
-     * @param bool|array $data
-     */
-    public function writeDBData($data = false)
-    {
-        foreach ($data as $key => $value) {
-            $this->dbData[$key] = $value;
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function getDBData()
-    {
-        return $this->dbData;
-    }
-
-    /**
-     * @param $field
-     * @return bool
-     */
-    public function fieldUpdatedFromDb($field)
-    {
-        if (!isset($this->{$field})) {
-            return false;
-        }
-        if (!isset($this->dbData[$field])) {
-            return false;
-        }
-        if ($this->{$field} == $this->dbData[$field]) {
-            return false;
-        }
-        return true;
-    }
-
     /**
      * @return bool
      */

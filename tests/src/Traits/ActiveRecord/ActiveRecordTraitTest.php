@@ -14,10 +14,10 @@ class ActiveRecordTraitTest extends AbstractTest
     public function testFieldUpdatedFromDb()
     {
         $book = new Book();
-        self::assertFalse($book->fieldUpdatedFromDb('name'));
+        self::assertTrue($book->fieldUpdatedFromDb('name'));
 
         $book->writeDBData(['name' => 1]);
-        self::assertFalse($book->fieldUpdatedFromDb('name'));
+        self::assertTrue($book->fieldUpdatedFromDb('name'));
 
         $book->name = 1;
         self::assertFalse($book->fieldUpdatedFromDb('name'));

@@ -161,7 +161,7 @@ trait ActiveRecordsTrait
         if ($pk == 'id') {
             $record->{$pk} = $lastId;
         }
-
+        $record->syncOriginal();
         return true;
     }
 
@@ -178,6 +178,7 @@ trait ActiveRecordsTrait
             return $query->execute();
         }
 
+        $model->syncOriginal();
         return false;
     }
 
@@ -380,24 +381,14 @@ trait ActiveRecordsTrait
         return $this->getDB()->getAdapter()->cleanData($data);
     }
 
-
     /**
      * @param Record $model
      * @return array
      */
     public function getQueryModelData($model)
     {
-        $data = [];
-
         $fields = $this->getFields();
-        $modelData = $model->getAttributes();
-        foreach ($fields as $field) {
-            if (isset($modelData[$field])) {
-                $data[$field] = $modelData[$field];
-            }
-        }
-
-        return $data;
+        return $model->getDirty($fields);
     }
 
     /**
