@@ -3,8 +3,8 @@
 namespace Nip\Records\AbstractModels;
 
 use ByTIC\DataObjects\BaseDto;
+use Nip\Helpers\Traits\HasHelpersTrait;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordTrait;
-use Nip\Records\Traits\HasHelpers\HasHelpersRecordTrait;
 use Nip\Records\Traits\HasManager\HasManagerRecordTrait;
 use Nip\Records\Traits\HasUrl\HasUrlRecordTrait;
 use Nip\Records\Traits\Serializable\SerializableRecord;
@@ -20,7 +20,7 @@ abstract class Record extends BaseDto implements \Serializable
 {
     use NameWorksTrait;
     use ActiveRecordTrait;
-    use HasHelpersRecordTrait;
+    use HasHelpersTrait;
     use HasManagerRecordTrait;
     use SerializableRecord;
     use HasUrlRecordTrait;
