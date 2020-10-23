@@ -69,6 +69,8 @@ class MorphTo extends BelongsTo
             }
         }
         $types = $this->getTypesFromCollection($collection);
+        $types = array_filter(array_unique($types));
+
         $results = new Collection();
         foreach ($types as $type) {
             $manager = $this->getModelManagerInstance($type);
