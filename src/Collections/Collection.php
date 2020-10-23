@@ -26,6 +26,10 @@ class Collection extends AbstractCollection
      */
     public function loadRelations($relations)
     {
+        if (count($this) < 1) {
+            return;
+        }
+
         if (is_string($relations)) {
             $relations = func_get_args();
         }
@@ -41,6 +45,10 @@ class Collection extends AbstractCollection
      */
     public function loadRelation($name)
     {
+        if (count($this) < 1) {
+            return;
+        }
+
         $relation = $this->getRelation($name);
         $results = $relation->getEagerResults($this);
         $relation->match($this, $results);
