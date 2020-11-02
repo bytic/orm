@@ -227,10 +227,10 @@ class HasAndBelongsToMany extends HasOneOrMany
      * @param $record
      * @return array
      */
-    protected function formatAttachData($record)
+    protected function formatAttachData($record): array
     {
         $data = [
-            $this->getManager()->getPrimaryFK() => $this->getItem()->{$this->getManager()->getPrimaryKey()},
+            $this->getFK() => $this->getItem()->{$this->getManager()->getPrimaryKey()},
             $this->getPivotFK() => $record->{$this->getWith()->getPrimaryKey()},
         ];
         return $data;
