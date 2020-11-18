@@ -30,7 +30,6 @@
   "require": {
     "php": "^7.1",
     "bytic/cache": "^0.9|^1.0",
-    "bytic/container": "^0.9|^1.0",
     "bytic/collections": "^1.0",
     "bytic/database": "^0.9|^1.0",
     "bytic/data-objects": "^1.0",
@@ -41,6 +40,7 @@
     "bytic/pipeline": "^1.0"
   },
   "require-dev": {
+    "bytic/container": "^0.9|^1.0",
     "bytic/orm-filters": "^1.0",
     "phpunit/phpunit": "^7.2|^8.0|^9.0",
     "mockery/mockery": "^1.0",
