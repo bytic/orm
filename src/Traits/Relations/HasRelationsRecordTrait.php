@@ -60,7 +60,6 @@ trait HasRelationsRecordTrait
 
         $relation = $this->getRelation($relationName);
         if (!is_object($relation)) {
-
             return false;
         }
 

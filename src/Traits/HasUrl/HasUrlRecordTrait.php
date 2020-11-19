@@ -7,7 +7,6 @@ namespace Nip\Records\Traits\HasUrl;
  */
 trait HasUrlRecordTrait
 {
-
     protected $_urlPK;
 
     protected $_urlCol = 'name';
