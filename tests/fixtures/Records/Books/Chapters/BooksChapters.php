@@ -8,6 +8,8 @@ namespace Nip\Records\Tests\Fixtures\Records\Books\Chapters;
  */
 class BooksChapters extends \Nip\Records\RecordManager
 {
+    use \Nip\Utility\Traits\SingletonTrait;
+
     protected function generateTable()
     {
         return 'books_chapters';
@@ -26,5 +28,10 @@ class BooksChapters extends \Nip\Records\RecordManager
     public function generateTableStructure()
     {
         return require TEST_FIXTURE_PATH . '/database_structure/table_with_unique.php';
+    }
+
+    public function getRootNamespace()
+    {
+        return 'Nip\Records\Tests\Fixtures\Records';
     }
 }

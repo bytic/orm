@@ -34,6 +34,11 @@ class Books extends \Nip\Records\RecordManager
         return require TEST_FIXTURE_PATH . '/database_structure/table_with_unique.php';
     }
 
+    public function getRootNamespace()
+    {
+        return 'Nip\Records\Tests\Fixtures\Records';
+    }
+
     /**
      * @param $event
      * @param $record

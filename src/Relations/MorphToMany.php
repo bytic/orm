@@ -87,7 +87,7 @@ class MorphToMany extends HasAndBelongsToMany
     /**
      * @inheritdoc
      */
-    protected function formatAttachData($record)
+    protected function formatAttachData($record): array
     {
         $data = parent::formatAttachData($record);
         $data[$this->getMorphKey()] = $this->getMorphType();

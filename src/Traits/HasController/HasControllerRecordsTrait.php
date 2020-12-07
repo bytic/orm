@@ -2,12 +2,16 @@
 
 namespace Nip\Records\Traits\HasController;
 
+use ByTIC\Namefy\Namefy;
+
 /**
  * Trait HasControllerRecordsTrait
  * @package Nip\Records\Traits\HasController
  */
 trait HasControllerRecordsTrait
 {
+    use HasControllerRecordsLegacyTrait;
+
     /**
      * @var null|string
      */
@@ -34,32 +38,18 @@ trait HasControllerRecordsTrait
 
     protected function initController()
     {
+        $this->setController($this->generateController());
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function generateController()
+    {
+        $model = $this->getClassName();
         if ($this->isNamespaced()) {
-            $controller = $this->generateControllerNamespaced();
-        } else {
-            $controller = $this->generateControllerGeneric();
+            $model = str_replace($this->getRootNamespace(), '', $model);
         }
-        $this->setController($controller);
-    }
-
-    /**
-     * @return string
-     */
-    protected function generateControllerNamespaced()
-    {
-        $class = $this->getModelNamespacePath();
-        $class = trim($class, '\\');
-
-        return inflector()->unclassify($class);
-    }
-
-    /**
-     * @return string
-     */
-    protected function generateControllerGeneric()
-    {
-        $class = $this->getClassName();
-
-        return inflector()->unclassify($class);
+        return Namefy::model($model)->controller();
     }
 }
