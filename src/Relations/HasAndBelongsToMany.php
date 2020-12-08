@@ -216,7 +216,7 @@ class HasAndBelongsToMany extends HasOneOrMany
                 if ($record->{"__$field"}) {
                     $data[$field] = $record->{"__$field"};
                 } else {
-                    $data[$field] = $data[$field] ? $data[$field] : false;
+                    $data[$field] = isset($data[$field]) ? $data[$field] : false;
                 }
             }
             $query->data($data);
@@ -229,11 +229,10 @@ class HasAndBelongsToMany extends HasOneOrMany
      */
     protected function formatAttachData($record): array
     {
-        $data = [
+        return [
             $this->getFK() => $this->getItem()->{$this->getManager()->getPrimaryKey()},
             $this->getPivotFK() => $record->{$this->getWith()->getPrimaryKey()},
         ];
-        return $data;
     }
 
     /**
@@ -243,7 +242,6 @@ class HasAndBelongsToMany extends HasOneOrMany
     {
         $query = $this->newInsertQuery();
         $this->queryAttachRecords($query, [$model]);
-//            echo $query;
         $query->execute();
     }
 
@@ -254,7 +252,6 @@ class HasAndBelongsToMany extends HasOneOrMany
     {
         $query = $this->newDeleteQuery();
         $this->queryDetachRecords($query, [$model]);
-//        echo $query;
         $query->execute();
     }
 
@@ -278,10 +275,12 @@ class HasAndBelongsToMany extends HasOneOrMany
 
 
     /** @noinspection PhpMissingParentCallCommonInspection
+     * @noinspection PhpDocMissingThrowsInspection
      * @return mixed
      */
     public function getWithClass()
     {
+        /** @noinspection PhpUnhandledExceptionInspection */
         return $this->getName();
     }
 
