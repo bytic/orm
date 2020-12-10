@@ -15,6 +15,9 @@ class CanBootTraitsRecordsTraitTest extends AbstractTest
     {
         $books = Books::instance();
         $bootTraits = $books->getBootTraits();
-        self::assertSame(['bootHasUuidRecordManagerTrait'], $bootTraits);
+        self::assertEquals(
+            ['bootTimestampableManagerTrait', 'bootTimestampableTrait', 'bootHasUuidRecordManagerTrait'],
+            $bootTraits
+        );
     }
 }

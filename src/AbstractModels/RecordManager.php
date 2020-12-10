@@ -2,6 +2,7 @@
 
 namespace Nip\Records\AbstractModels;
 
+use ByTIC\DataObjects\Behaviors\Timestampable\TimestampableManagerTrait;
 use Nip\Collections\Registry;
 use Nip\Database\Query\Insert as InsertQuery;
 use Nip\HelperBroker;
@@ -32,6 +33,7 @@ abstract class RecordManager
     use HasModelNameRecordsTrait;
     use HasEvents;
     use HasUrlRecordManagerTrait;
+    use TimestampableManagerTrait;
 
     use RecordManagerLegacyTrait;
 

@@ -7,7 +7,6 @@ use Nip\Helpers\Traits\HasHelpersTrait;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordTrait;
 use Nip\Records\Traits\HasManager\HasManagerRecordTrait;
 use Nip\Records\Traits\HasUrl\HasUrlRecordTrait;
-use Nip\Records\Traits\Serializable\SerializableRecord;
 use Nip\Utility\Traits\NameWorksTrait;
 
 /**
@@ -22,8 +21,13 @@ abstract class Record extends BaseDto implements \Serializable
     use ActiveRecordTrait;
     use HasHelpersTrait;
     use HasManagerRecordTrait;
-    use SerializableRecord;
+
+    use \ByTIC\DataObjects\Behaviors\Serializable\SerializableTrait;
+    use \ByTIC\DataObjects\Behaviors\Timestampable\TimestampableTrait;
+
     use HasUrlRecordTrait;
+
+    protected $serializable = ['attributes'];
 
     /**
      * Overloads Ucfirst() helper
