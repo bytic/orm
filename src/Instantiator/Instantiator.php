@@ -28,7 +28,7 @@ class Instantiator
 
         $manager = $this->create($className);
         $registry->set($manager->getClassName(), $manager);
-        return $manager;
+        return $this->prepare($manager);
     }
 
     /**
@@ -43,7 +43,7 @@ class Instantiator
             $manager = new $className();
         }
 
-        return $this->prepare($manager);
+        return $manager;
     }
 
     /**

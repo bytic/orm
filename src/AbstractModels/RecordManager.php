@@ -55,7 +55,6 @@ abstract class RecordManager
 
     public function __construct()
     {
-        $this->bootIfNotBooted();
     }
 
     /**
