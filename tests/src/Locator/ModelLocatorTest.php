@@ -14,16 +14,26 @@ use Nip\Records\Tests\Fixtures\Records\Books\Chapters\BooksChapters;
  */
 class ModelLocatorTest extends AbstractTest
 {
-    public function testGetClassFullName()
+    public function test_getClassFullName()
     {
         $manager = ModelLocator::get(Books::class);
         self::assertInstanceOf(Books::class, $manager);
     }
 
-    public function testGetInvalidAlias()
+    public function test_getInvalidAlias()
     {
         self::expectException(InvalidModelException::class);
         ModelLocator::get('ClassNotExist');
+    }
+
+    public function test_getManager_with_closure()
+    {
+        $alias = function() {
+            return Books::class;
+        };
+
+        $manager = ModelLocator::get($alias);
+        self::assertInstanceOf(Books::class, $manager);
     }
 
     public function testGetClassFromConfigNamespace()

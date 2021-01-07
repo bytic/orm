@@ -28,8 +28,11 @@ class ModelLocator
      * @return RecordManager
      * @throws InvalidModelException
      */
-    public function getManager($alias)
+    public function getManager($alias): RecordManager
     {
+        if ($alias instanceof \Closure) {
+            return $this->locateManager($alias());
+        }
         return $this->locateManager($alias);
     }
 
