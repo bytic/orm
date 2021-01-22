@@ -3,6 +3,7 @@
 namespace Nip\Records\Relations\Traits;
 
 use Nip\Records\Collections\Associated as AssociatedCollection;
+use Nip\Records\Collections\Collection;
 
 /**
  * Trait HasCollectionResults
@@ -13,9 +14,21 @@ use Nip\Records\Collections\Associated as AssociatedCollection;
 trait HasCollectionResults
 {
     /**
+     * @return Collection
+     */
+    public function newCollection(): Collection
+    {
+        $collection = $this->getWith()->newCollection();
+        /** @var Collection $collection */
+        $collection->initFromRelation($this);
+
+        return $collection;
+    }
+
+    /**
      * @return AssociatedCollection
      */
-    public function newCollection()
+    public function newAssociatedCollection()
     {
         $class = $this->getCollectionClass();
         $collection = new $class();

@@ -24,6 +24,11 @@ trait HasItemTrait
         return $this->item;
     }
 
+    public function hasItem(): bool
+    {
+        return $this->item instanceof Record;
+    }
+
     /**
      * @param Record|HasRelationsRecordTrait $item
      * @return $this

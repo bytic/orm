@@ -7,6 +7,10 @@ use Nip\Records\Record as Record;
 use Nip\Records\Relations\HasOneOrMany as Relation;
 use Nip\Records\Relations\Traits\HasCollectionResults;
 
+/**
+ * Class Associated
+ * @package Nip\Records\Collections
+ */
 class Associated extends RecordCollection
 {
     /**
@@ -20,16 +24,15 @@ class Associated extends RecordCollection
     protected $_item;
 
     /**
-     * @param HasCollectionResults $relation
+     * @param HasCollectionResults|Relation $relation
      */
     public function initFromRelation($relation)
     {
+        parent::initFromRelation($relation);
         $this->setWithRelation($relation);
-        $this->setManager($relation->getWith());
-        $this->setItem($relation->getItem());
-        $indexKey = $relation->getParam('indexKey');
-        if ($indexKey) {
-            $this->setIndexKey($indexKey);
+
+        if ($relation->hasItem()) {
+            $this->setItem($relation->getItem());
         }
     }
 

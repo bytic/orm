@@ -63,7 +63,7 @@ class MorphTo extends BelongsTo
     {
         if ($collection->count() < 1) {
             if ($this->getItem() instanceof Record) {
-                return $this->getWith()->newCollection();
+                return $this->newCollection();
             } else {
                 return new Collection();
             }

@@ -132,12 +132,12 @@ class HasAndBelongsToMany extends HasOneOrMany
     public function getEagerResults($collection)
     {
         if ($collection->count() < 1) {
-            return $this->getWith()->newCollection();
+            return $this->newCollection();
         }
 
         $query = $this->getEagerQuery($collection);
 
-        $return = $this->newCollection();
+        $return = $this->newAssociatedCollection();
         $results = $this->getDB()->execute($query);
         if ($results->numRows() > 0) {
             $i = 1;

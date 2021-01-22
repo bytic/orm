@@ -6,6 +6,8 @@ use Nip\Collections\Collection as AbstractCollection;
 use Nip\HelperBroker;
 use Nip\Records\AbstractModels\Record as Record;
 use Nip\Records\AbstractModels\RecordManager as Records;
+use Nip\Records\Relations\HasOneOrMany as Relation;
+use Nip\Records\Relations\Traits\HasCollectionResults;
 
 /**
  * Class Collection
@@ -19,6 +21,20 @@ class Collection extends AbstractCollection
      * @var Records
      */
     protected $_manager = null;
+
+
+    /**
+     * @param HasCollectionResults|Relation $relation
+     */
+    public function initFromRelation($relation)
+    {
+        $this->setManager($relation->getWith());
+
+        $indexKey = $relation->getParam('indexKey');
+        if ($indexKey) {
+            $this->setIndexKey($indexKey);
+        }
+    }
 
 
     /**
@@ -43,13 +59,13 @@ class Collection extends AbstractCollection
      * @param $name
      * @return Collection
      */
-    public function loadRelation($name)
+    public function loadRelation($name): Collection
     {
+        $relation = $this->getRelation($name);
         if (count($this) < 1) {
-            return;
+            return $relation->newCollection();
         }
 
-        $relation = $this->getRelation($name);
         $results = $relation->getEagerResults($this);
         $relation->match($this, $results);
         return $results;

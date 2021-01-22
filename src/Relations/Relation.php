@@ -21,6 +21,7 @@ use Nip_Helper_Arrays as ArraysHelper;
 abstract class Relation
 {
     use Traits\HasManagerTrait;
+    use Traits\HasCollectionResults;
     use Traits\HasWithTrait;
     use Traits\HasForeignKeyTrait;
     use Traits\HasPrimaryKeyTrait;
@@ -240,7 +241,7 @@ abstract class Relation
     public function getEagerResults($collection)
     {
         if ($collection->count() < 1) {
-            return $this->getWith()->newCollection();
+            return $this->newCollection();
         }
         $query = $this->getEagerQuery($collection);
 

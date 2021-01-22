@@ -17,7 +17,6 @@ use Nip\Records\Relations\Traits\HasCollectionResults;
  */
 abstract class HasOneOrMany extends Relation
 {
-    use HasCollectionResults;
 
     /**
      * @var string
@@ -63,7 +62,7 @@ abstract class HasOneOrMany extends Relation
      */
     public function initResults()
     {
-        $collection = $this->newCollection();
+        $collection = $this->newAssociatedCollection();
         if ($this->isPopulatable()) {
             $query = $this->getQuery();
             $items = $this->getWith()->findByQuery($query);
@@ -120,7 +119,7 @@ abstract class HasOneOrMany extends Relation
         /** Use Relation Primary Key in case it is overwritten */
         $foreignKey = $this->getPrimaryKey();
         $primaryKey = $record->{$foreignKey};
-        $collection = $this->newCollection();
+        $collection = $this->newAssociatedCollection();
 
         if (isset($dictionary[$primaryKey]) && is_array($dictionary[$primaryKey])) {
             foreach ($dictionary[$primaryKey] as $record) {
