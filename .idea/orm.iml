@@ -7,6 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="Nip\Records\" />
       <sourceFolder url="file://$MODULE_DIR$/tests/src" isTestSource="true" packagePrefix="Nip\Records\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/orm" isTestSource="false" packagePrefix="ByTIC\ORM\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/orm" isTestSource="true" packagePrefix="ByTIC\ORM\Tests\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/assets" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/cache" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/collections" />

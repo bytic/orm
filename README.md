@@ -12,3 +12,9 @@ ByTIC ORM component
 [![StyleCI](https://styleci.io/repos/119893593/shield?branch=master)](https://styleci.io/repos/119893593)
 [![Total Downloads](https://img.shields.io/packagist/dt/bytic/orm.svg?style=flat-square)](https://packagist.org/packages/bytic/orm)
 
+#### Inspiration
+* https://github.com/cycle/orm
+* https://github.com/illuminate/database/tree/master/Eloquent
+* https://github.com/doctrine
+* https://github.com/Tharos/LeanMapper
+* https://github.com/spiral/orm

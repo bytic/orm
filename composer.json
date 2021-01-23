@@ -12,7 +12,8 @@
   ],
   "autoload": {
     "psr-4": {
-      "Nip\\Records\\": "src"
+      "Nip\\Records\\": "src",
+      "ByTIC\\ORM\\": "orm"
     },
     "classmap": [
       "src",
@@ -23,6 +24,7 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "ByTIC\\ORM\\Tests\\": "tests/orm",
       "Nip\\Records\\Tests\\": "tests/src",
       "Nip\\Records\\Tests\\Fixtures\\": "tests/fixtures"
     }
