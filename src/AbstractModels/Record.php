@@ -22,12 +22,12 @@ abstract class Record extends BaseDto implements \Serializable
     use HasHelpersTrait;
     use HasManagerRecordTrait;
 
-    use \ByTIC\DataObjects\Behaviors\Serializable\SerializableTrait;
-    use \ByTIC\DataObjects\Behaviors\Timestampable\TimestampableTrait;
-
-    use HasUrlRecordTrait;
-
     protected $serializable = ['attributes'];
+
+    use \ByTIC\DataObjects\Behaviors\Serializable\SerializableTrait;
+
+    use \ByTIC\DataObjects\Behaviors\Timestampable\TimestampableTrait;
+    use HasUrlRecordTrait;
 
     /**
      * Overloads Ucfirst() helper
@@ -112,7 +112,7 @@ abstract class Record extends BaseDto implements \Serializable
             unset($data[$key]);
         }
 
-        $this->writeData($data);
+        $this->fill($data);
     }
 
     /**

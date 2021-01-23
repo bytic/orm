@@ -172,10 +172,18 @@ trait ActiveRecordsTrait
      */
     public function update(Record $model)
     {
-        $query = $this->updateQuery($model);
+        // If the "UPDATING" event returns false we'll bail out of the save and return
+        // false, indicating that the save failed. This provides a chance for any
+        // listeners to cancel save operations if validations fail or whatever.
+        if ($this->fireModelEvent(Observe::UPDATING, $model) === false) {
+            return false;
+        }
 
+        $query = $this->updateQuery($model);
         if ($query) {
-            return $query->execute();
+            $result = $query->execute();
+            $this->fireModelEvent(Observe::UPDATED, $model);
+            return true;
         }
 
         $model->syncOriginal();
@@ -237,11 +245,11 @@ trait ActiveRecordsTrait
             $data = $model->toArray();
 
             if ($data) {
-                $previous->writeData($model->toArray());
+                $previous->fill($model->toArray());
             }
             $previous->update();
 
-            $model->writeData($previous->toArray());
+            $model->fill($previous->toArray());
 
             return $model->getPrimaryKey();
         }
@@ -253,16 +261,20 @@ trait ActiveRecordsTrait
     /**
      * Delete a Record's database entry
      *
-     * @param Record $input
+     * @param Record $model
+     * @return false
      */
-    public function delete($input)
+    public function delete($model)
     {
+        if ($this->fireModelEvent(Observe::DELETING, $model) === false) {
+            return false;
+        }
         $pk = $this->getPrimaryKey();
 
-        if ($input instanceof $this->model) {
-            $primary = $input->getPrimaryKey();
+        if ($model instanceof $this->model) {
+            $primary = $model->getPrimaryKey();
         } else {
-            $primary = $input;
+            $primary = $model;
         }
 
         $query = $this->newDeleteQuery();
@@ -270,6 +282,8 @@ trait ActiveRecordsTrait
         $query->limit(1);
 
         $this->getDB()->execute($query);
+        $this->fireModelEvent(Observe::UPDATED, $model);
+        return true;
     }
 
     /**

@@ -11,3 +11,4 @@ ByTIC ORM component
 [![Quality Score](https://img.shields.io/scrutinizer/g/bytic/orm.svg?style=flat-square)](https://scrutinizer-ci.com/g/bytic/orm)
 [![StyleCI](https://styleci.io/repos/119893593/shield?branch=master)](https://styleci.io/repos/119893593)
 [![Total Downloads](https://img.shields.io/packagist/dt/bytic/orm.svg?style=flat-square)](https://packagist.org/packages/bytic/orm)
+

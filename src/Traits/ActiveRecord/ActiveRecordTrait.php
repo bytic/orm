@@ -26,8 +26,7 @@ trait ActiveRecordTrait
      */
     public function update()
     {
-        $return = $this->getManager()->update($this);
-        return $return;
+        return $this->getManager()->update($this);
     }
 
     public function save()
