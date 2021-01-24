@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace ByTIC\ORM\Schema\Objects;
+namespace ByTIC\ORM\Schema\Elements;
+
+use Exception;
 
 /**
  * Class EntitySchema
  * @package ByTIC\ORM\Schema\Objects
  */
-class EntitySchema
+class EntitySchema extends AbstractSchema
 {
     public const ROLE = 'role';
     public const ALIASES = 'aliases';
@@ -16,7 +18,7 @@ class EntitySchema
     public const REPOSITORY = 'repository';
     public const TABLE = 'table';
     public const DATABASE = 'database';
-    public const COLUMNS = 'columns';
+    public const FIELDS = 'fields';
     public const IDENTIFIER = 'identifier';
     public const RELATIONS = 'relations';
 
@@ -32,7 +34,18 @@ class EntitySchema
 
     protected $identifier;
 
-    protected $columns = [];
+    /**
+     * @var FieldCollection
+     */
+    protected $fields;
+
+    /**
+     * EntitySchema constructor.
+     */
+    public function __construct()
+    {
+        $this->fields = new FieldCollection();
+    }
 
     /**
      * {@inheritdoc}
@@ -47,9 +60,17 @@ class EntitySchema
         return $this->table;
     }
 
-    public function getColumns(): array
+    /**
+     * @param mixed $table
+     */
+    public function setTable($table): void
     {
-        return $this->columns;
+        $this->table = $table;
+    }
+
+    public function getFields(): FieldCollection
+    {
+        return $this->fields;
     }
 
     /**

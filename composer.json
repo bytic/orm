@@ -39,7 +39,8 @@
     "bytic/inflector": "^0.9|^1.0",
     "bytic/namefy": "^1.0",
     "bytic/utility": "^1.0",
-    "bytic/pipeline": "^1.0"
+    "bytic/pipeline": "^1.0",
+    "doctrine/persistence": "^2.0"
   },
   "require-dev": {
     "bytic/container": "^0.9|^1.0|^2.0",

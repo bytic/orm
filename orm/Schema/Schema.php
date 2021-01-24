@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace ByTIC\ORM\Schema;
 
 use ByTIC\ORM\Exception\SchemaException;
-use ByTIC\ORM\Schema\Objects\EntitySchema;
-use ByTIC\ORM\Schema\Objects\RelationSchema;
+use ByTIC\ORM\Schema\Elements\EntitySchema;
+use ByTIC\ORM\Schema\Elements\RelationSchema;
 
 /**
  * Class Schema
  * @package ByTIC\ORM\Schema
  */
-final class Schema implements \ByTIC\ORM\Schema\SchemaInterface
+final class Schema implements \ByTIC\ORM\Schema\SchemaInterface, \Serializable
 {
     /** @var array */
     protected $aliases = [];
@@ -25,7 +25,6 @@ final class Schema implements \ByTIC\ORM\Schema\SchemaInterface
      */
     public function __construct(array $schema = [])
     {
-        // split into two?
         [$this->entities, $this->aliases] = $this->normalize($schema);
     }
 
@@ -150,5 +149,21 @@ final class Schema implements \ByTIC\ORM\Schema\SchemaInterface
 
             yield $name => $rel;
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function serialize()
+    {
+        return serialize([$this->aliases, $this->entities]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function unserialize($data)
+    {
+        list($this->aliases, $this->entities) = unserialize($data);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ByTIC\ORM\Schema\Objects;
+namespace ByTIC\ORM\Schema\Elements;
 
 /**
  * Class RelationSchema
