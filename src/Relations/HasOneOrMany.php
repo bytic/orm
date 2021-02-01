@@ -17,7 +17,6 @@ use Nip\Records\Relations\Traits\HasCollectionResults;
  */
 abstract class HasOneOrMany extends Relation
 {
-
     /**
      * @var string
      */
