@@ -16,7 +16,6 @@ use Nip\Records\Tests\Fixtures\Records\Books\Books;
  */
 class CollectionTest extends AbstractTest
 {
-
     public function test_loadRelation_returns_empty_collection()
     {
         $records = Books::instance();
@@ -29,7 +28,7 @@ class CollectionTest extends AbstractTest
         $collection->shouldReceive('getRelation')->with('test')->andReturn($relation);
 
         $return = $collection->loadRelation('test');
-        self::assertInstanceOf(Collection::class,$return);
+        self::assertInstanceOf(Collection::class, $return);
         self::assertCount(0, $return);
     }
 

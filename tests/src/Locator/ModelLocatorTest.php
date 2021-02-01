@@ -28,7 +28,7 @@ class ModelLocatorTest extends AbstractTest
 
     public function test_getManager_with_closure()
     {
-        $alias = function() {
+        $alias = function () {
             return Books::class;
         };
 

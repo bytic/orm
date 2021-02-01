@@ -10,7 +10,6 @@ namespace ByTIC\ORM\Schema\Objects;
  */
 class ColumnSchema
 {
-
     public const TYPE_STRING = 'string';
 
     /**

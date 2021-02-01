@@ -6,5 +6,4 @@ namespace ByTIC\ORM;
 
 class ORM
 {
-
 }

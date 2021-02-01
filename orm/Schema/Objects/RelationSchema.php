@@ -26,30 +26,30 @@ class RelationSchema extends AbstractSchema
     /**
      * Identifies a one-to-one association.
      */
-    const ONE_TO_ONE = 1;
+    public const ONE_TO_ONE = 1;
 
     /**
      * Identifies a many-to-one association.
      */
-    const MANY_TO_ONE = 2;
+    public const MANY_TO_ONE = 2;
 
     /**
      * Identifies a one-to-many association.
      */
-    const ONE_TO_MANY = 4;
+    public const ONE_TO_MANY = 4;
 
     /**
      * Identifies a many-to-many association.
      */
-    const MANY_TO_MANY = 8;
+    public const MANY_TO_MANY = 8;
 
     /**
      * Combined bitmask for to-one (single-valued) associations.
      */
-    const TO_ONE = 3;
+    public const TO_ONE = 3;
 
     /**
      * Combined bitmask for to-many (collection-valued) associations.
      */
-    const TO_MANY = 12;
+    public const TO_MANY = 12;
 }

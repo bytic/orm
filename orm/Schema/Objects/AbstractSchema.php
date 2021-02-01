@@ -10,7 +10,6 @@ namespace ByTIC\ORM\Schema\Objects;
  */
 abstract class AbstractSchema
 {
-
     /**
      * EntitySchema constructor.
      * @param array $data
