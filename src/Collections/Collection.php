@@ -2,6 +2,7 @@
 
 namespace Nip\Records\Collections;
 
+use ByTIC\ORM\Exception\ORMException;
 use Nip\Collections\Collection as AbstractCollection;
 use Nip\HelperBroker;
 use Nip\Records\AbstractModels\Record as Record;
@@ -62,6 +63,9 @@ class Collection extends AbstractCollection
     public function loadRelation($name): Collection
     {
         $relation = $this->getRelation($name);
+        if (!($relation instanceof Relation)) {
+            throw new ORMException("Invalid relation {$name} on collection of {$this->getManager()->getClassName()}");
+        }
         if (count($this) < 1) {
             return $relation->newCollection();
         }
