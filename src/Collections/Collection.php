@@ -7,7 +7,7 @@ use Nip\Collections\Collection as AbstractCollection;
 use Nip\HelperBroker;
 use Nip\Records\AbstractModels\Record as Record;
 use Nip\Records\AbstractModels\RecordManager as Records;
-use Nip\Records\Relations\HasOneOrMany as Relation;
+use Nip\Records\Relations\Relation;
 use Nip\Records\Relations\Traits\HasCollectionResults;
 
 /**
