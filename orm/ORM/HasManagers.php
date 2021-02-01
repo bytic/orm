@@ -6,6 +6,7 @@ namespace ByTIC\ORM\ORM;
 
 use ByTIC\ORM\Exception\InvalidArgumentException;
 use ByTIC\ORM\Exception\ORMException;
+use ByTIC\ORM\Managers\EntityManagerFactory;
 use ByTIC\ORM\Managers\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -18,16 +19,37 @@ trait HasManagers
     /**
      * @var string
      */
-    protected $defaultManager = 'default';
+    protected $defaultManager = self::MANAGER_FALLBACK;
+
     /**
      * @var array
      */
-    protected $managers = [];
+    protected $managers = [self::MANAGER_FALLBACK => self::MANAGER_FALLBACK];
 
     /**
      * @var array
      */
     protected $managersMap = [];
+
+    /**
+     * @var EntityManagerFactory
+     */
+    protected $managersFactory;
+
+    /**
+     * @param       $name
+     * @param array $settings
+     */
+    public function addManager($name, array $settings = [])
+    {
+        $this->managersMap[$name] =
+            function () use ($name, $settings) {
+                return $this->getManagersFactory()->create($name, $settings);
+            };
+
+        $this->managers[$name] = $name;
+//        $this->addConnection($name, $settings);
+    }
 
     /**
      * @inheritDoc
@@ -47,18 +69,19 @@ trait HasManagers
     public function getManager($name = null): EntityManagerInterface
     {
         $name = $name ?: $this->getDefaultManagerName();
+        if ($name == $this->getDefaultManagerName() && $this->managerExists($name) == false) {
+            $this->addManager($name);
+        }
 
-        if (!$this->managerExists($name)) {
-            throw new InvalidArgumentException(sprintf('Doctrine Manager named "%s" does not exist.', $name));
+        if ($this->managerExists($name) == false) {
+            throw new InvalidArgumentException(sprintf('ORM: Entity Manager named "%s" does not exist.', $name));
         }
 
         if (isset($this->managersMap[$name])) {
             return $this->managersMap[$name];
         }
 
-        return $this->managersMap[$name] = $this->getService(
-            $this->getManagerBindingName($this->managers[$name])
-        );
+        return $this->managersMap[$name] = $this->getManagersFactory()->create([], $name);
     }
 
     /**
@@ -66,7 +89,7 @@ trait HasManagers
      *
      * @return bool
      */
-    public function managerExists($name)
+    public function managerExists($name): bool
     {
         return isset($this->managers[$name]);
     }
@@ -153,5 +176,17 @@ trait HasManagers
             }
         }
         return $this->getManager();
+    }
+
+    /**
+     * @return EntityManagerFactory
+     */
+    public function getManagersFactory(): EntityManagerFactory
+    {
+        if (is_object($this->managersFactory)) {
+            return $this->managersFactory;
+        }
+        $this->managersFactory = new EntityManagerFactory();
+        return $this->managersFactory;
     }
 }

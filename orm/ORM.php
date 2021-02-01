@@ -10,6 +10,11 @@ namespace ByTIC\ORM;
  */
 class ORM implements ORMInterface
 {
+    /**
+     * @const
+     */
+    public const MANAGER_FALLBACK = '__DEFAULT__';
+
     use ORM\Facade;
     use ORM\HasRepositories;
     use ORM\HasConnections;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ByTIC\ORM\ORM;
 
 use ByTIC\ORM\ORM;
-use RuntimeException;
 
 /**
  * Trait Facade
@@ -21,7 +20,7 @@ trait Facade
     /**
      * Get the root object behind the facade.
      *
-     * @return mixed
+     * @return ORM
      */
     public static function instance()
     {
@@ -32,7 +31,7 @@ trait Facade
      * Resolve the facade root instance from the container.
      *
      * @param object|string $name
-     * @return mixed
+     * @return ORM
      */
     protected static function resolveInstance(): ORM
     {
