@@ -2,6 +2,8 @@
 
 namespace Nip\Records\Locator\Configuration;
 
+use Nip\Utility\Arr;
+
 /**
  * Class Configuration
  * @package Nip\Records\Locator
@@ -9,6 +11,15 @@ namespace Nip\Records\Locator\Configuration;
 class Configuration
 {
     protected $namespaces = [];
+
+
+    /**
+     * @param $namespace
+     */
+    public function prependNamespace($namespace)
+    {
+        array_unshift($this->namespaces, $namespace);
+    }
 
     /**
      * @param $namespace
