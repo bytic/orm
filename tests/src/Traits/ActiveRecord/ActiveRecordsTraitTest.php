@@ -43,4 +43,34 @@ class ActiveRecordsTraitTest extends AbstractTest
             $listener
         );
     }
+
+    public function test_delete()
+    {
+        /** @var Mock|Books $books */
+        $books = Books::instance();
+        $listener = [];
+        $books::deleting(
+            function (Event $event) use (&$listener) {
+                $listener[] = $event->getName();
+            }
+        );
+        $books::deleted(
+            function (Event $event) use (&$listener) {
+                $listener[] = $event->getName();
+            }
+        );
+
+        $book = new Book(['test' => 'foe']);
+        $book->setManager($books);
+
+        $book->delete();
+
+        self::assertSame(
+            [
+                'orm.deleting: Nip\Records\Tests\Fixtures\Records\Books\Books',
+                'orm.deleted: Nip\Records\Tests\Fixtures\Records\Books\Books'
+            ],
+            $listener
+        );
+    }
 }

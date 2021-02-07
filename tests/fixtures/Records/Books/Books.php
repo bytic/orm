@@ -14,6 +14,8 @@ class Books extends \Nip\Records\RecordManager
     use SingletonTrait;
     use HasUuidRecordManagerTrait;
 
+    protected $model = Book::class;
+
     protected function generateTable()
     {
         return 'books';

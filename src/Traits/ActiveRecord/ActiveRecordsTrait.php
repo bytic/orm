@@ -282,7 +282,7 @@ trait ActiveRecordsTrait
         $query->limit(1);
 
         $this->getDB()->execute($query);
-        $this->fireModelEvent(Observe::UPDATED, $model);
+        $this->fireModelEvent(Observe::DELETED, $model);
         return true;
     }
 
