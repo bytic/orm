@@ -12,6 +12,8 @@ use Nip\Records\Relations\HasMany;
 use Nip\Records\Relations\HasOne;
 use Nip\Records\Relations\MorphToMany;
 use Nip\Records\Tests\AbstractTest;
+use Nip\Records\Tests\Fixtures\Records\Books\Books;
+use Nip\Records\Tests\Fixtures\Records\Books\Chapters\BooksChapters;
 use Nip\Records\Traits\Relations\HasRelationsRecordsTrait;
 
 /**
@@ -65,6 +67,25 @@ class RecordsTest extends AbstractTest
 
         $relation = $this->object->getRelation('Users');
         self::assertInstanceOf(MorphToMany::class, $relation);
+    }
+
+    public function test_cloneRelations()
+    {
+        $bookManager = Books::instance();
+
+        $from = $bookManager->getNew();
+        $chapters = $from->getRelation('Chapters')->newCollection();
+        $chapters[] = BooksChapters::instance()->getNew(['name' => 'chapter1']);
+        $chapters[] = BooksChapters::instance()->getNew(['name' => 'chapter2']);
+        $from->getRelation('Chapters')->setResults($chapters);
+        $to = $bookManager->getNew();
+
+        $bookManager->cloneRelations($from, $to);
+
+        $chaptersCloned = $to->getRelation('Chapters')->getResults();
+        self::assertCount(2, $chaptersCloned);
+        self::assertSame('chapter1', $chaptersCloned[0]->name);
+        self::assertSame('chapter2', $chaptersCloned[1]->name);
     }
 
 

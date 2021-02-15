@@ -266,6 +266,7 @@ trait HasRelationsRecordsTrait
     {
         $relations = $from->getManager()->getRelations();
         foreach ($relations as $name => $relation) {
+            $relation = $this->getRelation($name);
             /** @var \Nip\Records\Relations\HasMany $relation */
             if ($relation->getType() != 'belongsTo') {
                 /** @var Record[] $associatedOld */

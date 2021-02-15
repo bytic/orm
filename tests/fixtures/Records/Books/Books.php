@@ -2,6 +2,7 @@
 
 namespace Nip\Records\Tests\Fixtures\Records\Books;
 
+use Nip\Records\Tests\Fixtures\Records\Books\Chapters\BooksChapters;
 use Nip\Records\Traits\HasUuid\HasUuidRecordManagerTrait;
 use Nip\Utility\Traits\SingletonTrait;
 
@@ -15,6 +16,13 @@ class Books extends \Nip\Records\RecordManager
     use HasUuidRecordManagerTrait;
 
     protected $model = Book::class;
+
+    protected function initRelations()
+    {
+        parent::initRelations();
+        $this->hasMany('Chapters', ['class' => BooksChapters::class]);
+    }
+
 
     protected function generateTable()
     {
