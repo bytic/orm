@@ -180,14 +180,12 @@ trait ActiveRecordsTrait
         }
 
         $query = $this->updateQuery($model);
-        if ($query) {
-            $result = $query->execute();
-            $this->fireModelEvent(Observe::UPDATED, $model);
-            return true;
+        if (!is_object($query)) {
+            return false;
         }
-
-        $model->syncOriginal();
-        return false;
+        $return = $this->performUpdate($query, $model);
+        $this->fireModelEvent(Observe::UPDATED, $model);
+        return $return;
     }
 
     /**
@@ -224,6 +222,19 @@ trait ActiveRecordsTrait
     public function newUpdateQuery()
     {
         return $this->newQuery('update');
+    }
+
+
+    /**
+     * @param Query $query
+     * @param Record $record
+     * @return bool
+     */
+    protected function performUpdate(Query $query, Record $record)
+    {
+        $query->execute();
+        $record->syncOriginal();
+        return true;
     }
 
     /**
