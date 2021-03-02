@@ -50,6 +50,6 @@ trait HasControllerRecordsTrait
         if ($this->isNamespaced()) {
             $model = str_replace($this->getRootNamespace(), '', $model);
         }
-        return Namefy::model($model)->controller();
+        return Namefy::repository($model)->controller();
     }
 }

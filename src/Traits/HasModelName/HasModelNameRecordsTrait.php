@@ -2,6 +2,8 @@
 
 namespace Nip\Records\Traits\HasModelName;
 
+use ByTIC\Namefy\Namefy;
+
 /**
  * Trait HasModelNameRecordsTrait
  * @package Nip\Records\Traits\HasModelName
@@ -97,6 +99,8 @@ trait HasModelNameRecordsTrait
 
             if ($class == 'Table') {
                 $class = 'Row';
+            } elseif (strpos($class, 'RecordManager')) {
+                $class = str_replace('RecordManager','Record', $class);
             } else {
                 $class = ucfirst(inflector()->singularize($class));
             }
