@@ -14,10 +14,7 @@ use Nip\Records\Relations\HasOne;
  */
 class HasOneTest extends \Nip\Records\Tests\AbstractTest
 {
-    /**
-     * @var HasOne
-     */
-    protected $object;
+    protected $_user;
 
     public function testInitResults()
     {

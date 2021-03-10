@@ -3,8 +3,6 @@
 namespace Nip\Records\Tests\Relations;
 
 use Mockery as m;
-use Nip\Container\Container;
-use Nip\Database\Connections\Connection;
 use Nip\Records\Record;
 use Nip\Records\RecordManager;
 use Nip\Records\Relations\MorphToMany;

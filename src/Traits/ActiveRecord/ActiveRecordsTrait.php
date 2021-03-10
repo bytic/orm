@@ -426,13 +426,17 @@ trait ActiveRecordsTrait
         $operations = ["find", "delete", "count"];
         foreach ($operations as $operation) {
             if (strpos($name, $operation . "By") !== false || strpos($name, $operation . "OneBy") !== false) {
-                $params = [];
-                if (count($arguments) > 1) {
-                    $params = end($arguments);
-                }
-
                 $match = str_replace([$operation . "By", $operation . "OneBy"], "", $name);
                 $field = inflector()->underscore($match);
+
+                if ($this->hasField($field) === false) {
+                    continue;
+                }
+
+                $params = [];
+                if (count($arguments) > 1 && is_array(end($arguments))) {
+                    $params = end($arguments);
+                }
 
                 if ($field == $this->getPrimaryKey()) {
                     return $this->findByPrimary($arguments[0]);

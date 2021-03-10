@@ -8,7 +8,7 @@ use Nip\Records\Record;
 use Nip\Records\RecordManager;
 use Nip\Records\Relations\MorphMany;
 use Nip\Records\Tests\AbstractTest;
-use mockery as m;
+use Mockery as m;
 use Nip\Records\Tests\Fixtures\Records\Books\Book;
 
 /**
@@ -94,7 +94,7 @@ class MorphManyTest extends AbstractTest
         $relation->setItem($user);
         $relation->setManager($users);
 
-        $book = m::mock(Book::class)->shouldDeferMissing()
+        $book = m::mock(Book::class)->makePartial()
             ->shouldReceive('saveRecord')->andReturn(true)
             ->getMock();
 

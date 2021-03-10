@@ -73,4 +73,14 @@ class ActiveRecordsTraitTest extends AbstractTest
             $listener
         );
     }
+
+    public function test_isCallDatabaseOperation_dnx()
+    {
+        /** @var Mock|Books $books */
+        $books = \Mockery::mock(Books::class)->makePartial()->shouldAllowMockingProtectedMethods();
+//        $books->shouldReceive();
+
+        $this->expectError();
+        $books->findByEvent(new \stdClass());
+    }
 }
