@@ -3,9 +3,9 @@
 namespace Nip\Records\Traits\Searchable;
 
 use Nip\Database\Query\AbstractQuery as Query;
-use Nip\Records\Navigator\Pagination\Paginator;
 use Nip\Records\AbstractModels\Record;
 use Nip\Records\Collections\Collection as RecordCollection;
+use Nip\Records\Navigator\Pagination\Paginator;
 
 /**
  * Trait SearchableRecordsTrait
@@ -143,6 +143,21 @@ trait SearchableRecordsTrait
         }
 
         return null;
+    }
+
+
+    /**
+     * Finds one Record by field
+     *
+     * @param $field
+     * @param $value
+     * @return Record|null
+     */
+    public function findOneByField($field, $value)
+    {
+        $params['where'][] = ["$field " . (is_array($value) ? "IN" : "=") . " ?", $value];
+
+        return $this->findOneByParams($params);
     }
 
     /**
