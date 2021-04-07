@@ -5,6 +5,7 @@ namespace Nip\Records\AbstractModels;
 use ByTIC\DataObjects\BaseDto;
 use Nip\Helpers\Traits\HasHelpersTrait;
 use Nip\Records\Traits\ActiveRecord\ActiveRecordTrait;
+use Nip\Records\Traits\CanBootTraits\CanBootTraitsRecordsTrait;
 use Nip\Records\Traits\HasManager\HasManagerRecordTrait;
 use Nip\Records\Traits\HasUrl\HasUrlRecordTrait;
 use Nip\Utility\Traits\NameWorksTrait;
@@ -19,15 +20,21 @@ abstract class Record extends BaseDto implements \Serializable
 {
     use NameWorksTrait;
     use ActiveRecordTrait;
+    use CanBootTraitsRecordsTrait;
     use HasHelpersTrait;
     use HasManagerRecordTrait;
 
     protected $serializable = ['attributes'];
 
     use \ByTIC\DataObjects\Behaviors\Serializable\SerializableTrait;
-
     use \ByTIC\DataObjects\Behaviors\Timestampable\TimestampableTrait;
     use HasUrlRecordTrait;
+
+    public function __construct(array $data = null)
+    {
+        $this->bootTraits();
+        return parent::__construct($data);
+    }
 
     /**
      * Overloads Ucfirst() helper

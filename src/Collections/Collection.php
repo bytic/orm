@@ -141,7 +141,8 @@ class Collection extends AbstractCollection
      */
     public function add($record, $index = null)
     {
-        $index = (string) $this->getRecordKey($record, $index);
+        $index = $this->getRecordKey($record, $index);
+        $index = empty($index) ? null : (string) $index;
         parent::add($record, $index);
     }
 
