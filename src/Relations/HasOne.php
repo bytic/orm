@@ -3,27 +3,18 @@
 namespace Nip\Records\Relations;
 
 use Nip\Database\Query\AbstractQuery;
-use Nip\Records\AbstractModels\Record as Record;
 use Nip\Records\Collections\Collection as RecordCollection;
 
 /**
  * Class HasOneOrMany
  * @package Nip\Records\Relations
  */
-class HasOne extends Relation
+class HasOne extends HasOneOrMany
 {
     /**
      * @var string
      */
     protected $type = 'hasOne';
-
-    /** @noinspection PhpMissingParentCallCommonInspection
-     * @return string
-     */
-    public function generateFK()
-    {
-        return $this->getManager()->getPrimaryFK();
-    }
 
     /**
      * @inheritDoc
@@ -69,25 +60,14 @@ class HasOne extends Relation
             return [];
         }
         $dictionary = [];
+        $primaryKey = $this->getDictionaryKey();
         foreach ($collection as $record) {
-            $dictionary[$this->getDictionaryKey($record)] = $record;
+            $dictionary[$record->{$primaryKey}] = $record;
         }
 
         return $dictionary;
     }
-
-    /**
-     * @param Record $record
-     * @return array
-     * @throws \Exception
-     */
-    protected function getDictionaryKey(Record $record)
-    {
-        $withPK = $this->getPrimaryKey();
-
-        return $record->{$withPK};
-    }
-
+    
     /**
      * @inheritdoc
      */
