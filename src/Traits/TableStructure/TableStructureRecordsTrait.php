@@ -33,6 +33,18 @@ trait TableStructureRecordsTrait
         $this->fields = $fields;
     }
 
+    /**
+     * @param $name
+     */
+    protected function isNullable($name): bool
+    {
+        $structure = $this->getTableStructure();
+        if (!isset($structure[$name]['nullable'])) {
+            return false;
+        }
+        return (bool) $structure[$name]['nullable'];
+    }
+
     protected function checkFieldsIsInitiated()
     {
         if ($this->fields === null) {

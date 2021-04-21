@@ -413,7 +413,13 @@ trait ActiveRecordsTrait
     public function getQueryModelData($model)
     {
         $fields = $this->getFields();
-        return $model->getDirty($fields);
+        $data = $model->getDirty($fields);
+        foreach ($data as $field=>$value) {
+            if (empty($value)) {
+                $data[$field] = $this->isNullable($field) ? null : '';
+            }
+        }
+        return $data;
     }
 
     /**
