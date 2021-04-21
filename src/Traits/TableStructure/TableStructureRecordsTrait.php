@@ -39,10 +39,10 @@ trait TableStructureRecordsTrait
     protected function isNullable($name): bool
     {
         $structure = $this->getTableStructure();
-        if (!isset($structure[$name]['nullable'])) {
+        if (!isset($structure['fields'][$name]['nullable'])) {
             return false;
         }
-        return (bool) $structure[$name]['nullable'];
+        return (bool) $structure['fields'][$name]['nullable'];
     }
 
     protected function checkFieldsIsInitiated()
