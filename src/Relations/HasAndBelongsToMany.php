@@ -19,10 +19,12 @@ class HasAndBelongsToMany extends HasOneOrMany
 {
     use HasPivotTable;
 
+    public const NAME = 'hasAndBelongsToMany';
+
     /**
      * @var string
      */
-    protected $type = 'hasAndBelongsToMany';
+    protected $type = self::NAME;
 
     /**
      * @var null

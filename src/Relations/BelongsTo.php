@@ -12,10 +12,12 @@ use Nip\Records\Collections\Collection as RecordCollection;
  */
 class BelongsTo extends Relation
 {
+    public const NAME = 'belongsTo';
+
     /**
      * @var string
      */
-    protected $type = 'belongsTo';
+    protected $type = self::NAME;
 
     /** @noinspection PhpMissingParentCallCommonInspection
      * @return string

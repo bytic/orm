@@ -11,10 +11,12 @@ use Nip\Records\Collections\Collection as RecordCollection;
  */
 class HasOne extends HasOneOrMany
 {
+    public const NAME = 'hasOne';
+
     /**
      * @var string
      */
-    protected $type = 'hasOne';
+    protected $type = self::NAME;
 
     /**
      * @inheritDoc

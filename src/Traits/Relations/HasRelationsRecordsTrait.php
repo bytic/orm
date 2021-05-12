@@ -3,6 +3,8 @@
 namespace Nip\Records\Traits\Relations;
 
 use Nip\Records\Record;
+use Nip\Records\Relations\BelongsTo;
+use Nip\Records\Relations\HasOne;
 use Nip\Records\Relations\MorphToMany;
 use Nip\Records\Relations\Relation;
 use Nip\Records\Traits\AbstractTrait\RecordsTrait;
@@ -282,18 +284,28 @@ trait HasRelationsRecordsTrait
     {
         $relation = $this->getRelation($name);
         /** @var \Nip\Records\Relations\HasMany $relation */
-        if ($relation->getType() != 'belongsTo') {
-            /** @var Record[] $associatedOld */
-            $associatedOld = $from->{'get' . $name}();
-            if (count($associatedOld)) {
-                $associatedNew = $to->getRelation($name)->newCollection();
-                foreach ($associatedOld as $associated) {
-                    $aItem = $associated->getCloneWithRelations();
-                    $associatedNew[] = $aItem;
-                }
-                $to->getRelation($name)->setResults($associatedNew);
-            }
+        if ($relation->getType() == BelongsTo::NAME) {
+            return;
         }
+
+        $associatedOld = $from->{'get' . $name}();
+
+        if ($relation->getType() == HasOne::NAME) {
+            $associatedNew = $associatedOld->getClone();
+            $to->getRelation($name)->setResults($associatedNew);
+            return;
+        }
+
+        /** @var Record[] $associatedOld */
+        if (count($associatedOld)) {
+            $associatedNew = $to->getRelation($name)->newCollection();
+            foreach ($associatedOld as $associated) {
+                $aItem = $associated->getCloneWithRelations();
+                $associatedNew[] = $aItem;
+            }
+            $to->getRelation($name)->setResults($associatedNew);
+        }
+        $to->getRelation($name)->setResults($associatedNew);
     }
 
     /**
