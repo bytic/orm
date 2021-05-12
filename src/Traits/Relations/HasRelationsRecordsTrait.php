@@ -266,23 +266,34 @@ trait HasRelationsRecordsTrait
     {
         $relations = $from->getManager()->getRelations();
         foreach ($relations as $name => $relation) {
-            $relation = $this->getRelation($name);
-            /** @var \Nip\Records\Relations\HasMany $relation */
-            if ($relation->getType() != 'belongsTo') {
-                /** @var Record[] $associatedOld */
-                $associatedOld = $from->{'get' . $name}();
-                if (count($associatedOld)) {
-                    $associatedNew = $to->getRelation($name)->newCollection();
-                    foreach ($associatedOld as $associated) {
-                        $aItem = $associated->getCloneWithRelations();
-                        $associatedNew[] = $aItem;
-                    }
-                    $to->getRelation($name)->setResults($associatedNew);
-                }
-            }
+            $this->cloneRelation($name, $from, $to);
         }
 
         return $to;
+    }
+
+    /**
+     * @param $name
+     * @param $from
+     * @param $to
+     * @throws \Exception
+     */
+    public function cloneRelation($name, $from, $to)
+    {
+        $relation = $this->getRelation($name);
+        /** @var \Nip\Records\Relations\HasMany $relation */
+        if ($relation->getType() != 'belongsTo') {
+            /** @var Record[] $associatedOld */
+            $associatedOld = $from->{'get' . $name}();
+            if (count($associatedOld)) {
+                $associatedNew = $to->getRelation($name)->newCollection();
+                foreach ($associatedOld as $associated) {
+                    $aItem = $associated->getCloneWithRelations();
+                    $associatedNew[] = $aItem;
+                }
+                $to->getRelation($name)->setResults($associatedNew);
+            }
+        }
     }
 
     /**
