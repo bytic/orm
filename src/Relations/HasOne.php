@@ -76,4 +76,21 @@ class HasOne extends HasOneOrMany
     public function populateQuerySpecific(AbstractQuery $query)
     {
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function save()
+    {
+        $result = $this->getResults();
+        if (!is_object($result)) {
+            return;
+        }
+        $primaryKey = $this->getPrimaryKey();
+        $foreignKey = $this->getFK();
+
+        $result->{$foreignKey} = $this->getItem()->{$primaryKey};
+        $result->saveRecord();
+        return true;
+    }
 }
