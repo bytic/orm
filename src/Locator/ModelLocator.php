@@ -36,6 +36,11 @@ class ModelLocator
         return $this->locateManager($alias);
     }
 
+    public function getManagerClass($alias): string
+    {
+        return get_class($this->getManager($alias));
+    }
+
     /**
      * @param $alias
      * @return RecordManager

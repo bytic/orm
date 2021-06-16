@@ -2,7 +2,6 @@
 
 namespace Nip\Records\Locator\ModelLocator\Traits;
 
-use Nip\Records\Locator\Exceptions\InvalidModelException;
 use Nip\Records\AbstractModels\RecordManager;
 
 /**
@@ -23,6 +22,15 @@ trait StaticMethodsTrait
     public static function get($entityManager)
     {
         return self::instance()->getManager($entityManager);
+    }
+
+    /**
+     * @param $entityManager
+     * @return string
+     */
+    public static function class($entityManager)
+    {
+        return self::instance()->getManagerClass($entityManager);
     }
 
     /**

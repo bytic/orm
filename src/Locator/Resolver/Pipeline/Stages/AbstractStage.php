@@ -24,7 +24,7 @@ abstract class AbstractStage implements StageInterface
     {
         $this->setCommand($command);
         $this->processCommand();
-        return $command;
+        return $this->getCommand();
     }
 
     /**
