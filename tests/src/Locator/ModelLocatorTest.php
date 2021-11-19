@@ -5,6 +5,8 @@ namespace Nip\Records\Tests\Locator;
 use Nip\Records\Locator\Exceptions\InvalidModelException;
 use Nip\Records\Locator\ModelLocator;
 use Nip\Records\Tests\AbstractTest;
+use Nip\Records\Tests\Fixtures\Locator\GrandParentModelLocator;
+use Nip\Records\Tests\Fixtures\Locator\ParentModelLocator;
 use Nip\Records\Tests\Fixtures\Records\Books\Books;
 use Nip\Records\Tests\Fixtures\Records\Books\Chapters\BooksChapters;
 
@@ -69,5 +71,18 @@ class ModelLocatorTest extends AbstractTest
 
         $manager = ModelLocator::get('books-chapters');
         self::assertInstanceOf(BooksChapters::class, $manager);
+    }
+
+    public function test_inheritance()
+    {
+        $repository = Books::instance();
+        ModelLocator::set('books', $repository);
+
+        foreach (['books', Books::class] as $key) {
+            self::assertEquals($repository, ModelLocator::get($key));
+            self::assertEquals($repository, ParentModelLocator::get($key));
+            self::assertEquals($repository, GrandParentModelLocator::get($key));
+        }
+
     }
 }

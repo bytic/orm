@@ -83,7 +83,7 @@ trait HasWithTrait
             $this->setWith($manager);
         } catch (InvalidModelException $exception) {
             /** @noinspection PhpUnhandledExceptionInspection */
-            throw new Exception(
+            throw new InvalidModelException(
                 'Cannot instance records [' . $name . '] in ' . $this->debugString()
                 . '|| with message ' . $exception->getMessage()
             );

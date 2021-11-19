@@ -29,7 +29,10 @@ class Collection extends AbstractCollection
      */
     public function initFromRelation($relation)
     {
-        $this->setManager($relation->getWith());
+        $manager = $relation->getWith();
+        if ($manager instanceof Records) {
+            $this->setManager($manager);
+        }
 
         $indexKey = $relation->getParam('indexKey');
         if ($indexKey) {
