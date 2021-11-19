@@ -16,6 +16,7 @@ class CanCacheTest extends AbstractTest
     {
         $manager = MappingManager::instance();
         $manager->needsCaching(false);
+        $manager->repository()->clear();
         self::assertFalse($manager->needsCaching());
 
         $books = Books::instance();

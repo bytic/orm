@@ -2,10 +2,11 @@
 
 namespace Nip\Records\Instantiator;
 
+use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Mapping\Configurator\EntityConfigurator;
 use Nip\Records\Mapping\MappingManager;
-use Nip\Records\AbstractModels\RecordManager;
 use Nip\Records\Registry\HasModelRegistry;
+use Nip\Utility\Oop;
 
 /**
  * Class Instantiator
@@ -37,13 +38,11 @@ class Instantiator
      */
     protected function create($className)
     {
-        if (method_exists($className, "instance")) {
-            $manager = call_user_func([$className, "instance"]);
-        } else {
-            $manager = new $className();
+        if (false === Oop::classUsesTrait($className, CanInstanceTrait::class)) {
+            return call_user_func([$className, "instance"]);
         }
 
-        return $manager;
+        return new $className();
     }
 
     /**
