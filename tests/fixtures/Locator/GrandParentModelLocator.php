@@ -10,5 +10,4 @@ use Nip\Records\Locator\ModelLocator;
  */
 class GrandParentModelLocator extends ModelLocator
 {
-
 }

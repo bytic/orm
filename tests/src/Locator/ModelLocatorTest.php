@@ -83,6 +83,5 @@ class ModelLocatorTest extends AbstractTest
             self::assertEquals($repository, ParentModelLocator::get($key));
             self::assertEquals($repository, GrandParentModelLocator::get($key));
         }
-
     }
 }
