@@ -35,8 +35,9 @@ trait TableStructureRecordsTrait
 
     /**
      * @param $name
+     * @return bool
      */
-    protected function isNullable($name): bool
+    public function isNullable($name): bool
     {
         $structure = $this->getTableStructure();
         if (!isset($structure['fields'][$name]['nullable'])) {
@@ -44,6 +45,21 @@ trait TableStructureRecordsTrait
         }
         return (bool) $structure['fields'][$name]['nullable'];
     }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function isAutoincrement($name): bool
+    {
+        $structure = $this->getTableStructure();
+        if (!isset($structure['fields'][$name]['auto_increment'])) {
+            return false;
+        }
+        return (bool) $structure['fields'][$name]['auto_increment'];
+    }
+
+
 
     protected function checkFieldsIsInitiated()
     {
