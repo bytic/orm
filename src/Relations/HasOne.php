@@ -69,7 +69,7 @@ class HasOne extends HasOneOrMany
 
         return $dictionary;
     }
-    
+
     /**
      * @inheritdoc
      */
