@@ -16,7 +16,7 @@ trait IsCachedTrait
     /**
      * @inheritDoc
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         $this->needsCaching(true);
         parent::offsetSet($key, $value);
