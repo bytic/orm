@@ -36,24 +36,25 @@ trait HasUrlRecordManagerTrait
      * @param null $module
      * @return string|null
      */
-    public function compileURL($action, $params = [], $module = null)
+    public function compileURL($action, $params = [], $module = null): ?string
     {
         $controller = $this->getController();
 
-        if (substr($action, 0, 5) == 'Async') {
-            $controller = 'async-' . $controller;
-            $action = substr($action, 5);
+        if (is_string($action)) {
+            if (substr($action, 0, 5) == 'Async') {
+                $controller = 'async-' . $controller;
+                $action = substr($action, 5);
+            }
+
+            if (substr($action, 0, 5) == 'Modal') {
+                $controller = 'modal-' . $controller;
+                $action = substr($action, 5);
+            }
         }
 
-        if (substr($action, 0, 5) == 'Modal') {
-            $controller = 'modal-' . $controller;
-            $action = substr($action, 5);
-        }
-
-        $params = (array) $params;
+        $params = (array)$params;
 
         $params['action'] = (!empty($action)) ? $action : 'index';
-        $params['controller'] = $controller;
 
         $params['action'] = inflector()->unclassify($params['action']);
         $params['action'] = ($params['action'] == 'index') ? null : $params['action'];
