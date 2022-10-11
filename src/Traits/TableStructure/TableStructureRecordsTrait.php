@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Records\Traits\TableStructure;
 
 /**
@@ -43,7 +45,7 @@ trait TableStructureRecordsTrait
         if (!isset($structure['fields'][$name]['nullable'])) {
             return false;
         }
-        return (bool) $structure['fields'][$name]['nullable'];
+        return (bool)$structure['fields'][$name]['nullable'];
     }
 
     /**
@@ -56,9 +58,8 @@ trait TableStructureRecordsTrait
         if (!isset($structure['fields'][$name]['auto_increment'])) {
             return false;
         }
-        return (bool) $structure['fields'][$name]['auto_increment'];
+        return (bool)$structure['fields'][$name]['auto_increment'];
     }
-
 
 
     protected function checkFieldsIsInitiated()
@@ -71,7 +72,9 @@ trait TableStructureRecordsTrait
     public function initFields()
     {
         $structure = $this->getTableStructure();
-        $this->setFields(array_keys($structure['fields']));
+        if (is_array($structure['fields'])) {
+            $this->setFields(array_keys($structure['fields']));
+        }
     }
 
     /**

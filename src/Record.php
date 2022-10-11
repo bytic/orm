@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Records;
 
 use Nip\Records\Traits\Relations\HasRelationsRecordTrait;
