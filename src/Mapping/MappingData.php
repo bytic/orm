@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Records\Mapping;
 
 /**
@@ -151,18 +153,30 @@ class MappingData implements \Serializable
         return is_array($this->bootTraits);
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function __sleep()
+    {
+        return ['table', 'model', 'controller', 'tableStructure', 'fields', 'bootTraits'];
+    }
+
+    public function __serialize(): array
+    {
+        $data = [];
+        $properties = $this->__sleep();
+        foreach ($properties as $property) {
+            $data[$property] = $this->{$property};
+        }
+        return $data;
+    }
 
     /**
      * @inheritDoc
      */
-    public function serialize()
+    public function serialize(): string
     {
-        $data = [];
-        $properties = ['table', 'model', 'controller', 'tableStructure', 'fields', 'bootTraits'];
-        foreach ($properties as $property) {
-            $data[$property] = $this->{$property};
-        }
-        return serialize($data);
+        return serialize($this->__serialize());
     }
 
     /**
@@ -176,6 +190,11 @@ class MappingData implements \Serializable
     public function unserialize($serialized)
     {
         $data = unserialize($serialized);
+        $this->__unserialize($data);
+    }
+
+    public function __unserialize(array $data): void
+    {
         $this->fromArray($data);
     }
 
@@ -184,7 +203,7 @@ class MappingData implements \Serializable
      */
     public function fromArray($data)
     {
-        foreach ($data as $key=>$value) {
+        foreach ($data as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }
