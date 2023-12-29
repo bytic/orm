@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Records\Registry\Traits;
 
 use Nip\Cache\Cacheable\CanCache;

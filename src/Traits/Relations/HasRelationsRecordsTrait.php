@@ -28,7 +28,7 @@ trait HasRelationsRecordsTrait
 
     /** @noinspection PhpDocMissingThrowsInspection
      * Get a specified relationship.
-     * @param  string $relation
+     * @param string $relation
      * @return null|Relation
      * @throws \Exception
      */
@@ -200,6 +200,17 @@ trait HasRelationsRecordsTrait
      * @return Relation
      * @throws \Exception
      */
+    public function morphOne($name, $params = [])
+    {
+        return $this->initRelation('morphOne', $name, $params);
+    }
+
+    /**
+     * @param $name
+     * @param array $params
+     * @return Relation
+     * @throws \Exception
+     */
     public function morphMany($name, $params = [])
     {
         return $this->initRelation('morphMany', $name, $params);
@@ -232,7 +243,7 @@ trait HasRelationsRecordsTrait
 
     /**
      * Determine if the given relation is loaded.
-     * @param  string $key
+     * @param string $key
      * @return bool
      * @throws \Exception
      */
@@ -245,8 +256,8 @@ trait HasRelationsRecordsTrait
 
     /**
      * Set the specific relationship in the model.
-     * @param  string $relation
-     * @param  mixed $value
+     * @param string $relation
+     * @param mixed $value
      * @return $this
      * @throws \Exception
      */
@@ -322,7 +333,7 @@ trait HasRelationsRecordsTrait
 
     /**
      * Set the entire relations array on the model.
-     * @param  array $relations
+     * @param array $relations
      * @return $this
      */
     public function setRelations(array $relations)
