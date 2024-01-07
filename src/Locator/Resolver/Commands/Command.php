@@ -22,6 +22,8 @@ class Command
      */
     protected $alias;
 
+    protected $default = null;
+
     /**
      * @var Configuration
      */
@@ -131,5 +133,21 @@ class Command
     public function addTry($class)
     {
         $this->tries[] = $class;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * @param null $default
+     */
+    public function setDefault($default): void
+    {
+        $this->default = $default;
     }
 }

@@ -28,12 +28,12 @@ class ModelLocator
      * @return RecordManager
      * @throws InvalidModelException
      */
-    public function getManager($alias): RecordManager
+    public function getManager($alias, $default = null): RecordManager
     {
         if ($alias instanceof \Closure) {
-            return $this->locateManager($alias());
+            return $this->locateManager($alias(), $default);
         }
-        return $this->locateManager($alias);
+        return $this->locateManager($alias, $default);
     }
 
     public function getManagerClass($alias): string
@@ -46,14 +46,14 @@ class ModelLocator
      * @return RecordManager
      * @throws InvalidModelException
      */
-    protected function locateManager($alias)
+    protected function locateManager($alias, $default = null)
     {
         $registry = $this->getModelRegistry();
         if ($registry->has($alias)) {
             return $registry->get($alias);
         }
 
-        $manager = $this->locateManagerPipeline($alias);
+        $manager = $this->locateManagerPipeline($alias, $default);
         $registry->set($alias, $manager);
         $registry->set($manager->getClassName(), $manager);
         return $manager;
@@ -64,9 +64,11 @@ class ModelLocator
      * @return RecordManager
      * @throws InvalidModelException
      */
-    protected function locateManagerPipeline($alias)
+    protected function locateManagerPipeline($alias, $default = null)
     {
         $command = CommandsFactory::create($alias, $this);
+        $command->setDefault($default);
+
         $pipeline = $this->buildCallPipeline();
 
         /** @var Command $command */

@@ -8,6 +8,7 @@ use League\Pipeline\PipelineInterface;
 use League\Pipeline\ProcessorInterface;
 use Nip\Records\Locator\Resolver\Commands\Command;
 use Nip\Records\Locator\Resolver\Pipeline\Stages\ClassInstance;
+use Nip\Records\Locator\Resolver\Pipeline\Stages\DefaultClassInstance;
 use Nip\Records\Locator\Resolver\Pipeline\Stages\NamespaceSearch;
 use Nip\Records\Locator\Resolver\Pipeline\Stages\RegistryInstance;
 use Nip\Records\Locator\Resolver\Pipeline\Stages\TableNameClassInstance;
@@ -24,6 +25,7 @@ class PipelineBuilder extends AbstractBuilder
         $this->add(new ClassInstance());
         $this->add(new NamespaceSearch());
         $this->add(new TableNameClassInstance());
+        $this->add(new DefaultClassInstance());
     }
 
     /**

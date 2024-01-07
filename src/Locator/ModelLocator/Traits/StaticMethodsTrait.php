@@ -19,9 +19,9 @@ trait StaticMethodsTrait
      * @param $entityManager
      * @return RecordManager
      */
-    public static function get($entityManager)
+    public static function get($entityManager, $default = null)
     {
-        return self::instance()->getManager($entityManager);
+        return self::instance()->getManager($entityManager, $default);
     }
 
     /**
