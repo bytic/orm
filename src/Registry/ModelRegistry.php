@@ -12,4 +12,9 @@ use Nip\Records\Registry\Traits\IsCachedTrait;
 class ModelRegistry extends AbstractLazyCollection
 {
     use IsCachedTrait;
+
+    protected function dataCacheKey($key = null)
+    {
+        return 'orm.registry.data';
+    }
 }

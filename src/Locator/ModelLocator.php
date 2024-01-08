@@ -56,6 +56,7 @@ class ModelLocator
         $manager = $this->locateManagerPipeline($alias, $default);
         $registry->set($alias, $manager);
         $registry->set($manager->getClassName(), $manager);
+        $registry->set($manager->getController(), $manager);
         return $manager;
     }
 
