@@ -67,11 +67,6 @@ class MappingManager
         return $this->repository;
     }
 
-    public function __destruct()
-    {
-        $this->checkSaveCache();
-    }
-
     protected function bootIfNeeded()
     {
         if ($this->booted === true) {

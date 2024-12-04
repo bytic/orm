@@ -26,6 +26,7 @@ trait IsCachedTrait
 
     public function __destruct()
     {
+        $this->saveDataToCache($this->generateCacheData());
         $this->checkSaveCache();
     }
 
@@ -58,5 +59,10 @@ trait IsCachedTrait
             );
             $this->setItems($data);
         }
+    }
+
+    protected function dataCacheKey($key = null)
+    {
+        return 'orm.registry.data';
     }
 }
