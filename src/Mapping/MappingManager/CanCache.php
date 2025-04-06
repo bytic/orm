@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Records\Mapping\MappingManager;
 
 use DateInterval;
@@ -14,6 +16,12 @@ trait CanCache
 {
     use \Nip\Cache\Cacheable\CanCache;
 
+
+    public function __destruct()
+    {
+        $this->saveDataToCache($this->generateCacheData());
+        $this->checkSaveCache();
+    }
     /**
      * @return mixed
      */

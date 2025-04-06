@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Records\Mapping;
 
 use Nip\Records\Mapping\Configurator\DataConfigurator;
@@ -65,11 +67,6 @@ class MappingManager
     {
         $this->bootIfNeeded();
         return $this->repository;
-    }
-
-    public function __destruct()
-    {
-        $this->checkSaveCache();
     }
 
     protected function bootIfNeeded()

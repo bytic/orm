@@ -26,6 +26,7 @@ trait IsCachedTrait
 
     public function __destruct()
     {
+        $this->saveDataToCache($this->generateCacheData());
         $this->checkSaveCache();
     }
 
