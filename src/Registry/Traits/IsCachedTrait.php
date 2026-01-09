@@ -60,4 +60,9 @@ trait IsCachedTrait
             $this->setItems($data);
         }
     }
+
+    protected function dataCacheKey($key = null)
+    {
+        return 'orm.registry.data';
+    }
 }

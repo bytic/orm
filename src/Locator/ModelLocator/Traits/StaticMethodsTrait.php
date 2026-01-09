@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Records\Locator\ModelLocator\Traits;
 
 use Nip\Records\AbstractModels\RecordManager;
+use Nip\Records\Locator\Exceptions\InvalidModelException;
 
 /**
  * Trait StaticMethodsTrait
@@ -14,6 +17,15 @@ trait StaticMethodsTrait
      * @var self
      */
     protected static $instance;
+
+    public static function has($entityManager, $default = null)
+    {
+        try {
+            return self::get($entityManager, $default);
+        } catch (InvalidModelException $e) {
+            return null;
+        }
+    }
 
     /**
      * @param $entityManager
