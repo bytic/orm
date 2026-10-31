@@ -243,6 +243,9 @@ abstract class Relation
         if ($collection->count() < 1) {
             return $this->newCollection();
         }
+        if (count($this->getEagerFkList($collection)) < 1) {
+            return $this->newCollection();
+        }
         $query = $this->getEagerQuery($collection);
 
         return $this->getWith()->findByQuery($query);
@@ -281,7 +284,21 @@ abstract class Relation
         $arrayHelper = HelperBroker::get('Arrays');
         $return = $arrayHelper->pluck($collection, $this->getFK());
 
-        return array_unique($return);
+        return static::filterEagerFkList($return);
+    }
+
+    /**
+     * Removes empty keys so the eager query never ends up as `IN ()`
+     * @param array $fkList
+     * @return array
+     */
+    public static function filterEagerFkList($fkList): array
+    {
+        $fkList = array_filter((array)$fkList, function ($value) {
+            return $value !== null && trim((string)$value) !== '';
+        });
+
+        return array_values(array_unique($fkList));
     }
 
     /**
