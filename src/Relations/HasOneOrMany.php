@@ -106,7 +106,7 @@ abstract class HasOneOrMany extends Relation
         $arrayHelper = HelperBroker::get('Arrays');
         $return = $arrayHelper->pluck($collection, $key);
 
-        return array_unique($return);
+        return static::filterEagerFkList($return);
     }
 
     /**

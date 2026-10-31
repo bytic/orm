@@ -74,6 +74,9 @@ class MorphTo extends BelongsTo
         $results = new Collection();
         foreach ($types as $type) {
             $manager = $this->getModelManagerInstance($type);
+            if (count($this->getEagerFkListType($collection, $manager)) < 1) {
+                continue;
+            }
             $query = $this->getEagerQueryType($collection, $manager);
             $typeCollection = $manager->findByQuery($query);
             foreach ($typeCollection as $item) {
@@ -116,7 +119,7 @@ class MorphTo extends BelongsTo
             }
         }
 
-        return array_unique($return);
+        return static::filterEagerFkList($return);
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection

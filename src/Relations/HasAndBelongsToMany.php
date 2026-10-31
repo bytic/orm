@@ -137,9 +137,13 @@ class HasAndBelongsToMany extends HasOneOrMany
             return $this->newCollection();
         }
 
+        $return = $this->newAssociatedCollection();
+        if (count($this->getEagerFkList($collection)) < 1) {
+            return $return;
+        }
+
         $query = $this->getEagerQuery($collection);
 
-        $return = $this->newAssociatedCollection();
         $results = $this->getDB()->execute($query);
         if ($results->numRows() > 0) {
             $i = 1;
