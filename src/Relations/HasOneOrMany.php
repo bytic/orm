@@ -43,7 +43,12 @@ abstract class HasOneOrMany extends Relation
      */
     public function hasResults()
     {
-        return $this->isPopulated() && count($this->getResults()) > 0;
+        if (!$this->isPopulated()) {
+            return false;
+        }
+
+        $results = $this->getResults();
+        return $results !== null && count($results) > 0;
     }
 
     /**

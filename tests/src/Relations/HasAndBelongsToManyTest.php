@@ -2,6 +2,7 @@
 
 namespace Nip\Records\Tests\Relations;
 
+use Mockery as m;
 use Nip\Records\Collections\Collection;
 use Nip\Records\RecordManager;
 use Nip\Records\Relations\HasAndBelongsToMany;
@@ -45,5 +46,33 @@ class HasAndBelongsToManyTest extends \Nip\Records\Tests\AbstractTest
         $results = $relation->getResults();
         self::assertInstanceOf(Collection::class, $results);
         self::assertCount(0, $results);
+    }
+
+    public function testHasResultsForUnloadedNullEmptyAndNonEmptyResults()
+    {
+        $relation = new HasAndBelongsToMany();
+
+        self::assertFalse($relation->hasResults());
+        self::assertFalse($relation->isPopulated());
+
+        $relation->setResults(null);
+        self::assertFalse($relation->hasResults());
+
+        $relation->setResults(new Collection());
+        self::assertFalse($relation->hasResults());
+
+        $relation->setResults(new Collection([new Book()]));
+        self::assertTrue($relation->hasResults());
+    }
+
+    public function testSaveWithNullResultsDoesNotInsertConnections()
+    {
+        $relation = m::mock(HasAndBelongsToMany::class)->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+        $relation->shouldReceive('deleteConnections')->once();
+        $relation->shouldReceive('newInsertQuery')->never();
+        $relation->setResults(null);
+
+        self::assertSame($relation, $relation->save());
     }
 }
