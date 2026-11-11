@@ -308,7 +308,7 @@ trait HasRelationsRecordsTrait
         }
 
         /** @var Record[]|null $associatedOld */
-        $associatedNew = $to->getRelation($name)->newCollection();
+        $associatedNew = $to->getRelation($name)->newAssociatedCollection();
         foreach ($associatedOld ?? [] as $associated) {
             $aItem = $associated->getCloneWithRelations();
             $associatedNew[] = $aItem;
