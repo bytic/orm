@@ -88,6 +88,33 @@ class RecordsTest extends AbstractTest
         self::assertSame('chapter2', $chaptersCloned[1]->name);
     }
 
+    public function test_cloneRelationsWithEmptyCollection()
+    {
+        $bookManager = Books::instance();
+        $from = $bookManager->getNew();
+        $from->getRelation('Chapters')->setResults($from->getRelation('Chapters')->newCollection());
+        $to = $bookManager->getNew();
+
+        $bookManager->cloneRelations($from, $to);
+
+        $relation = $to->getRelation('Chapters');
+        self::assertTrue($relation->isPopulated());
+        self::assertCount(0, $relation->getResults());
+        self::assertFalse($relation->hasResults());
+    }
+
+    public function test_cloneRelationsWithNullCollection()
+    {
+        $bookManager = Books::instance();
+        $from = $bookManager->getNew();
+        $from->getRelation('Chapters')->setResults(null);
+        $to = $bookManager->getNew();
+
+        $bookManager->cloneRelations($from, $to);
+
+        self::assertCount(0, $to->getRelation('Chapters')->getResults());
+    }
+
 
     protected function _testInitRelationsFromArrayBelongsToUser($name)
     {

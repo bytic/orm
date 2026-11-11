@@ -307,14 +307,11 @@ trait HasRelationsRecordsTrait
             return;
         }
 
-        /** @var Record[] $associatedOld */
-        if (count($associatedOld)) {
-            $associatedNew = $to->getRelation($name)->newCollection();
-            foreach ($associatedOld as $associated) {
-                $aItem = $associated->getCloneWithRelations();
-                $associatedNew[] = $aItem;
-            }
-            $to->getRelation($name)->setResults($associatedNew);
+        /** @var Record[]|null $associatedOld */
+        $associatedNew = $to->getRelation($name)->newAssociatedCollection();
+        foreach ($associatedOld ?? [] as $associated) {
+            $aItem = $associated->getCloneWithRelations();
+            $associatedNew[] = $aItem;
         }
         $to->getRelation($name)->setResults($associatedNew);
     }
