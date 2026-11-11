@@ -2,7 +2,6 @@
 
 namespace Nip\Records\Relations;
 
-use Nip\Database\Query\AbstractQuery;
 use Nip\Database\Query\Delete as DeleteQuery;
 use Nip\Database\Query\Select as SelectQuery;
 use Nip\Records\Relations\Traits\HasCollectionResults;
@@ -68,20 +67,9 @@ class MorphToMany extends HasAndBelongsToMany
         $this->inverse = $inverse;
     }
 
-    /**
-     * @param AbstractQuery $query
-     * @return AbstractQuery
-     */
-    public function populateQuerySpecific(AbstractQuery $query)
+    protected function generateFK()
     {
-        if ($this->isInverse()) {
-            return parent::populateQuerySpecific($query);
-        }
-        $primaryKey = $this->getPrimaryKey();
-
-        $query->where("`{$this->getTable()}`.`pivotal_id` = ?", $this->getItem()->{$primaryKey});
-
-        return $query;
+        return $this->isInverse() ? parent::generateFK() : 'pivotal_id';
     }
 
     /**
@@ -136,6 +124,14 @@ class MorphToMany extends HasAndBelongsToMany
     protected function generateMorphType()
     {
         return $this->isInverse() ? $this->getWith()->getTable() : $this->getManager()->getTable();
+    }
+
+    protected function deleteConnections()
+    {
+        $query = $this->newDeleteQuery();
+        $query->where("`{$this->getFK()}` = ?", $this->getItemRelationPrimaryKey());
+        $query->where("`{$this->getMorphKey()}` = ?", $this->getMorphType());
+        $query->execute();
     }
 
     /**
